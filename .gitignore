@@ -1,3 +1,16 @@
 
 *.pyc
 *.js
+apps/administracion/migrations/0001_initial.py
+apps/administracion/migrations/0002_gasto.py
+apps/administracion/migrations/0003_auto_20210408_2243.py
+apps/administracion/migrations/0004_auto_20210408_2352.py
+apps/administracion/migrations/0005_auto_20210409_0038.py
+apps/administracion/migrations/0007_auto_20210410_1816.py
+apps/administracion/migrations/0006_auto_20210409_0040.py
+apps/administracion/migrations/0008_auto_20210410_2111.py
+apps/administracion/migrations/0009_auto_20210410_2246.py
+apps/proyectos/migrations/0001_initial.py
+apps/proyectos/migrations/0002_auto_20210410_2111.py
+apps/proyectos/migrations/0003_auto_20210410_2246.py
+apps/reportes/migrations/0001_initial.py
