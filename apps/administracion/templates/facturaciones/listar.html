@@ -1,0 +1,59 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Facturas:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'administracion:facturaciones-crear'%}">Crear Factura</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Detalle</th>
+						<th>Descripcion</th>
+						<th>Forma Pago</th>
+						<th>Fecha Emision</th>
+						<th>Fecha Vencimiento</th>
+						<th>Monto Total</th>
+						<th>Monto Facturacion</th>
+						<th>Saldo Facturacion</th>
+						<th>Estado</th>
+                    </tr>
+
+				{% for factura in facturas %}
+					<tr>
+						<td>{{factura.id}}</td>
+						<td>{{factura.detalle}}</td>
+                        <td>{{factura.descripcion}}</td>
+                        <td>{{factura.forma_pago}}</td>
+                        <td>{{factura.fecha_emision}}</td>
+                        <td>{{factura.fecha_vencimiento}}</td>
+						<td>{{factura.monto_total}}</td>
+						<td>{{factura.monto_facturacion}}</td>
+						<td>{{factura.saldo_facturacion}}</td>
+						<td>{{factura.estado}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:facturaciones-modificar'  factura.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:facturaciones-borrar'  factura.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

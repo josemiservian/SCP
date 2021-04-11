@@ -1,0 +1,51 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Integrantes del equipo:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'proyectos:squads-add' pk%}">Agregar integrante</a>
+			<p></p>
+			<table class="table table-sm">
+				<tr>
+					<th></th>
+					<th>Proyecto</th>
+					<th>Nombre</th>
+					<th>Rol</th>
+					<th>Tarifa Asignada</th>
+					<th>Acción</th>
+				</tr>
+
+				{% for integrante in integrantes %}
+					<tr>
+						<td>{{integrante.id}}</td>
+						<td>{{integrante.equipo_proyecto.nombre}}</td>
+						<td>{{integrante.empleado.nombre}} {{integrante.empleado.apellido}}</td>
+                        <td>{{integrante.rol}}</td>
+                        <td>{{integrante.tarifa_asignada}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:squads-borrar-integrante'  integrante.id%}">Quitar del proyecto</a></td>
+					</tr>
+				{% endfor %}
+				
+			</table>
+			<p></p>
+			
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

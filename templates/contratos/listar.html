@@ -1,0 +1,62 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Contratos:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'proyectos:contratos-crear'%}">Crear Contrato</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th>Cliente</th>
+						<th>Nombre</th>
+						<th>Descripcion</th>
+						<th>Monto</th>
+						<th>Horas Presupuestadas</th>
+						<th>Fecha Inicio</th>
+						<th>Fecha Fin</th>
+						<th>Tipo Servicio</th>
+						<th>Estado</th>
+						<th>Rentabilidad</th>
+						<th>Horas Ejecutadas</th>
+
+                    </tr>
+
+				{% for contrato in contratos %}
+					<tr>
+						<td>{{contrato.cliente}}</td>
+						<td>{{contrato.nombre}}</td>
+						<td>{{contrato.descripcion}}</td>
+						<td>{{contrato.monto}}</td>
+						<td>{{contrato.horas_presupuestadas}}</td>
+						<td>{{contrato.fecha_inicio}}</td>
+						<td>{{contrato.fecha_fin}}</td>
+						<td>{{contrato.tipo_servicio}}</td>
+						<td>{{contrato.estado}}</td>
+						<td>{{contrato.rentabilidad}}</td>
+						<td>{{contrato.horas_ejecutadas}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:contratos-modificar'  contrato.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:contratos-borrar'  contrato.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

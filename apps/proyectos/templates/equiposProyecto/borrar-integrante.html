@@ -1,0 +1,21 @@
+{% block content %}
+
+<br>
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body">
+
+
+			<p>¿Está seguro de quitar a {{integrante}} del equipo?</p>
+
+			<form action="{% url 'proyectos:squads-borrar-integrante' integrante.id  %}" method="POST">
+				
+				{% csrf_token %}
+				<input class="btn btn-danger" type="submit" name="Aceptar">
+				<a class="btn btn-warning" href="{% url 'proyectos:squads-integrantes' integrante.equipo_proyecto.id%}">Cancelar</a>
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

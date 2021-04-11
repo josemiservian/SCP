@@ -1,0 +1,15 @@
+{%  include 'navbar.html' %}
+{% block content %}
+<p><a class="btn btn-sm btn-info" href="{% url 'gestion:areas-listar'%}">Areas</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'proyectos:clientes-listar'%}">Clientes</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'proyectos:contratos-listar'%}">Contratos</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'gestion:empleados-listar'%}">Empleados</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'proyectos:squads-listar'%}">Squads</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'administracion:facturaciones-listar'%}">Facturaciones</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'administracion:pagos-listar'%}">Pagos</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'gestion:grupos-listar'%}">Grupos</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'proyectos:registrohoras-listar' request.user%}">Registro Horas</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'gestion:roles-listar'%}">Roles</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'reportes:seguimientos-listar'%}">Seguimientos</a></p>
+<p><a class="btn btn-sm btn-info" href="{% url 'gestion:servicios-listar'%}">Servicios</a></p>
+{% endblock %}

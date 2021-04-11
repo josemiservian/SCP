@@ -1,0 +1,56 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Registros:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'proyectos:registrohoras-crear'%}">Registrar Horas</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+						<th>Empleado</th>
+                        <th>Contrato</th>
+                        <th>Nombre</th>
+                        <th>Detalle</th>
+                        <th>Fecha</th>
+                        <th>Hora Inicio</th>
+						<th>Hora Fin</th>
+						<th>Accion</th>
+                    </tr>
+
+				{% for registro in registros %}
+					<tr>
+						<td>{{registro.id}}</td>
+						<td>{{registro.empleado.usuario.username}}</td>
+						<td>{{registro.contrato.nombre}}</td>
+                        <td>{{registro.nombre}}</td>
+                        <td>{{registro.detalle}}</td>
+                        <td>{{registro.fecha}}</td>
+                        <td>{{registro.hora_inicio}}</td>
+						<td>{{registro.hora_fin}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:registrohoras-modificar'  registro.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:registrohoras-borrar'  registro.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

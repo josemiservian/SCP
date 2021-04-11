@@ -1,0 +1,56 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Pagos:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'administracion:pagos-crear'%}">Crear Pago</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Detalle</th>
+                        <th>Descripcion</th>
+                        <th>Monto</th>
+                        <th>Numero de cuota</th>
+                        <th>Fecha</th>
+						<th>Saldo</th>
+						<th>Estado</th>
+						<th>Accion</th>
+                    </tr>
+
+				{% for pago in pagos %}
+					<tr>
+						<td>{{pago.id}}</td>
+						<td>{{pago.detalle}}</td>
+                        <td>{{pago.descripcion}}</td>
+                        <td>{{pago.monto}}</td>
+                        <td>{{pago.nro_cuota}}</td>
+                        <td>{{pago.fecha}}</td>
+						<td>{{pago.saldo}}</td>
+						<td>{{pago.estado}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:pagos-modificar'  pago.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:pagos-borrar'  pago.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

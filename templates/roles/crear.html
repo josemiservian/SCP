@@ -1,0 +1,11 @@
+{% block container %}
+
+    <form method="POST" action="{% url "gestion:roles-crear" %}">
+        {% csrf_token %}
+
+        {{form.as_p}}
+        <input type="submit" value="Submit">
+        <a class="btn btn-warning" href="{% url 'gestion:roles-listar' %}">Cancelar</a>
+    </form>
+
+{% endblock %}

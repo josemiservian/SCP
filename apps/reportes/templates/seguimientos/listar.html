@@ -1,0 +1,58 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Seguimientos:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'reportes_seguimientos-crear'%}">Crear Seguimiento</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Detalle</th>
+                        <th>Descripcion</th>
+                        <th>Estado Inicial</th>
+                        <th>Estado Final</th>
+                        <th>Cantidad de horas Invertidas</th>
+						<th>Contrato</th>
+						<th>Empleado</th>
+						<th>Registro</th>
+						<th>Accion</th>
+                    </tr>
+
+				{% for seguimiento in seguimientos %}
+					<tr>
+						<td>{{seguimiento.id}}</td>
+						<td>{{seguimiento.detalle}}</td>
+                        <td>{{seguimiento.descripcion}}</td>
+                        <td>{{seguimiento.estado_inicial}}</td>
+                        <td>{{seguimiento.estado_final}}</td>
+                        <td>{{seguimiento.cant_horas_invertidas}}</td>
+						<td>{{seguimiento.contrato.nombre}}</td>
+						<td>{{seguimiento.empleado.usuario.username}}</td>
+						<td>{{seguimiento.registro.nombre}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'reportes_seguimientos-modificar'  seguimiento.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'reportes_seguimientos-borrar'  seguimiento.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,52 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Servicio:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:servicios-crear'%}">Crear Servicio</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Detalle</th>
+                        <th>Descripcion</th>
+                        <th>Estado final</th>
+                        <th>Costo</th>
+						<th>Area</th>
+                        <th>Accion</th>
+                    </tr>
+
+				{% for servicio in servicios %}
+					<tr>
+						<td>{{servicio.id}}</td>
+						<td>{{servicio.detalle}}</td>
+                        <td>{{servicio.descripcion}}</td>
+                        <td>{{servicio.estado_final}}</td>
+                        <td>{{servicio.costo}}</td>
+                        <td>{{servicio.area.nombre}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:servicios-modificar'  servicio.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:servicios-borrar'  servicio.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

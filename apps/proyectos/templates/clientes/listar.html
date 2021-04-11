@@ -1,0 +1,47 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Clientes</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'proyectos:clientes-crear'%}">Crear Cliente</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Rubro</th>
+                        <th>Estado</th>
+                    </tr>
+
+				{% for cliente in clientes %}
+					<tr>
+						<td>{{cliente.id}}</td>
+                        <td>{{cliente.nombre}}</td>
+                        <td>{{cliente.rubro}}</td>
+						<td>{{cliente.estado}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:clientes-modificar'  cliente.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:clientes-borrar'  cliente.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

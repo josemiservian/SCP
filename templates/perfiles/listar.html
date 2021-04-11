@@ -1,0 +1,43 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Perfiles:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'perfiles:crear'%}">Crear Perfil</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Perfil</th>
+                    </tr>
+
+				{% for perfil in perfiles %}
+					<tr>
+						<td>{{perfil.id}}</td>
+						<td>{{perfil.perfil}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'perfiles:modificar'  perfil.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'perfiles:borrar'  perfil.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

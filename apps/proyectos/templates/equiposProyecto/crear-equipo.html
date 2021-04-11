@@ -1,0 +1,11 @@
+{% block container %}
+
+    <form method="POST" action="{% url "proyectos:squads-crear" %}">
+        {% csrf_token %}
+
+        {{form.as_p}}
+        <input type="submit" value="Crear">
+        <a  href="{% url "proyectos:squads-listar" %}" class="cancellink-box">Cancelar</a>
+    </form>
+
+{% endblock %}

@@ -1,0 +1,45 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Areas:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:areas-crear'%}">Crear Area</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Estado</th>
+                    </tr>
+
+				{% for area in areas %}
+					<tr>
+						<td>{{area.id}}</td>
+                        <td>{{area.nombre}}</td>
+                        <td>{{area.estado}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:areas-modificar'  area.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:areas-borrar'  area.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

@@ -1,0 +1,13 @@
+{% block container %}
+
+    <form method="POST" action="{% url "gestion:areas-crear" %}">
+        {% csrf_token %}
+
+        {{form.as_p}}
+        <div>
+            <input type="submit" value="Crear">
+            <a  href="{% url "gestion:areas-listar" %}" class="cancellink-box">Cancelar</a>
+        </div>
+    </form>
+
+{% endblock %}

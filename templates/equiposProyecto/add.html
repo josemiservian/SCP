@@ -1,0 +1,11 @@
+{% block container %}
+
+    <form method="POST" action="{% url 'proyectos:squads-add' pk%}">
+        {% csrf_token %}
+
+        {{form.as_p}}
+        <input type="submit" value="Añadir al equipo">
+        <a class="btn btn-warning" href="{% url 'proyectos:squads-integrantes' pk%}">Cancelar</a>
+    </form>
+
+{% endblock %}

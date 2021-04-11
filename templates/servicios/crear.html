@@ -1,0 +1,11 @@
+{% block container %}
+
+    <form method="POST" action="{% url "gestion:servicios-crear" %}">
+        {% csrf_token %}
+
+        {{form.as_p}}
+        <input type="submit" value="Crear">
+        <a class="btn btn-warning" href="{% url 'gestion:servicios-listar' %}">Cancelar</a>
+    </form>
+
+{% endblock %}

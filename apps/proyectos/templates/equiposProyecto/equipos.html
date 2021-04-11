@@ -1,0 +1,50 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Equipo:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'proyectos:squads-crear'%}">Crear equipo</a>
+			<p></p>
+			<table class="table table-sm">
+				<tr>
+					<th></th>
+					<th>Nombre</th>
+					<th>Descripcion</th>
+					<th>Contrato</th>
+					<th>Lider Proyecto</th>
+				</tr>
+
+				{% for equipo in equipos %}
+					<tr>
+						<td>{{equipo.id}}</td>
+						<td>{{equipo.nombre}}</td>
+                        <td>{{equipo.descripcion}}</td>
+                        <td>{{equipo.contrato.nombre}}</td>
+                        <td>{{equipo.lider_proyecto.nombre}} {{equipo.lider_proyecto.apellido}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:squads-modificar'  equipo.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:squads-borrar-equipo'  equipo.id%}">Borrar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:squads-integrantes'  equipo.id%}">Ver integrantes</a></td>						
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

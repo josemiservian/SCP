@@ -1,0 +1,46 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Roles:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:roles-crear'%}">Crear Rol</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Nombre</th>
+                        <th>Tipo</th>
+                        <th>Accion</th>
+                    </tr>
+
+				{% for rol in roles %}
+					<tr>
+						<td>{{rol.id}}</td>
+						<td>{{rol.nombre}}</td>
+                        <td>{{rol.tipo}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:roles-modificar'  rol.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:roles-borrar'  rol.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

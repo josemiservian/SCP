@@ -1,0 +1,10 @@
+{% block container %}
+
+    <form method="POST" action="{% url "reportes_seguimientos-crear" %}">
+        {% csrf_token %}
+
+        {{form.as_p}}
+        <input type="submit" value="Submit">
+    </form>
+
+{% endblock %}

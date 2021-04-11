@@ -1,0 +1,23 @@
+{% block content %}
+
+<br>
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body">
+
+
+			<p>¿Está seguro de borrar el contrato "{{contrato}}"?</p>
+
+			<form action="{% url 'proyectos:contratos-borrar' contrato.id  %}" method="POST">
+				
+				{% csrf_token %}
+				<input class="btn btn-danger" type="submit" name="Aceptar">
+				<a class="btn btn-warning" href="{% url 'proyectos:contratos-listar' %}">Cancelar</a>
+
+				
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% block content %}
+
+
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body">
+
+			<form action="" method="POST">
+				{% csrf_token %}
+				{{ form.management_form }}
+				{% for field in form %}
+					{{field}}
+					<hr>
+				{% endfor %}
+				
+                <button type="submit" class="btn btn-primary btn-block mt-5">Actualizar</button>
+				<a class="btn btn-warning" href="{% url 'proyectos:registrohoras-listar' request.user.username%}">Cancelar</a>
+
+			</form>
+
+		</div>
+	</div>
+</div>
+
+
+{% endblock %}

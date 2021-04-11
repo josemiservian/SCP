@@ -1,0 +1,44 @@
+{%  include 'navbar.html' %}
+{% block content %}
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Grupos:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:grupos-crear'%}">Crear Grupo</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Grupo</th>
+						<th>Accion</th>
+                    </tr>
+
+				{% for grupo in grupos %}
+					<tr>
+						<td>{{grupo.id}}</td>
+						<td>{{grupo.name}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:grupos-modificar'  grupo.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:grupos-borrar'  grupo.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	
+		
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+

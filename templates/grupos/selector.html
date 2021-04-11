@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <title>Change group | Django site admin</title>
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/nav_sidebar.css">
+        <script src="/static/admin/js/nav_sidebar.js" defer=""></script>
+
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+
+
+        <script src="/admin/jsi18n/"></script>
+        <script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+        <script src="/static/admin/js/jquery.init.js"></script>
+        <script src="/static/admin/js/core.js"></script>
+        <script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+        <script src="/static/admin/js/SelectBox.js"></script>
+        <script src="/static/admin/js/actions.js"></script>
+        <script src="/static/admin/js/SelectFilter2.js"></script>
+        <script src="/static/admin/js/urlify.js"></script>
+        <script src="/static/admin/js/prepopulate.js"></script>
+        <script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+        <meta name="robots" content="NONE,NOARCHIVE">
+</head>
+    <body>
+        <label for="id_permissions">Permisos:</label>
+    <div class="related-widget-wrapper">
+        <div class="selector">
+            <div class="selector-available">
+                <select name="permissions_old" id="id_permissions_from" multiple class="filtered" data-field-name="permissions" data-is-stacked="0">
+                    {% for permiso in permisos %}
+                        <option value="{{permiso.id}}" title="{{permiso.name}}">{{permiso}}</option>
+                    {% endfor %}
+                </select>
+                
+                <a title="Click para seleccionar todos los permisos." href="#" id="id_permissions_add_all_link" class="selector-chooseall active">Seleccionar todo</a>
+            
+            </div>
+            <ul class="selector-chooser">
+                <li>
+                    <a title="Choose" href="#" id="id_permissions_add_link" class="selector-add">Seleccionar</a>
+                </li>
+                <li>
+                    <a title="Remove" href="#" id="id_permissions_remove_link" class="selector-remove">Quitar</a>
+                </li>
+            </ul>
+            <div class="selector-chosen">
+                <h2>Chosen permissions <span class="help help-tooltip help-icon" title="This is the list of chosen permissions. You may remove some by selecting them in the box below and then clicking the &quot;Remove&quot; arrow between the two boxes."></span>
+                </h2>
+                <select id="id_permissions_to" multiple="" size="0" name="permissions" class="filtered" style="height: 268px;">
+                </select>
+                <a title="Click to remove all chosen permissions at once." href="#" id="id_permissions_remove_all_link" class="selector-clearall active">Remove all</a>
+            </div>
+        
+        </div>
+    </div>
+    </body>    
+</html>

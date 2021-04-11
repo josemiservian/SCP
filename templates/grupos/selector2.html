@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    <head>
+        <title>Crear Grupo</title>
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/base.css">
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/nav_sidebar.css">
+        <script src="/static/admin/js/nav_sidebar.js" defer=""></script>     
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/forms.css">
+        <script src="/admin/jsi18n/"></script>
+        <script src="/static/admin/js/vendor/jquery/jquery.js"></script>
+        <script src="/static/admin/js/jquery.init.js"></script>
+        <script src="/static/admin/js/core.js"></script>
+        <script src="/static/admin/js/admin/RelatedObjectLookups.js"></script>
+        <script src="/static/admin/js/SelectBox.js"></script>
+        <script src="/static/admin/js/actions.js"></script>
+        <script src="/static/admin/js/SelectFilter2.js"></script>
+        <script src="/static/admin/js/urlify.js"></script>
+        <script src="/static/admin/js/prepopulate.js"></script>
+        <script src="/static/admin/js/vendor/xregexp/xregexp.js"></script>
+        <meta name="viewport" content="user-scalable=no, width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <link rel="stylesheet" type="text/css" href="/static/admin/css/responsive.css">
+        <meta name="robots" content="NONE,NOARCHIVE">
+    </head>
+    <body class="app-auth model-group change-form">
+        <div id="container">
+            <div class="main shifted" id="main">
+                <div class="content">
+                    <div id="content" class="colM">
+                        <h1>Crear Grupo</h1>
+                    </div>
+                    <div id="content-main">
+                        <form method="post" action="{% url "grupos:selector" %}">
+                            {% csrf_token %}
+                            <div>
+                                <fieldset class="module aligned">
+                                    <div class="form-row field-name">
+                                        <div>
+                                            <label class="required" for="id_name">Nombre:</label>
+                                            <input type="text" name="name" class="vTextField" maxlength="150" required="" id="id_name">
+                                        </div>
+                                    </div>
+                                    <div class="form row field-permissions">
+                                        <div>
+                                            <label for="id_permissions">
+                                                Permisos:
+                                            </label>
+                                            <div class="related-widget-wrapper">
+                                                <div class="selector">
+                                                    <div class="selector-available">
+                                                        <h2>Permisos Disponibles 
+                                                            <span class="help help-tooltip help-icon" title="Esta es la lista de permisos disponibles. Puede elegir algunos seleccionándolos en el cuadro a continuación y luego haciendo clic en la flecha Elegir entre las dos cajas  .">
+
+                                                            </span>
+                                                        </h2>
+                                                        <select name="permissions_old" id="id_permissions_from" multiple class="filtered" data-field-name="permissions" data-is-stacked="0">
+                                                            {% for permiso in form.permisos %}
+                                                                <option value="{{permiso.id}}" title="{{permiso.name}}">{{permiso}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                        <a title="Click para seleccionar todos los permisos al mismo tiempo" href="#" id="id_permissions_add_all_link" class="selector-chooseall active">
+                                                            Seleccionar todo
+                                                        </a>                                                    
+                                                    </div>
+                                                    <ul class="selector-chooser">
+                                                        <li>
+                                                            <a title="Choose" href="#" id="id_permissions_add_link" class="selector-add active">Seleccionar</a>
+                                                        </li>
+                                                        <li>
+                                                            <a title="Remove" href="#" id="id_permissions_remove_link" class="selector-remove active">Quitar</a>
+                                                        </li>
+                                                    </ul>
+                                                    <div class="selector-chosen">
+                                                        <h2>Permisos seleccionados <span class="help help-tooltip help-icon" title="Esta es la lista de permisos seleccionados. Puede eliminar algunos seleccionándolos en el cuadro a continuación y luego haciendo clic en la flecha Eliminar entre las dos casillas."></span>
+                                                        </h2>
+                                                        <select id="id_permissions_to" multiple="" size="0" name="permissions" class="filtered" style="height: 268px;">
+                                                        </select>
+                                                        <a title="Click to remove all chosen permissions at once." href="#" id="id_permissions_remove_all_link" class="selector-clearall active">Remove all</a>
+                                                    </div>
+                                                
+                                                </div>
+                                                <div class="help">Mantenga presionada la tecla "Control" o "Comando" en una Mac, para seleccionar más de una.</div>
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </fieldset>
+                                
+                            </div>
+                            <div class="submit-row">
+                                    
+                                <input type="submit" value="Crear" class="default" name="save">
+                                <p class="cancellink-box"><a  href="{% url "grupos:listar" %}" class="cancellink-box">Cancelar</a></p>
+                                
+                            </div>
+                        </form>
+                    </div>                    
+                </div>
+                
+            </div>
+        </div>
+        
+    </body>
+</html>

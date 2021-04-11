@@ -1,0 +1,23 @@
+{% block content %}
+
+<br>
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body">
+
+
+			<p>¿Está seguro de borrar el area "{{area}}"?</p>
+
+			<form action="{% url 'gestion:areas-borrar' area.id  %}" method="POST">
+				
+				{% csrf_token %}
+				<input class="btn btn-danger" type="submit" name="Aceptar">
+				<a class="btn btn-warning" href="{% url 'gestion:areas-listar' %}">Cancelar</a>
+
+				
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
