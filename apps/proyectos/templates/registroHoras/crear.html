@@ -1,11 +1,61 @@
-{% block container %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    {% load static %}
+    <script src="{% static '/js/validateTime.js'%}"></script> 
+    <title>Registrar Horas</title>
+</head>
+<body>
+    <div>
+        <a><label><strong>Registrar horas trabajadas</strong></label></a>
+        <p></p>
+    </div>
+    {% block container %}
+    <div>
+        <form method="POST" action="{% url "proyectos:registrohoras-crear" %}">
+            {% csrf_token %}
 
-    <form method="POST" action="{% url "proyectos:registrohoras-crear" %}">
-        {% csrf_token %}
-
-        {{form.as_p}}
-        <input type="submit" value="Crear">
-        <a class="btn btn-warning" href="{% url 'proyectos:registrohoras-listar' request.user.username%}">Cancelar</a>
-    </form>
-
-{% endblock %}
+            <div class="form-group">
+                <label>Contrato:</label>{{form.contrato}}
+            </div>
+            <p></p>
+            <div class="form-group">
+                <label>Nombre:</label>{{form.nombre}}
+            </div>
+            <p></p>
+            <div class="form-group">
+                <label>Detalle:</label>{{form.detalle}}
+            </div>
+            <p></p>
+            <div class="form-group">
+                <label>Fecha:</label>{{form.fecha}}
+            </div>
+            <p></p>
+            <div class="form-group">
+                <label>Hora Inicio:</label>{{form.hora_inicio}}
+            </div>
+            <p></p>
+            <div class="form-group">
+                <label>Hora Fin:</label>{{form.hora_fin}}
+            </div>
+            <p></p>
+            <div class="form-group">
+                <label for="horas_trabajadas">Horas trabajadas:</label>
+                <input 
+                    id="horas_trabajadas"
+                    name="horas_trabajadas"
+                    type="text" 
+                    onblur="validateTime(this)">
+            </div>
+            <p></p>
+            <input type="submit" value="Crear">
+            <a class="btn btn-warning" href="{% url 'proyectos:registrohoras-listar'%}">Cancelar</a>
+        </form>
+    </div>
+        
+    {% endblock %}
+</body>
+</html>

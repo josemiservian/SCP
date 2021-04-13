@@ -1,6 +1,5 @@
 
 *.pyc
-*.js
 apps/administracion/migrations/0001_initial.py
 apps/administracion/migrations/0002_gasto.py
 apps/administracion/migrations/0003_auto_20210408_2243.py
@@ -14,3 +13,29 @@ apps/proyectos/migrations/0001_initial.py
 apps/proyectos/migrations/0002_auto_20210410_2111.py
 apps/proyectos/migrations/0003_auto_20210410_2246.py
 apps/reportes/migrations/0001_initial.py
+apps/administracion/migrations/0010_auto_20210411_2305.py
+apps/administracion/migrations/0011_auto_20210411_2306.py
+apps/administracion/migrations/0012_auto_20210411_2317.py
+apps/administracion/migrations/0013_auto_20210411_2318.py
+apps/administracion/migrations/0014_auto_20210411_2318.py
+apps/administracion/migrations/0015_auto_20210412_0014.py
+apps/administracion/migrations/0016_auto_20210412_0248.py
+apps/administracion/migrations/0017_auto_20210412_0302.py
+apps/administracion/migrations/0018_auto_20210412_2321.py
+apps/administracion/migrations/0019_auto_20210412_2323.py
+apps/administracion/migrations/0020_auto_20210413_0003.py
+apps/administracion/migrations/0021_auto_20210413_0034.py
+apps/administracion/migrations/0022_auto_20210413_0035.py
+apps/administracion/migrations/0023_auto_20210413_0217.py
+apps/administracion/migrations/0024_auto_20210413_0218.py
+apps/proyectos/migrations/0004_pruebahash.py
+apps/proyectos/migrations/0005_pruebahash_prueba.py
+apps/proyectos/migrations/0006_auto_20210412_0014.py
+apps/proyectos/migrations/0007_delete_pruebahash.py
+apps/proyectos/migrations/0008_registrohora_horas_cargadas.py
+apps/proyectos/migrations/0009_auto_20210412_2321.py
+apps/proyectos/migrations/0010_auto_20210412_2323.py
+apps/proyectos/migrations/0011_remove_registrohora_horas_cargadas.py
+apps/proyectos/migrations/0012_registrohora_horas_cargadas.py
+apps/proyectos/migrations/0013_auto_20210413_0217.py
+apps/proyectos/migrations/0014_auto_20210413_0218.py

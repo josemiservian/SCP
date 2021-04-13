@@ -8,6 +8,8 @@ import datetime as dt
 
 #Constantes
 HOUR_CHOICES = [(dt.time(hour=x), '{:02d}:00'.format(x)) for x in range(0, 24)] #Para desplegar una lista de horas
+HORAS = ['%02d:%s' % (h, m)  for h in (list(range(0,24))) for m in ('00', '30')]
+HORAS = tuple([(hora,hora) for hora in HORAS])
 
 
 #Formularios para Clientes
@@ -39,7 +41,7 @@ class FormCrearContrato(forms.Form):
     cliente = forms.ModelChoiceField(queryset=Cliente.objects.all())
     nombre = forms.CharField(min_length=4, max_length=30)
     descripcion = forms.CharField(max_length=80)
-    monto = forms.CharField(max_length=8)
+    monto = forms.FloatField()
     horas_presupuestadas = forms.IntegerField()
     fecha_inicio = forms.DateField(widget=forms.SelectDateWidget)
     fecha_fin = forms.DateField(widget=forms.SelectDateWidget)
@@ -79,6 +81,7 @@ class FormCrearRegistroHora(forms.Form):
     fecha = forms.DateField(widget=forms.SelectDateWidget)
     hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
     hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
+    horas_trabajadas = forms.CharField(min_length=5, max_length=5, help_text='Horas trabajadas (HH:MM)')
 
     def save(self, request):
         """Crea y guarda un registro"""
@@ -87,11 +90,22 @@ class FormCrearRegistroHora(forms.Form):
         registro = RegistroHora(empleado=empleado, contrato=data['contrato'],
                                 nombre=data['nombre'], detalle=data['detalle'],
                                 fecha=data['fecha'], hora_inicio=data['hora_inicio'],
-                                hora_fin=data['hora_fin'],)
+                                hora_fin=data['hora_fin'],
+                                horas_trabajadas=data['horas_trabajadas'])
         registro.save()
+        return registro.id
 
 
 class RegistroForm(forms.ModelForm):
+    
+    contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    nombre = forms.CharField(min_length=3, max_length=30)
+    detalle = forms.CharField(min_length=3, max_length=50)
+    fecha = forms.DateField(widget=forms.SelectDateWidget)
+    hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
+    hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
+
+    
     class Meta: 
         model = RegistroHora
         fields = ('contrato', 'nombre','detalle','fecha','hora_inicio','hora_fin')

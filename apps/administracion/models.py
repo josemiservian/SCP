@@ -48,6 +48,11 @@ class Gasto(models.Model):
     gasto = models.FloatField(null=False, default=0)
     empleado = models.ForeignKey('gestion.Empleado', null=False, on_delete=models.CASCADE)
     contrato = models.ForeignKey('proyectos.Contrato', null=False, on_delete=models.CASCADE)
+    registro = models.ForeignKey(
+        'proyectos.RegistroHora', 
+        null=True,
+        default=None, 
+        on_delete=models.CASCADE)
 
     def __str__(self):
         return self.motivo + ' - ' + self.empleado.nombre + ' ' + self.empleado.apellido + ' - ' + self.contrato.nombre

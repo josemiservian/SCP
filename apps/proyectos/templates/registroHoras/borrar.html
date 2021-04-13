@@ -11,9 +11,8 @@
 			<form action="{% url 'proyectos:registrohoras-borrar' registro.id  %}" method="POST">
 				
 				{% csrf_token %}
-				<input class="btn btn-danger" type="submit" name="Aceptar">
-				<a class="btn btn-warning" href="{% url 'proyectos:registrohoras-listar' request.user%}">Cancelar</a>
-				<a class="btn btn-warning" href="{% url 'proyectos:registrohoras-listar2'%}">Cancelar</a>
+				<input class="btn btn-danger" type="submit" name="Aceptar">				
+				<a class="btn btn-warning" href="{% url 'proyectos:registrohoras-listar'%}">Cancelar</a>
 				
 			</form>
 		</div>

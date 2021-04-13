@@ -1,5 +1,6 @@
 from django.db import models
 import datetime as dt
+import uuid
 
 class Cliente(models.Model):
     '''Clientes de la consultora'''
@@ -22,13 +23,13 @@ class Contrato(models.Model):
     cliente = models.ForeignKey('proyectos.Cliente', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=30, null=False)
     descripcion = models.CharField(max_length=80, null=False)
-    monto = models.IntegerField(null=False)
+    monto = models.FloatField(null=False)
     horas_presupuestadas = models.IntegerField(default=0)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     tipo_servicio = models.ForeignKey('gestion.Servicio', on_delete=models.CASCADE)
     horas_ejecutadas = models.IntegerField(null=True, default=0)
-    gastos = models.IntegerField(default=0)
+    gastos = models.FloatField(default=0)
     rentabilidad_horas = models.FloatField(null=True, default=1) 
     rentabilidad_presupuesto = models.FloatField(null=True, default=1)
     estado = models.CharField(max_length=15, null=False, default='Activo')
@@ -130,6 +131,12 @@ class RegistroHora(models.Model):
     fecha = models.DateField(null=False)
     hora_inicio =  models.TimeField(default=dt.time(00, 00), null=False)
     hora_fin =  models.TimeField(default=dt.time(00, 00), null=False)
+    horas_trabajadas = models.CharField(
+        max_length=8, 
+        default='00:00', 
+        help_text='Horas cargadas en formato HH:MM',
+        null=True
+    )
 
     def __str__(self):
         return self.nombre
