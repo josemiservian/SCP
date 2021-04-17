@@ -1,6 +1,6 @@
 from datetime import datetime as dt
 from apps.administracion.models import Gasto
-from apps.gestion.models import Empleado
+from apps.cuentas.models import Empleado
 from apps.proyectos.models import Contrato, EquipoProyecto, MiembroEquipoProyecto
 
 def calcular_horas(hora_inicio, hora_fin, accion):#contrato, 

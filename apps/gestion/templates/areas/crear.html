@@ -1,5 +1,10 @@
-{% block container %}
+{%  extends 'main.html' %}
+{% block content %}
 
+<br>
+
+<div class="col col-md-5"> 
+    <h5>Crear Area</h5>
     <form method="POST" action="{% url "gestion:areas-crear" %}">
         {% csrf_token %}
 
@@ -9,5 +14,7 @@
             <a  href="{% url "gestion:areas-listar" %}" class="cancellink-box">Cancelar</a>
         </div>
     </form>
+</div>
+    
 
 {% endblock %}

@@ -99,11 +99,6 @@ urlpatterns = [
         view=registroHoras.borrar_registroHora,
         name='registrohoras-borrar'
     ),
-    #path(
-    #    route='registrohoras/listar/<str:empleado__usuario__username>',#
-    #    view=registroHoras.listar_registroHoras,
-    #    name='registrohoras-listar'
-    #),
     path(
         route='registrohoras/listar',
         view=registroHoras.listar_registroHoras,

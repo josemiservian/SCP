@@ -1,18 +1,22 @@
+{%  extends 'main.html' %}
 {% block content %}
+<br>
 
 <br>
 <div class="row">
 	<div class="col-md-6">
+		<h5>Borrar seguimiento</h5>
+		<p></p>
 		<div class="card card-body">
 
 
 			<p>¿Está seguro de borrar el seguimiento "{{seguimiento}}"?</p>
 
-			<form action="{% url 'reportes_seguimientos-borrar' seguimiento.id  %}" method="POST">
+			<form action="{% url 'reportes:seguimientos-borrar' seguimiento.id  %}" method="POST">
 				
 				{% csrf_token %}
 				<input class="btn btn-danger" type="submit" name="Aceptar">
-				<a class="btn btn-warning" href="{% url 'reportes_seguimientos-listar' %}">Cancelar</a>
+				<a class="btn btn-warning" href="{% url 'reportes:seguimientos-listar' %}">Cancelar</a>
 
 				
 			</form>

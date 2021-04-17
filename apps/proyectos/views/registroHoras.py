@@ -14,7 +14,7 @@ from scp.decorators import allowed_users
 
 #Models
 from apps.administracion.models import Gasto
-from apps.gestion.models import Empleado
+from apps.cuentas.models import Empleado
 from apps.proyectos.models import Contrato, RegistroHora
 
 #Formularios
@@ -36,7 +36,7 @@ class CrearRegistroHora(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_registrohora')
 def crear_registroHoras(request):
 
@@ -75,14 +75,14 @@ def crear_registroHoras(request):
     context = {'form':form}
     return render(request, 'registroHoras/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_registrohora')
 def listar_registroHoras(request):
     '''Lista las horas cargadas por el usuario '''
     registros = RegistroHora.objects.filter(empleado__usuario__username=request.user)
     return render(request, 'registroHoras/listar.html', {'registros':registros})        
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_registrohora')
 def actualizar_registroHora(request, pk):
 
@@ -126,7 +126,7 @@ def actualizar_registroHora(request, pk):
     context = {'form':form}
     return render(request, 'registroHoras/modificar.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_registrohora')
 def borrar_registroHora(request, pk):
 
@@ -149,7 +149,7 @@ def borrar_registroHora(request, pk):
     context = {'registro':registro}
     return render(request, 'registroHoras/borrar.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_registrohora')
 def resumen_horas_empleado(request):
     '''Resumen de horas trabajadas totales del empleado.'''

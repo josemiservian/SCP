@@ -1,9 +1,9 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg fixed-top" id="main-navbar">
     <div class="container">
-        <a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:empleados-inicio'%}">Inicio</a>
-        <a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:empleados-configuracion'%}">Actualizar Perfil</a>
-        <a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:empleados-logout'%}">Cerrar Sesion</a>
+        <a class="btn btn-primary  btn-sm btn-block" href="{% url 'cuentas:inicio'%}">Inicio</a>
+        <a class="btn btn-primary  btn-sm btn-block" href="{% url 'cuentas:configuracion'%}">Actualizar Perfil</a>
+        <a class="btn btn-primary  btn-sm btn-block" href="{% url 'cuentas:logout'%}">Cerrar Sesion</a>
         <th></th>
         <th>Hola, {{request.user}}</th>
     </div>

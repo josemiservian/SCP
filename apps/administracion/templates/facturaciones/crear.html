@@ -1,10 +1,14 @@
-{% block container %}
+{%  extends 'main.html' %}
+{% load static %}
+
+{% block content %}
+<br>
 
     <form method="POST" action="{% url "administracion:facturaciones-crear" %}">
         {% csrf_token %}
 
         {{form.as_p}}
-        <input type="submit" value="Submit">
+        <input type="submit" value="Aceptar">
         <a class="btn btn-warning" href="{% url 'administracion:facturaciones-listar'%}">Cancelar</a>
     </form>
 

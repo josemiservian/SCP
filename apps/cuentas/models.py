@@ -1,5 +1,5 @@
 from django.db import models
-from django.auth import User
+from django.contrib.auth.models import User
 
 # Create your models here.
 class Empleado(models.Model):
@@ -11,7 +11,7 @@ class Empleado(models.Model):
     apellido = models.CharField(max_length=20, null=False)
     direccion = models.CharField(max_length=80, null=False)
     fecha_nacimiento = models.DateField(null=False)
-    cargo = models.CharField(max_length=20, null=False, default='')
+    cargo = models.ForeignKey('gestion.Cargo', on_delete=models.CASCADE, null=True)
     tarifa = models.FloatField(null=False, default=0)
     estado = models.CharField(max_length=20, null=False, default='Activo')
     #area = models.ForeignKey('areas.Area', on_delete=models.CASCADE)
@@ -20,4 +20,4 @@ class Empleado(models.Model):
     modified = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return self.usuario.username
+        return self.nombre + ' ' + self.apellido

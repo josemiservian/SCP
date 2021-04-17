@@ -1,0 +1,91 @@
+<br>
+
+<div class="row">
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="horas-totales">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Total de horas trabajadas</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{total_horas_mensuales}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="horas-totales">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Proyectos asignados:</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{proyectos_asignados}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="horas-totales">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Total de tareas realizadas:</h5>
+			  	</div>
+			  	<div class="card-body">
+			    	<h3 class="card-title">{{total_tareas_mensuales}}</h3>
+			  	</div>
+			</div>
+		</div>
+	</div>
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="tareas-realizadas">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Últimas 5 tareas realizadas</h5>
+			  	</div>
+				<table class="table table-sm">
+					<tr>
+						<th>Contrato</th>
+						<th>Nombre</th>
+						<th>Detalle</th>
+						<th>Fecha</th>
+					</tr>
+					{% for tareas in tareas_realizadas %}
+						<tr>
+							
+							<td>{{tareas.contrato__nombre}}</td>
+							<td>{{tareas.nombre}}</td>
+							<td>{{tareas.detalle}}</td>
+							<td>{{tareas.fecha}}</td>
+							
+						</tr>
+					{% endfor %}
+			  	</table>
+			</div>
+		</div>
+	</div>
+
+	<div class="col">
+		<div class="col-md">
+			<div class="card text-center text-white  mb-3" id="horas-proyectos">
+			  	<div class="card-header">
+			  		<h5 class="card-title">Horas por Proyectos</h5>
+			  	</div>
+			  	<table class="table table-sm">
+					<tr>
+						<th>Contrato</th>
+						<th>Horas</th>
+					</tr>
+					{% for hora in horas_proyectos %}
+						<tr>
+							
+							<td>{{hora.contrato__nombre}}</td>
+							<td>{{hora.horas__sum}}	</td>
+							
+						</tr>
+					{% endfor %}
+			  	</table>
+			</div>
+		</div>
+	</div>
+</div>

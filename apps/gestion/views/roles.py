@@ -29,7 +29,7 @@ class CrearRol(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_rol')
 def crear_roles(request):
 
@@ -44,14 +44,14 @@ def crear_roles(request):
 	context = {'form':form}
 	return render(request, 'roles/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_rol')
 def listar_roles(request):
 
     roles = Rol.objects.all()
     return render(request, 'roles/listar.html', {'roles':roles})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_rol')
 def actualizar_rol(request, pk):
 
@@ -68,7 +68,7 @@ def actualizar_rol(request, pk):
 	return render(request, 'roles/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_rol')
 def borrar_rol(request, pk):
 	

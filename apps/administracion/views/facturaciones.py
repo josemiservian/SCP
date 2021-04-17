@@ -29,7 +29,7 @@ class CrearFactura(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_facturacion')
 def crear_factura(request):
 
@@ -44,14 +44,14 @@ def crear_factura(request):
 	context = {'form':form}
 	return render(request, 'facturaciones/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_facturacion')
 def listar_facturas(request):
 
     facturas = Facturacion.objects.all()
     return render(request, 'facturaciones/listar.html', {'facturas':facturas})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_facturacion')
 def actualizar_factura(request, pk):
 
@@ -62,13 +62,13 @@ def actualizar_factura(request, pk):
 		form = FacturaForm(request.POST, instance=factura)
 		if form.is_valid():
 			form.save()
-			return redirect('facturaciones:listar')
+			return redirect('administracion:facturaciones-listar')
 
 	context = {'form':form}
 	return render(request, 'facturaciones/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_facturacion')
 def borrar_factura(request, pk):
 	

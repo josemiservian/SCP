@@ -1,10 +1,12 @@
+{%  extends 'main.html' %}
 {% block content %}
-
 <br>
+
 <div class="row">
 	<div class="col-md-6">
-		<div class="card card-body">
-
+		<h5>Borrar Empleado</h5>
+		
+		<div class="card card-body">	
 
 			<p>¿Está seguro de borrar el empleado "{{empleado}}"?</p>
 
@@ -12,7 +14,7 @@
 				
 				{% csrf_token %}
 				<input class="btn btn-danger" type="submit" name="Aceptar">
-				<a class="btn btn-warning" href="{% url 'gestion:empleados-inicio' %}">Cancelar</a>
+				<a class="btn btn-warning" href="{% url 'gestion:empleados-listar' %}">Cancelar</a>
 
 				
 			</form>

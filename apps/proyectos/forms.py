@@ -3,7 +3,8 @@ from django import forms
 
 # Models
 from apps.proyectos.models import Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora
-from apps.gestion.models import Empleado, Rol, Servicio
+from apps.cuentas.models import Empleado
+from apps.gestion.models import Rol, Servicio
 import datetime as dt
 
 #Constantes

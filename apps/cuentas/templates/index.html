@@ -1,0 +1,61 @@
+{%  extends 'main.html' %}
+
+{% block content %}
+
+{%  include 'cuentas/resumen.html' %}
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Últimas 5 tareas realizadas</h5>
+		<hr>
+		<div class="card card-body">
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url "proyectos:registrohoras-listar" %}">Registrar Horas</a>
+			<table class="table table-sm">
+				<tr>
+					<th>Contrato</th>
+					<th>Nombre</th>
+					<th>Detalle</th>
+					<th>Fecha</th>
+				</tr>
+				{% for tareas in tareas_realizadas %}
+					<tr>
+						
+						<td>{{tareas.contrato__nombre}}</td>
+						<td>{{tareas.nombre}}</td>
+						<td>{{tareas.detalle}}</td>
+						<td>{{tareas.fecha}}</td>
+						
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>
+	</div>
+
+	<div class="col-md-7">
+		<h5>Horas por Proyectos:</h5>
+		<hr>
+		<div class="card card-body">
+			
+			<table class="table table-sm">
+				<tr>
+					<th>Contrato</th>
+					<th>Cantidad de horas</th>
+
+				</tr>
+				{% for proyectos in horas_proyectos %}
+					<tr>
+						
+						<td>{{proyectos.contrato__nombre}}</td>
+						<td>{{proyectos.horas__sum}}</td>
+						
+					</tr>
+				{% endfor %}	
+			</table>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}

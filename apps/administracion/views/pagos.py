@@ -30,7 +30,7 @@ class CrearPago(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_pago')
 def crear_pago(request):
 
@@ -45,14 +45,14 @@ def crear_pago(request):
 	context = {'form':form}
 	return render(request, 'pagos/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_pago')
 def listar_pagos(request):
 
     pagos = Pago.objects.all()
     return render(request, 'pagos/listar.html', {'pagos':pagos})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_pago')
 def actualizar_pago(request, pk):
 
@@ -69,7 +69,7 @@ def actualizar_pago(request, pk):
 	return render(request, 'pagos/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_pago')
 def borrar_pago(request, pk):
 	

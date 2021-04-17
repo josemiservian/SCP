@@ -1,17 +1,18 @@
-{%  include 'navbar.html' %}
+{%  extends 'main.html' %}
+
+
 {% block content %}
 
-<br>
+	<br>
 
 <div class="row">
-	<div class="col-md-5">
+	<div class="col-md">
 		<h5>Facturas:</h5>
-		<hr>
 		<div class="card card-body">
 			
 			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
-			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'administracion:facturaciones-crear'%}">Crear Factura</a>
-			<p></p>
+			<a class="btn btn-primary " href="{% url 'administracion:facturaciones-crear'%}">Crear Factura</a>
+		</div>
 			<table class="table table-sm">
                     <tr>
                         <th></th>
@@ -24,6 +25,7 @@
 						<th>Monto Facturacion</th>
 						<th>Saldo Facturacion</th>
 						<th>Estado</th>
+						<th>Accion</th>
                     </tr>
 
 				{% for factura in facturas %}
@@ -44,13 +46,6 @@
 				{% endfor %}
 
 			</table>
-		</div>
-	</div>
-
-	
-		
-			</table>
-		</div>
 	</div>
 
 </div>

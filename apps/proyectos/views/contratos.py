@@ -29,7 +29,7 @@ class CrearContrato(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_contrato')
 def crear_contrato(request):
 
@@ -44,14 +44,14 @@ def crear_contrato(request):
 	context = {'form':form}
 	return render(request, 'contratos/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_contrato')
 def listar_contratos(request):
 
     contratos = Contrato.objects.all()
     return render(request, 'contratos/listar.html', {'contratos':contratos})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_contrato')
 def actualizar_contrato(request, pk):
 
@@ -68,7 +68,7 @@ def actualizar_contrato(request, pk):
 	return render(request, 'contratos/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_contrato')
 def borrar_contrato(request, pk):
 	

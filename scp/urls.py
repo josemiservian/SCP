@@ -25,7 +25,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
  
  
-    #path('', include('apps.cuentas.urls')),
+    path('', include(('apps.cuentas.urls','cuentas'), namespace='cuentas')),
     path('administracion/', include(('apps.administracion.urls', 'administracion'), namespace='administracion')),
     path('gestion/', include(('apps.gestion.urls', 'gestion'), namespace='gestion')),
     path('proyectos/', include(('apps.proyectos.urls', 'proyectos'), namespace='proyectos')),

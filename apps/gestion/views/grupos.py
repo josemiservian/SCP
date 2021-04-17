@@ -11,7 +11,7 @@ from scp.decorators import allowed_users
 from apps.gestion.forms import FormCrearGrupo, GrupoForm
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_group')
 def crear_grupo(request):
 
@@ -26,14 +26,14 @@ def crear_grupo(request):
 	context = {'form':form}
 	return render(request, 'grupos/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_group')
 def listar_grupos(request):
 
     grupos = Group.objects.all()
     return render(request, 'grupos/listar.html', {'grupos':grupos})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_group')
 def actualizar_grupo(request, pk):
 
@@ -50,7 +50,7 @@ def actualizar_grupo(request, pk):
 	return render(request, 'grupos/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_group')
 def borrar_grupo(request, pk):
 	
@@ -62,7 +62,7 @@ def borrar_grupo(request, pk):
     context = {'grupo':grupo}
     return render(request, 'grupos/borrar.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_group')
 def selector(request):
 	

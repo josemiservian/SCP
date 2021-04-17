@@ -2,7 +2,7 @@
 from django import forms
 
 # Models
-from apps.gestion.models import Empleado
+from apps.cuentas.models import Empleado
 from apps.proyectos.models import Contrato, RegistroHora
 from apps.reportes.models import Seguimiento
 

@@ -6,6 +6,9 @@ class Cliente(models.Model):
     '''Clientes de la consultora'''
 
     nombre = models.CharField(max_length=60, null=False, blank=False)
+    ruc = models.CharField(max_length=15, null=False, default='000000-0')
+    direccion = models.CharField(max_length=100, null=False, default='FPUNA')
+    telefono = models.CharField(max_length=20, null=False, default='0981111111')
     rubro = models.CharField(max_length=30, null=False, blank=False)
     estado = models.CharField(max_length=10, null=False, blank=False)
 
@@ -87,7 +90,7 @@ class EquipoProyecto(models.Model):
     nombre = models.CharField(max_length=40, blank=True, null=True)
     descripcion = models.CharField(max_length=80, blank=True, null=True)
     contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
-    lider_proyecto = models.ForeignKey('gestion.Empleado', on_delete=models.CASCADE)
+    lider_proyecto = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     #rol = models.ForeignKey('roles.Rol', on_delete=models.CASCADE)
     #tarifa_asignada = models.FloatField(null=False)
 
@@ -99,7 +102,7 @@ class MiembroEquipoProyecto(models.Model):
     '''Empleados relacionados a cada equipo.'''
     
     equipo_proyecto = models.ForeignKey('proyectos.EquipoProyecto', on_delete=models.CASCADE)
-    empleado = models.ForeignKey('gestion.Empleado', on_delete=models.CASCADE)
+    empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     #rol = models.ForeignKey('gestion.Rol', on_delete=models.CASCADE)
     LIDER_PROYECTO = 'LPR'
     CONSULTOR = 'CON'
@@ -124,7 +127,7 @@ class RegistroHora(models.Model):
     '''Registro de horas de las tareas de los proyectos en los cuales se 
     encuentran los empleados de la consultora.'''
 
-    empleado = models.ForeignKey('gestion.Empleado', on_delete=models.CASCADE)
+    empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=60, null=False)
     detalle = models.CharField(max_length=250, null=False)
@@ -134,7 +137,7 @@ class RegistroHora(models.Model):
     horas_trabajadas = models.CharField(
         max_length=8, 
         default='00:00', 
-        help_text='Horas cargadas en formato HH:MM',
+        help_text='Horas trabajadas en formato HH:MM',
         null=True
     )
 

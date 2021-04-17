@@ -46,7 +46,7 @@ class Gasto(models.Model):
     detalle = models.CharField(max_length=75, blank=True, null=False, default='')
     fecha = models.DateField(null=False, default=timezone.now())
     gasto = models.FloatField(null=False, default=0)
-    empleado = models.ForeignKey('gestion.Empleado', null=False, on_delete=models.CASCADE)
+    empleado = models.ForeignKey('cuentas.Empleado', null=False, on_delete=models.CASCADE)
     contrato = models.ForeignKey('proyectos.Contrato', null=False, on_delete=models.CASCADE)
     registro = models.ForeignKey(
         'proyectos.RegistroHora', 
