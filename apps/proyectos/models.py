@@ -82,8 +82,6 @@ class Contrato(models.Model):
         return self.nombre
     
 
-
-
 class EquipoProyecto(models.Model):
     '''Equipos conformados para la realización de proyectos'''
 
@@ -143,3 +141,34 @@ class RegistroHora(models.Model):
 
     def __str__(self):
         return self.nombre
+
+
+class Propuesta(models.Model):
+    '''Propuesta hecha al cliente por parte de la empresa'''
+    
+    area = models.ForeignKey('gestion.Area', on_delete=models.CASCADE)
+    gerente = models.ForeignKey('cuentas.empleado', on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=60, null=False, blank=False)
+    horas_totales = models.IntegerField(null=True)
+    total = models.FloatField(null=True)
+    #porcentaje_ganancia = models.DecimalField(null=False)
+    ganancia_esperada = models.FloatField(null=True)
+    aceptado = models.BooleanField(null=True, default=False)
+    fecha_aceptacion = models.DateField(null=True, default=None)
+    
+    def __str__(self):
+        return self.area.nombre + ' - ' + self.nombre
+
+class PropuestaDetalle(models.Model):
+    '''Detalle de la propuesta. Personas que participaran, etc.'''
+    
+    propuesta = models.ForeignKey('proyectos.Propuesta', on_delete=models.CASCADE)
+    servicio = models.ForeignKey('gestion.Servicio', on_delete=models.CASCADE)
+    descripcion = models.CharField(max_length=500, null=False, blank=False)
+    horas_propuestas = models.IntegerField(null=False)
+    cargo = models.ForeignKey('gestion.Cargo', on_delete=models.CASCADE) #ver porque pueden ser varios cargos 
+    tarifa = models.FloatField(null=False)
+    total = models.FloatField(null=False)
+
+    def __str__(self):
+        return self.propuesta + ' ' + self.servicio + ' ' + self.cargo

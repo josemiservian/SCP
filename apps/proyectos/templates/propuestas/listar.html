@@ -1,0 +1,50 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<br>
+
+<div class="row">
+	<div class="col-md-5">
+		<h5>Propuestas:</h5>
+		<hr>
+			
+			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
+			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'proyectos:propuestas-crear'%}">Crear propuesta</a>
+			<p></p>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Area</th>
+                        <th>Gerente</th>
+                        <th>Nombre</th>
+						<th>Horas totales</th>
+						<th>Total</th>
+						<th>Ganancia esperada</th>
+						<th>Aceptado</th>
+						<th>Fecha de aceptacion</th>
+						<th>Accion</th>
+                    </tr>
+
+				{% for propuesta in propuestas %}
+					<tr>
+						<td>{{propuesta.id}}</td>
+                        <td>{{propuesta.area}}</td>
+                        <td>{{propuesta.gerente}}</td>
+						<td>{{propuesta.nombre}}</td>
+						<td>{{propuesta.horas_totales}}</td>
+                        <td>{{propuesta.total}}</td>
+                        <td>{{propuesta.ganancia_esperada}}</td>
+						<td>{{propuesta.aceptado}}</td>
+						<td>{{propuesta.fecha_aceptacion}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-modificar'  propuesta.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-borrar'  propuesta.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+	</div>
+</div>
+
+{% endblock %}
+

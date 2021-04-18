@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.proyectos.views import clientes, contratos, equiposProyecto, registroHoras
+from apps.proyectos.views import clientes, contratos, equiposProyecto, registroHoras, propuestas
 
 
 urlpatterns = [
@@ -103,5 +103,26 @@ urlpatterns = [
         route='registrohoras/listar',
         view=registroHoras.listar_registroHoras,
         name='registrohoras-listar'
+    ),
+    #Propuestas
+    path(
+        route='propuestas/crear',
+        view=propuestas.crear_propuesta,
+        name='propuestas-crear'
+    ),
+    path(
+        route='propuestas/modificar/<str:pk>',
+        view=propuestas.actualizar_propuesta,
+        name='propuestas-modificar'
+    ),
+    path(
+        route='propuestas/borrar/<str:pk>',
+        view=propuestas.borrar_propuesta,
+        name='propuestas-borrar'
+    ),
+    path(
+        route='propuestas/listar',
+        view=propuestas.listar_propuestas,
+        name='propuestas-listar'
     ),
 ]
