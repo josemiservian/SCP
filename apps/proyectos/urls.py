@@ -125,4 +125,25 @@ urlpatterns = [
         view=propuestas.listar_propuestas,
         name='propuestas-listar'
     ),
+    #Propuestas Detalle
+    path(
+        route='propuestas/<str:pk>/detalle/crear',#
+        view=propuestas.crear_propuestaDetalle,
+        name='propuestasDetalle-crear'
+    ),
+    path(
+        route='propuestas/<str:pk>/detalle/modificar',
+        view=propuestas.actualizar_propuestaDetalle,
+        name='propuestasDetalle-modificar'
+    ),
+    path(
+        route='propuestas/<str:pk>/detalle/borrar',
+        view=propuestas.borrar_propuestaDetalle,
+        name='propuestasDetalle-borrar'
+    ),
+    path(
+        route='propuestas/detalle/listar',
+        view=propuestas.listar_propuestasDetalle,
+        name='propuestasDetalle-listar'
+    ),
 ]

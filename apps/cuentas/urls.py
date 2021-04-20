@@ -10,6 +10,11 @@ urlpatterns = [
         name="inicio"
     ),
     path(
+        route='admin', 
+        view=empleados.admin, 
+        name="admin"
+    ),
+    path(
         route='login',
         view=empleados.vista_login,
         name='login'

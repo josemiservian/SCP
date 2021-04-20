@@ -37,6 +37,7 @@
                         <td>{{propuesta.ganancia_esperada}}</td>
 						<td>{{propuesta.aceptado}}</td>
 						<td>{{propuesta.fecha_aceptacion}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-listar'%}">Aceptar propuesta</a></td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-modificar'  propuesta.id%}">Actualizar</a></td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-borrar'  propuesta.id%}">Borrar</a></td>
 					</tr>

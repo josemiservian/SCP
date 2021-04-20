@@ -3,15 +3,20 @@
 <br>
 <div class="row">
 	
-	<div class="col-md-6">
+	<div class="col-md-10">
 		<div class="card card-body">
-			<h5>Añadir empleado al equipo</h5>
+			<h5>Añadir empleados al equipo</h5>
 			<p></p>
 			<form action="" method="POST">
 				{% csrf_token %}
-				{{form.as_p}}
+				{{ formset.management_form }}
+				{% for form in formset %}
+					{{form}}
+					<hr>
+				{% endfor %}
 				
 				<input type="submit" name="Añadir al equipo">
+				<a  href="{% url "proyectos:squads-listar" %}" class="cancellink-box">Cancelar</a>
 				
 			</form>
 

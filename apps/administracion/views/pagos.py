@@ -13,6 +13,8 @@ from apps.administracion.models import Pago
 #Formularios
 from apps.administracion.forms import PagoForm, FormCrearPago
 
+#Filtros
+from apps.administracion.filtros import PagoFilter
 
 # Create your views here.
 
@@ -50,7 +52,10 @@ def crear_pago(request):
 def listar_pagos(request):
 
     pagos = Pago.objects.all()
-    return render(request, 'pagos/listar.html', {'pagos':pagos})
+    
+    pagos_filtros = PagoFilter(request.GET, queryset=pagos)
+    
+    return render(request, 'pagos/listar.html', {'pagos':pagos, 'filtros':pagos_filtros})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_pago')

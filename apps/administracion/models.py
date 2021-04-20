@@ -44,7 +44,7 @@ class Gasto(models.Model):
         choices=MOTIVOS_CHOICES, 
         default=OTROS)
     detalle = models.CharField(max_length=75, blank=True, null=False, default='')
-    fecha = models.DateField(null=False, default=timezone.now())
+    fecha = models.DateField(null=False)#
     gasto = models.FloatField(null=False, default=0)
     empleado = models.ForeignKey('cuentas.Empleado', null=False, on_delete=models.CASCADE)
     contrato = models.ForeignKey('proyectos.Contrato', null=False, on_delete=models.CASCADE)

@@ -61,3 +61,9 @@ apps/gestion/migrations/0001_initial.py
 apps/gestion/migrations/0001_initial.py
 apps/gestion/migrations/0001_initial.py
 apps/gestion/migrations/0001_initial.py
+apps/administracion/migrations/0007_auto_20210419_0106.py
+apps/administracion/migrations/0008_auto_20210420_1404.py
+apps/administracion/migrations/0009_auto_20210420_1404.py
+apps/proyectos/migrations/0006_auto_20210419_0106.py
+apps/proyectos/migrations/0007_propuesta_porcentaje_ganancia.py
+apps/proyectos/migrations/0008_contrato_propuesta.py

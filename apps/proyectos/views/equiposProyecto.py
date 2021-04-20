@@ -47,42 +47,22 @@ class AddMiembro(FormView):
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_miembroequipoproyecto')
 def add_integrante(request, pk):
-    
-    form = FormAddMiembro
-
-    if request.method == 'POST':
-        form = FormAddMiembro(request.POST)
-        if form.is_valid():
-            #form.save(pk)
-            form.save(pk, request.user)
-            return listar_integrantes(request, pk)
-
-    context = {'form':form}
-    return render(request, 'equiposProyecto/add2.html', context)
-
-
-
-
-@login_required(login_url='cuentas:login')
-@allowed_users(action='add_miembroequipoproyecto')
-def add_integrante2(request, pk):
 	
     MiembroFormSet = inlineformset_factory(
         EquipoProyecto, 
         MiembroEquipoProyecto,
         fields=('empleado','rol','tarifa_asignada'),
         can_delete=False,
-        extra=1)
+        extra=5)
     equipo = EquipoProyecto.objects.get(id=pk)
     formset = MiembroFormSet(queryset=MiembroEquipoProyecto.objects.none(),instance=equipo)
     if request.method =='POST':
-        #form = FormAddMiembro(request.POST)
         formset = MiembroFormSet(request.POST, instance=equipo)
         if formset.is_valid():
             formset.save()
-            return listar_integrantes(request, pk)
-            #return redirect('proyectos:squads-listar')
-    context = {'form':formset}
+            #return listar_integrantes(request, pk)
+            return redirect('proyectos:squads-listar')
+    context = {'formset':formset}
     return render(request, 'equiposProyecto/add2.html', context)
 
 @login_required(login_url='cuentas:login')

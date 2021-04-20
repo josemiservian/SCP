@@ -1,0 +1,27 @@
+{%  extends 'main.html' %}
+{% load static %}
+{% block content %}
+
+<div class="row">
+    <div class="col col-md-15">
+        <h5>Detalle de la Propuesta</h5>
+        <p></p>
+    
+
+            <form method="POST" >
+                {% csrf_token %}
+                {{ formset.management_form }}
+                {% for form in formset %}
+                    {{form}}
+                <hr>
+                {% endfor %}
+                
+                <input type="submit" value="Crear">
+                <a  href="{% url "proyectos:propuestas-listar" %}" class="cancellink-box">Cancelar</a>
+            </form>
+            
+
+    </div>
+</div>        
+
+{% endblock %}

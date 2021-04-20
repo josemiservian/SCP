@@ -2,14 +2,29 @@
 {% block content %}
 <br>
 
+<br>
 <div class="row">
-	<div class="col-md-5">
-		<h5>Pagos:</h5>
-		
-		<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
-		<a class="btn btn-primary  btn-sm btn-block" href="{% url 'administracion:pagos-crear'%}">Crear Pago</a>
-		<p></p>
-		<table class="table table-sm">
+	<div class="col">
+		<div class="card card-body">
+			<h5>Pagos:</h5>
+			
+			<form method="get">
+				{{filtros.form}}
+
+		    <button class="btn btn-primary" type="submit">Buscar</button>
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<br>
+
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<a class="btn btn-primary " href="{% url 'administracion:pagos-crear'%}" type="submit">Crear Pago</a>
+			<table class="table table-sm">
 				<tr>
 					<th></th>
 					<th>Detalle</th>
@@ -37,9 +52,10 @@
 				</tr>
 			{% endfor %}
 
-		</table>
-	</div>
+			</table>
 
+		</div>
+	</div>
 </div>
 
 {% endblock %}
