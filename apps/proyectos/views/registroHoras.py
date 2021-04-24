@@ -96,8 +96,6 @@ def listar_registroHoras(request):
 
     registros = paginator.get_page(page)
 
-
-
     return render(request, 'registroHoras/listar.html', {'registros':registros, 'filtros':filtros})        
 
 @login_required(login_url='cuentas:login')
