@@ -1,3 +1,23 @@
 
 *.pyc
 *.js
+apps/administracion/migrations/0001_initial.py
+apps/administracion/migrations/0002_auto_20210418_0039.py
+apps/administracion/migrations/0003_auto_20210418_0040.py
+apps/administracion/migrations/0004_auto_20210418_0225.py
+apps/administracion/migrations/0005_auto_20210418_0229.py
+apps/administracion/migrations/0006_auto_20210418_0229.py
+apps/administracion/migrations/0007_auto_20210419_0106.py
+apps/administracion/migrations/0008_auto_20210420_1404.py
+apps/administracion/migrations/0009_auto_20210420_1404.py
+apps/administracion/migrations/0010_auto_20210422_2359.py
+apps/cuentas/migrations/0001_initial.py
+apps/proyectos/migrations/0001_initial.py
+apps/proyectos/migrations/0002_propuesta.py
+apps/proyectos/migrations/0003_propuestadetalle.py
+apps/proyectos/migrations/0004_auto_20210418_0229.py
+apps/proyectos/migrations/0005_auto_20210418_0229.py
+apps/proyectos/migrations/0006_auto_20210419_0106.py
+apps/proyectos/migrations/0007_propuesta_porcentaje_ganancia.py
+apps/proyectos/migrations/0008_contrato_propuesta.py
+apps/reportes/migrations/0001_initial.py
