@@ -17,6 +17,9 @@ from apps.administracion.models import Gasto
 from apps.cuentas.models import Empleado
 from apps.proyectos.models import Contrato, RegistroHora
 
+#Filtros
+from apps.proyectos.filtros import RegistroHoraFilter
+
 #Formularios
 from apps.proyectos.forms import FormCrearRegistroHora, RegistroForm
 
@@ -80,7 +83,14 @@ def crear_registroHoras(request):
 def listar_registroHoras(request):
     '''Lista las horas cargadas por el usuario '''
     registros = RegistroHora.objects.filter(empleado__usuario__username=request.user)
-    return render(request, 'registroHoras/listar.html', {'registros':registros})        
+    #empleado = Empleado.objects.get(usuario__username=request.user)
+    #registros = empleado.registrohora_set.all()
+
+    filtro = RegistroHoraFilter(request.GET, queryset=registros)
+
+    registros = filtro.qs
+
+    return render(request, 'registroHoras/listar.html', {'registros':registros, 'filtro':filtro})        
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_registrohora')

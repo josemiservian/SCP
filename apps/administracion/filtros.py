@@ -3,7 +3,7 @@ import django_filters
 from django_filters import DateFilter, CharFilter, NumberFilter, RangeFilter
 
 #Modelos
-from .models import *
+from apps.administracion.models import Gasto, Pago
 
 class FacturacionFilter(django_filters.FilterSet):
     pass
@@ -11,14 +11,15 @@ class FacturacionFilter(django_filters.FilterSet):
 
 class GastoFilter(django_filters.FilterSet):
 
-    fecha_inicio = DateFilter(field_name='fecha', lookup_expr='gte')
-    fecha_fin = DateFilter(field_name='fecha', lookup_expr='lte')
-    motivo = CharFilter(field_name='motivo', lookup_expr='icontains')
+    #motivo = CharFilter(field_name='motivo', label='Motivo', lookup_expr='icontains')
+    detalle = CharFilter(field_name='detalle', label='Detalle', lookup_expr='icontains')
+    fecha_inicio = DateFilter(field_name='fecha', label='Fecha (Mayor/igual a)',lookup_expr='gte')
+    fecha_fin = DateFilter(field_name='fecha', label='Fecha (Menor/igual a)',lookup_expr='lte')
     
     class Meta:
         model = Gasto
         fields = ('__all__')
-        exclude = ['registro']
+        exclude = ['detalle','registro', 'fecha', 'gasto']
 
 
 class PagoFilter(django_filters.FilterSet):
@@ -29,8 +30,9 @@ class PagoFilter(django_filters.FilterSet):
     descripcion = CharFilter(field_name='descripcion', lookup_expr='icontains')
     fecha_inicio = DateFilter(field_name='fecha', lookup_expr='gte')
     fecha_fin = DateFilter(field_name='fecha', lookup_expr='lte')
+    estado = django_filters.ChoiceFilter(choices=(('P', 'Pagado'), ('NP', 'No pagado')))
 
     class Meta:
         model = Pago
-        fields = ('__all__')
-        exclude = ['fecha', 'saldo', 'nro_cuota', 'detalle', 'descripcion', 'monto']
+        #fields = ['estado']
+        exclude = ['fecha', 'saldo', 'nro_cuota', 'detalle', 'descripcion', 'monto', 'estado']

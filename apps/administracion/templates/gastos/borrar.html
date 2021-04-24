@@ -1,0 +1,26 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<br>
+<div class="row">
+	<div class="col-md-6">
+		<h5>Borrar gasto</h5>
+		<div class="card card-body">
+
+
+			<p>¿Está seguro de borrar el gasto "{{gasto}}"?</p>
+
+			<form action="{% url 'administracion:gastos-borrar' gasto.id  %}" method="POST">
+				
+				{% csrf_token %}
+				<input class="btn btn-danger" type="submit" name="Aceptar">
+				<a class="btn btn-warning" href="{% url 'administracion:gastos-listar' %}">Cancelar</a>
+
+				
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

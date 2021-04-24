@@ -70,7 +70,11 @@ class Pago(models.Model):
     nro_cuota = models.IntegerField()
     fecha = models.DateField(null=False)
     saldo = models.FloatField(null=False)
-    estado = models.CharField(max_length=10)
+    ESTADOS_CHOICES = (
+        ('P', 'Pagado'),
+        ('NP', 'No pagado')
+    )
+    estado = models.CharField(max_length=10, choices=ESTADOS_CHOICES)
 
     def __str__(self):
         return self.detalle

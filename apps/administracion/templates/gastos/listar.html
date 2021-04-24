@@ -1,0 +1,67 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<div class="row">
+	<div class="col d-flex justify-content-between">
+		<h5>Gastos:</h5>
+		<a class="btn btn-primary" href="{% url 'administracion:gastos-crear'%}">Añadir gasto</a>	
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<h5>Filtros:</h5>
+			<form method="GET">
+				{{filtros.form}}
+
+		    <button class="btn btn-primary" type="submit">Buscar</button>
+			
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<br>
+
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<table class="table table-sm">
+				<tr>
+					<th></th>
+					<th>Motivo</th>
+					<th>Detalle</th>
+					<th>Fecha</th>
+					<th>Gasto</th>
+					<th>Empleado</th>
+					<th>Contrato</th>
+					<th>Registro</th>
+					<th>Accion</th>
+				</tr>
+
+			{% for gasto in gastos %}
+				<tr>
+					<td>{{gasto.id}}</td>
+					<td>{{gasto.motivo}}</td>
+					<td>{{gasto.detalle}}</td>
+					<td>{{gasto.fecha}}</td>
+					<td>{{gasto.gasto}}</td>
+					<td>{{gasto.empleado}}</td>
+					<td>{{gasto.contrato}}</td>
+					<td>{{gasto.registro}}</td>
+					<td><a class="btn btn-sm btn-info" href="{% url 'administracion:gastos-modificar'  gasto.id%}">Actualizar</a></td>
+					<td><a class="btn btn-sm btn-info" href="{% url 'administracion:gastos-borrar'  gasto.id%}">Borrar</a></td>
+				</tr>
+			{% endfor %}
+
+			</table>
+
+		</div>
+	</div>
+</div>
+
+{% endblock %}
+

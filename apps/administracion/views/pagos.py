@@ -53,9 +53,11 @@ def listar_pagos(request):
 
     pagos = Pago.objects.all()
     
-    pagos_filtros = PagoFilter(request.GET, queryset=pagos)
+    filtros = PagoFilter(request.GET, queryset=pagos)
+
+    pagos = filtros.qs
     
-    return render(request, 'pagos/listar.html', {'pagos':pagos, 'filtros':pagos_filtros})
+    return render(request, 'pagos/listar.html', {'pagos':pagos, 'filtros':filtros})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_pago')
