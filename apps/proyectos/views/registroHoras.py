@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from urllib.parse import urlencode
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 #Utilidades
 from scp import utils
@@ -85,12 +86,19 @@ def listar_registroHoras(request):
     registros = RegistroHora.objects.filter(empleado__usuario__username=request.user)
     #empleado = Empleado.objects.get(usuario__username=request.user)
     #registros = empleado.registrohora_set.all()
+    filtros = RegistroHoraFilter(request.GET, queryset=registros)
 
-    filtro = RegistroHoraFilter(request.GET, queryset=registros)
+    registros = filtros.qs
 
-    registros = filtro.qs
+    paginator = Paginator(registros, 10)
 
-    return render(request, 'registroHoras/listar.html', {'registros':registros, 'filtro':filtro})        
+    page = request.GET.get('page')
+
+    registros = paginator.get_page(page)
+
+
+
+    return render(request, 'registroHoras/listar.html', {'registros':registros, 'filtros':filtros})        
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_registrohora')

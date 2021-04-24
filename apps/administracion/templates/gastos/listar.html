@@ -28,38 +28,35 @@
 
 <div class="row">
 	<div class="col">
-		<div class="card card-body">
-			<table class="table table-sm">
-				<tr>
-					<th></th>
-					<th>Motivo</th>
-					<th>Detalle</th>
-					<th>Fecha</th>
-					<th>Gasto</th>
-					<th>Empleado</th>
-					<th>Contrato</th>
-					<th>Registro</th>
-					<th>Accion</th>
-				</tr>
+		<table class="table table-sm">
+			<tr>
+				<th></th>
+				<th>Motivo</th>
+				<th>Detalle</th>
+				<th>Fecha</th>
+				<th>Gasto</th>
+				<th>Empleado</th>
+				<th>Contrato</th>
+				<th>Registro</th>
+				<th>Accion</th>
+			</tr>
 
-			{% for gasto in gastos %}
-				<tr>
-					<td>{{gasto.id}}</td>
-					<td>{{gasto.motivo}}</td>
-					<td>{{gasto.detalle}}</td>
-					<td>{{gasto.fecha}}</td>
-					<td>{{gasto.gasto}}</td>
-					<td>{{gasto.empleado}}</td>
-					<td>{{gasto.contrato}}</td>
-					<td>{{gasto.registro}}</td>
-					<td><a class="btn btn-sm btn-info" href="{% url 'administracion:gastos-modificar'  gasto.id%}">Actualizar</a></td>
-					<td><a class="btn btn-sm btn-info" href="{% url 'administracion:gastos-borrar'  gasto.id%}">Borrar</a></td>
-				</tr>
-			{% endfor %}
+		{% for gasto in gastos %}
+			<tr>
+				<td>{{gasto.id}}</td>
+				<td>{{gasto.motivo}}</td>
+				<td>{{gasto.detalle}}</td>
+				<td>{{gasto.fecha}}</td>
+				<td>{{gasto.gasto}}</td>
+				<td>{{gasto.empleado}}</td>
+				<td>{{gasto.contrato}}</td>
+				<td>{{gasto.registro}}</td>
+				<td><a class="btn btn-sm btn-info" href="{% url 'administracion:gastos-modificar'  gasto.id%}">Actualizar</a></td>
+				<td><a class="btn btn-sm btn-info" href="{% url 'administracion:gastos-borrar'  gasto.id%}">Borrar</a></td>
+			</tr>
+		{% endfor %}
 
-			</table>
-
-		</div>
+		</table>
 	</div>
 </div>
 
