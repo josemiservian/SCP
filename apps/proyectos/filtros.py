@@ -1,9 +1,9 @@
 #Django
 import django_filters
-from django_filters import DateFilter, CharFilter, NumberFilter, RangeFilter
+from django_filters import DateFilter, CharFilter, NumberFilter
 
 #Modelos
-from apps.proyectos.models import RegistroHora
+from apps.proyectos.models import Contrato, RegistroHora
 
 class RegistroHoraFilter(django_filters.FilterSet):
     
@@ -25,4 +25,13 @@ class RegistroHoraFilter(django_filters.FilterSet):
             'horas_trabajadas', 
             'fecha'
         ]
-        
+
+
+class ContratoFilter(django_filters.FilterSet):
+
+    nombre = CharFilter(field_name='nombre', label= 'Nombre', lookup_expr='icontains')
+
+    class Meta:
+        model = Contrato
+        fields =  ['cliente', 'propuesta', 'tipo_servicio']#('__all__')
+        #exclude = ['nombre', 'created', 'modified', 'rentabilidad_presupuesto', 'descripcion', 'monto']

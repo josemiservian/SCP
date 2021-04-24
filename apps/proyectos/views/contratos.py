@@ -3,12 +3,16 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 
 #Decoradores
 from scp.decorators import allowed_users
 
 #Modelos
 from apps.proyectos.models import Contrato
+
+#Filtros
+from apps.proyectos.filtros import ContratoFilter
 
 # Forms
 from apps.proyectos.forms import FormCrearContrato, ContratoForm
@@ -49,7 +53,18 @@ def crear_contrato(request):
 def listar_contratos(request):
 
     contratos = Contrato.objects.all()
-    return render(request, 'contratos/listar.html', {'contratos':contratos})
+    
+    filtros = ContratoFilter(request.GET, queryset=contratos)
+
+    contratos = filtros.qs
+
+    paginator = Paginator(contratos, 10)
+
+    page = request.GET.get('page')
+
+    contratos = paginator.get_page(page)
+    
+    return render(request, 'contratos/listar.html', {'contratos':contratos, 'filtros':filtros})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_contrato')
