@@ -5,7 +5,7 @@
 <br>
 
 <div class="row">
-	<div class="col-md-5">
+	<div class="col-md-10">
 		<h5>Propuestas:</h5>
 		<hr>
 			
@@ -34,6 +34,7 @@
                         <td>{{propuesta.cargo}}</td>
                         <td>{{propuesta.tarifa}}</td>
 						<td>{{propuesta.total}}</td>						
+						<td><a class="btn btn-sm btn-info" href="#">Ver propuesta</a></td><!--{% url 'proyectos:propuestasDetalle-borrar'  propuesta.propuesta.id%}-->
 						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestasDetalle-modificar'  propuesta.id%}">Actualizar</a></td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestasDetalle-borrar'  propuesta.id%}">Borrar</a></td>
 					</tr>

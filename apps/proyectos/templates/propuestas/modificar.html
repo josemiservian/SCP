@@ -2,6 +2,13 @@
 {% block content %}
 <br>
 
+<div class="row">
+	<div class="col d-flex justify-content-between">
+		<h5>Propuestas:</h5>
+		<a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-crear' propuesta%}">Agregar detalles</a>
+		<a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-detallePorPropuesta' propuesta%}">Ver detalles</a>
+	</div>
+</div>
 
 <div class="row">
 	<div class="col-md-6">
@@ -16,7 +23,7 @@
 					<hr>
 				{% endfor %}
 				
-                <button type="submit" class="btn btn-primary btn-block mt-5">Actualizar</button>
+                <button type="submit" class="btn btn-primary">Actualizar</button>
 				<a  href="{% url "proyectos:propuestas-listar" %}" class="cancellink-box">Cancelar</a>
 			</form>
 

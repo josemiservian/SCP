@@ -69,9 +69,16 @@ def actualizar_propuesta(request, pk):
 			form.save()
 			return redirect('proyectos:propuestas-listar')
 
-	context = {'form':form}
+	context = {'form':form, 'propuesta':pk}
 	return render(request, 'propuestas/modificar.html', context)
 
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_propuesta')
+def detalle_propuesta(request, pk):
+	
+    propuesta = Propuesta.objects.get(id=pk)
+    return render(request, 'propuestas/detalle.html', {'propuesta':propuesta})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='delete_propuesta')
@@ -131,6 +138,13 @@ def crear_propuestaDetalle(request, pk):
 def listar_propuestasDetalle(request):
 
     propuestas_detalle = PropuestaDetalle.objects.all() #queryset
+    return render(request, 'propuestas/listar_propuestaDetalle.html', {'propuestas_detalle':propuestas_detalle})
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_propuesta')
+def listar_detalle_propuesta(request, pk):
+    '''Lista los detalles de propuestas dada una propuesta'''
+    propuestas_detalle = PropuestaDetalle.objects.filter(propuesta__id=pk)
     return render(request, 'propuestas/listar_propuestaDetalle.html', {'propuestas_detalle':propuestas_detalle})
 
 @login_required(login_url='cuentas:login')

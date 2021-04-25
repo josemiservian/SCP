@@ -181,7 +181,13 @@ class Propuesta(models.Model):
     total = models.FloatField(null=True)
     porcentaje_ganancia = models.DecimalField(null=False, max_digits=5, decimal_places=3, default=0.0)
     ganancia_esperada = models.FloatField(null=True)
-    aceptado = models.BooleanField(null=True, default=False)
+    ESTADO_CHOICES = [
+        ('P', 'Pendiente'),
+        ('A', 'Aceptado'),
+        ('R', 'Rechazado')
+    ]
+    estado = models.CharField(max_length=20, null=False, choices=ESTADO_CHOICES, default='P')
+    #aceptado = models.BooleanField(null=True, default=False)
     fecha_aceptacion = models.DateField(null=True, default=None)
     
     def __str__(self):

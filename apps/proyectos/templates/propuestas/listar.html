@@ -25,7 +25,7 @@
 						<th>Horas totales</th>
 						<th>Total</th>
 						<th>Ganancia esperada</th>
-						<th>Aceptado</th>
+						<th>Estado</th>
 						<th>Fecha de aceptacion</th>
 						<th>Accion</th>
                     </tr>
@@ -39,9 +39,9 @@
 						<td>{{propuesta.horas_totales}}</td>
                         <td>{{propuesta.total}}</td>
                         <td>{{propuesta.ganancia_esperada}}</td>
-						<td>{{propuesta.aceptado}}</td>
+						<td>{{propuesta.estado}}</td>
 						<td>{{propuesta.fecha_aceptacion}}</td>
-						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-listar'%}">Aceptar propuesta</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-detalle' propuesta.id%}">Administrar</a></td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-modificar'  propuesta.id%}">Actualizar</a></td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-borrar'  propuesta.id%}">Borrar</a></td>
 					</tr>

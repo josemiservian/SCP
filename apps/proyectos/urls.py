@@ -127,6 +127,11 @@ urlpatterns = [
     ),
     #Propuestas Detalle
     path(
+        route='propuestas/<str:pk>',
+        view=propuestas.detalle_propuesta,
+        name='propuestas-detalle'
+    ),
+    path(
         route='propuestas/<str:pk>/detalle/crear',#
         view=propuestas.crear_propuestaDetalle,
         name='propuestasDetalle-crear'
@@ -145,5 +150,10 @@ urlpatterns = [
         route='propuestas/detalle/listar',
         view=propuestas.listar_propuestasDetalle,
         name='propuestasDetalle-listar'
+    ),
+    path(
+        route='propuestas/<str:pk>/detalle/listar',
+        view=propuestas.listar_detalle_propuesta,
+        name='propuestasDetalle-detallePorPropuesta'
     ),
 ]

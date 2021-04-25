@@ -1,0 +1,38 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<div class="row">
+	<div class="col d-flex justify-content-between">
+		<a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-crear' propuesta.id%}">Agregar detalles</a>
+		<a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-detallePorPropuesta' propuesta.id%}">Ver detalles</a>
+	</div>
+</div>
+<br>
+<div class="col">
+	<div class="card card-body">
+		<h5><strong>Detalle:</strong></h5>
+		<hr>
+        <p><strong>Area</strong>: {% if propuesta.area is None %} - {% else %} {{propuesta.area}} {% endif %}</p>
+        <p><strong>Gerente</strong>: {% if propuesta.gerente is None %} - {% else %} {{propuesta.gerente}} {% endif %}</p>
+        <p><strong>Nombre</strong>: {% if propuesta.nombre is None %} - {% else %} {{propuesta.nombre}} {% endif %}</p>
+        <p><strong>Horas totales</strong>: {% if propuesta.horas_totales is None %} - {% else %} {{propuesta.horas_totales}} {% endif %}</p>
+        <p><strong>Total</strong>: {% if propuesta.total is None %} - {% else %} {{propuesta.total}} {% endif %}</p>
+        <p><strong>Ganancia esperada</strong>: {% if propuesta.ganancia_esperada is None %} - {% else %} {{propuesta.ganancia_esperada}} {% endif %}</p>
+        <p><strong>Estado</strong>: {% if propuesta.estado is None %} - {% else %} {{propuesta.estado}} {% endif %}</p>
+        <p><strong>Fecha de aceptacion</strong>: {% if propuesta.fecha_aceptacion is None %} - {% else %} {{propuesta.fecha_aceptacion}} {% endif %}</p>
+            
+	</div>
+</div>
+<br>
+
+<div class="col justify-content-between">
+    <a class="btn btn-success" href="#%}">Definir estado</a>
+    <a class="btn btn-primary" href="{% url 'proyectos:propuestas-modificar' propuesta.id%}">Actualizar</a>
+    <a class="btn btn-secondary" href="{% url 'proyectos:propuestas-modificar' propuesta.id%}">Cancelar</a>
+</div>
+
+
+{% endblock %}
+
+
