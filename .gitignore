@@ -68,3 +68,6 @@ apps/proyectos/migrations/0006_auto_20210419_0106.py
 apps/proyectos/migrations/0007_propuesta_porcentaje_ganancia.py
 apps/proyectos/migrations/0008_contrato_propuesta.py
 apps/administracion/migrations/0010_auto_20210422_2359.py
+apps/administracion/migrations/0002_auto_20210424_2305.py
+apps/proyectos/migrations/0002_entregable.py
+apps/proyectos/migrations/0003_condicionpago.py

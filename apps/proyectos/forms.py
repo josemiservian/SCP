@@ -17,28 +17,37 @@ HORAS = tuple([(hora,hora) for hora in HORAS])
 class FormCrearCliente(forms.Form):
     
     nombre = forms.CharField(min_length=3, max_length=30)
+    ruc = forms.CharField(min_length=8)
+    direccion = forms.CharField(min_length=6)
+    telefono = forms.CharField(min_length=6)
     rubro = forms.CharField(min_length=4, max_length=50)
     estado = forms.CharField(max_length=15)
 
     def save(self):
         """Crea y guarda un cliente"""
         data = self.cleaned_data
-        cliente = Cliente(nombre=data['nombre'], rubro=data['rubro'],estado=data['estado'],)
+        cliente = Cliente(
+            nombre=data['nombre'], 
+            ruc=data['ruc'],
+            direccion=data['direccion'],
+            telefono=data['telefono'],
+            rubro=data['rubro'],estado=data['estado'],)
         cliente.save()
 
 
 class ClienteForm(forms.ModelForm):
     """Formulario de Cliente."""
-
+    
     class Meta:
         
         model = Cliente
-        fields = ('nombre', 'rubro','estado')
+        fields = ('__all__')
 
 
 #Formularios para Contratos
 class FormCrearContrato(forms.Form):
     
+    propuestas = forms.ModelChoiceField(queryset=Propuesta.objects.all())#Traer solo las propuestas aceptadas
     cliente = forms.ModelChoiceField(queryset=Cliente.objects.all())
     nombre = forms.CharField(min_length=4, max_length=30)
     descripcion = forms.CharField(max_length=80)

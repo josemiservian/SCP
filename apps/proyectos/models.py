@@ -36,6 +36,7 @@ class Contrato(models.Model):
     gastos = models.FloatField(default=0)
     rentabilidad_horas = models.FloatField(null=True, default=1) 
     rentabilidad_presupuesto = models.FloatField(null=True, default=1)
+    #condiciones_pago =
     estado = models.CharField(max_length=15, null=False, default='Activo')
 
     created = models.DateTimeField(auto_now_add=True)
@@ -82,6 +83,32 @@ class Contrato(models.Model):
         """Retorna nombre de Proyecto."""
         return self.nombre
     
+
+class Entregable(models.Model):
+    '''Entregables que tendrá un proyecto'''
+    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    actividades = models.CharField(max_length=200, blank=False, null=False)
+    responsable = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
+    horas_asignadas = models.IntegerField()
+    fecha_inicio = models.DateField(null=False)
+    fecha_fin = models.DateField(null=False)
+
+
+    def __str__(self):
+        self.contrato.nombre + self.actividades
+
+
+class CondicionPago(models.Model):
+
+    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    descripcion = models.CharField(max_length=200, blank=False, null=False)
+    porcentaje_pago = models.DecimalField(null=False, max_digits=5, decimal_places=3, default=0.0)
+    monto_pagar = models.FloatField(null=False)
+    fecha_estimada = models.DateField(null=False)
+
+    def __str__(self):
+        self.contrato.nombre + self.descripcion
+
 
 class EquipoProyecto(models.Model):
     '''Equipos conformados para la realización de proyectos'''
@@ -166,8 +193,8 @@ class PropuestaDetalle(models.Model):
     propuesta = models.ForeignKey('proyectos.Propuesta', on_delete=models.CASCADE)
     servicio = models.ForeignKey('gestion.Servicio', on_delete=models.CASCADE)
     descripcion = models.CharField(max_length=500, null=False, blank=False)
-    horas_servicio = models.IntegerField(null=False)
     cargo = models.ForeignKey('gestion.Cargo', on_delete=models.CASCADE) #ver porque pueden ser varios cargos 
+    horas_servicio = models.IntegerField(null=False)
     tarifa = models.FloatField(null=False)
     total = models.FloatField(null=False)
 
