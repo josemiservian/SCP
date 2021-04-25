@@ -1,5 +1,5 @@
 from django.urls import path
-from apps.proyectos.views import clientes, contratos, equiposProyecto, registroHoras
+from apps.proyectos.views import clientes, contratos, equiposProyecto, registroHoras, propuestas
 
 
 urlpatterns = [
@@ -100,13 +100,60 @@ urlpatterns = [
         name='registrohoras-borrar'
     ),
     path(
-        route='registrohoras/listar/<str:empleado__usuario__username>',#
+        route='registrohoras/listar',
         view=registroHoras.listar_registroHoras,
         name='registrohoras-listar'
     ),
+    #Propuestas
     path(
-        route='registrohoras/listar2',
-        view=registroHoras.listar2,
-        name='registrohoras-listar2'
+        route='propuestas/crear',
+        view=propuestas.crear_propuesta,
+        name='propuestas-crear'
+    ),
+    path(
+        route='propuestas/modificar/<str:pk>',
+        view=propuestas.actualizar_propuesta,
+        name='propuestas-modificar'
+    ),
+    path(
+        route='propuestas/borrar/<str:pk>',
+        view=propuestas.borrar_propuesta,
+        name='propuestas-borrar'
+    ),
+    path(
+        route='propuestas/listar',
+        view=propuestas.listar_propuestas,
+        name='propuestas-listar'
+    ),
+    #Propuestas Detalle
+    path(
+        route='propuestas/<str:pk>',
+        view=propuestas.detalle_propuesta,
+        name='propuestas-detalle'
+    ),
+    path(
+        route='propuestas/<str:pk>/detalle/crear',#
+        view=propuestas.crear_propuestaDetalle,
+        name='propuestasDetalle-crear'
+    ),
+    path(
+        route='propuestas/<str:pk>/detalle/modificar',
+        view=propuestas.actualizar_propuestaDetalle,
+        name='propuestasDetalle-modificar'
+    ),
+    path(
+        route='propuestas/<str:pk>/detalle/borrar',
+        view=propuestas.borrar_propuestaDetalle,
+        name='propuestasDetalle-borrar'
+    ),
+    path(
+        route='propuestas/detalle/listar',
+        view=propuestas.listar_propuestasDetalle,
+        name='propuestasDetalle-listar'
+    ),
+    path(
+        route='propuestas/<str:pk>/detalle/listar',
+        view=propuestas.listar_detalle_propuesta,
+        name='propuestasDetalle-detallePorPropuesta'
     ),
 ]

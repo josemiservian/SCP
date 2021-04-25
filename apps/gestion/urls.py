@@ -26,36 +26,11 @@ urlpatterns = [
         name='areas-listar'
     ),
 
-    #Empleados
-    path(
-        route='empleados/', 
-        view=empleados.inicio, 
-        name="empleados-inicio"
-    ),
+    #Gestión de Empleados
     path(
         route='empleados/crear',
         view=empleados.crear_empleado,
         name='empleados-crear'
-    ),
-    path(
-        route='empleados/registro',
-        view=empleados.VistaRegistro.as_view(),
-        name='empleados-registro'
-    ),
-    path(
-        route='empleados/login',
-        view=empleados.vista_login,
-        name='empleados-login'
-    ),
-    path(
-        route='empleados/logout',
-        view=empleados.vista_logout,
-        name='empleados-logout'
-    ),
-    path(
-        route='empleados/configuracion',
-        view=empleados.VistaActualizarPerfil.as_view(),
-        name='empleados-configuracion'
     ),
     path(
         route='empleados/modificar/<str:pk>/',
@@ -68,10 +43,10 @@ urlpatterns = [
         name='empleados-listar'
     ),
     path(
-        route='empleados/borrar/<str:pk>/', 
-        view=empleados.borrar_empleado, 
-        name="empleados-borrar"),
-
+        route='empleados/borrar/<str:pk>',
+        view=empleados.borrar_empleado,
+        name='empleados-borrar'
+    ),
     #Grupos
     path(
         route='grupos/crear',

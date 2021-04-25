@@ -1,4 +1,6 @@
-{% block container %}
+{%  extends 'main.html' %}
+{% block content %}
+<br>
 
     <form method="POST" action="{% url 'proyectos:squads-add' pk%}">
         {% csrf_token %}

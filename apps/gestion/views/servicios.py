@@ -29,7 +29,7 @@ class CrearServicio(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_servicio')
 def crear_servicio(request):
 
@@ -44,14 +44,14 @@ def crear_servicio(request):
 	context = {'form':form}
 	return render(request, 'servicios/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_servicio')
 def listar_servicios(request):
 
     servicios = Servicio.objects.all()
     return render(request, 'servicios/listar.html', {'servicios':servicios})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_servicio')
 def actualizar_servicio(request, pk):
 
@@ -68,7 +68,7 @@ def actualizar_servicio(request, pk):
 	return render(request, 'servicios/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_servicio')
 def borrar_servicio(request, pk):
 	

@@ -3,7 +3,8 @@ from django import forms
 
 # Models
 from django.contrib.auth.models import User, Group, Permission
-from apps.gestion.models import Area, Empleado, Rol, Servicio
+from apps.cuentas.models import Empleado
+from apps.gestion.models import Area, Rol, Servicio
 
 #Constantes
 GRUPOS = tuple([(grupo.id, grupo.name) for grupo in Group.objects.all()])
@@ -107,15 +108,6 @@ class FormularioRegistro(forms.Form):
                             cargo=data['cargo'], tarifa=data['tarifa'],
                             estado=data['estado'])
         empleado.save()
-
-
-class EmpleadoForm(forms.ModelForm):
-    """Formulario de Empleado."""
-
-    class Meta:
-        
-        model = Empleado
-        fields = ('cedula','nombre', 'apellido', 'direccion', 'fecha_nacimiento', 'cargo', 'tarifa', 'estado')
 
 
 #Formularios para Grupos del sistema

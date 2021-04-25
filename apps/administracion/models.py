@@ -44,10 +44,15 @@ class Gasto(models.Model):
         choices=MOTIVOS_CHOICES, 
         default=OTROS)
     detalle = models.CharField(max_length=75, blank=True, null=False, default='')
-    fecha = models.DateField(null=False, default=timezone.now())
+    fecha = models.DateField(null=False)#
     gasto = models.FloatField(null=False, default=0)
-    empleado = models.ForeignKey('gestion.Empleado', null=False, on_delete=models.CASCADE)
+    empleado = models.ForeignKey('cuentas.Empleado', null=False, on_delete=models.CASCADE)
     contrato = models.ForeignKey('proyectos.Contrato', null=False, on_delete=models.CASCADE)
+    registro = models.ForeignKey(
+        'proyectos.RegistroHora', 
+        null=True,
+        default=None, 
+        on_delete=models.CASCADE)
 
     def __str__(self):
         return self.motivo + ' - ' + self.empleado.nombre + ' ' + self.empleado.apellido + ' - ' + self.contrato.nombre
@@ -65,7 +70,11 @@ class Pago(models.Model):
     nro_cuota = models.IntegerField()
     fecha = models.DateField(null=False)
     saldo = models.FloatField(null=False)
-    estado = models.CharField(max_length=10)
+    ESTADOS_CHOICES = (
+        ('P', 'Pagado'),
+        ('NP', 'No pagado')
+    )
+    estado = models.CharField(max_length=10, choices=ESTADOS_CHOICES)
 
     def __str__(self):
         return self.detalle

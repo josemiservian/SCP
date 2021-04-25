@@ -5,6 +5,7 @@ from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from urllib.parse import urlencode
 from django.utils import timezone
+from django.core.paginator import Paginator
 
 #Utilidades
 from scp import utils
@@ -14,8 +15,11 @@ from scp.decorators import allowed_users
 
 #Models
 from apps.administracion.models import Gasto
-from apps.gestion.models import Empleado
+from apps.cuentas.models import Empleado
 from apps.proyectos.models import Contrato, RegistroHora
+
+#Filtros
+from apps.proyectos.filtros import RegistroHoraFilter
 
 #Formularios
 from apps.proyectos.forms import FormCrearRegistroHora, RegistroForm
@@ -36,7 +40,7 @@ class CrearRegistroHora(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_registrohora')
 def crear_registroHoras(request):
 
@@ -57,46 +61,44 @@ def crear_registroHoras(request):
             )
             gastos = utils.calcular_gasto_hora(request.user, contrato.id, horas)
             contrato.maestro_calculos(horas, gastos)
+            contrato.save()
+            registro_id = form.save(request)
             gasto_horas = Gasto.objects.create(
                 motivo='HONORARIOS', 
                 detalle=form['detalle'].value(),
                 fecha=form['fecha'].value(),
                 gasto=utils.calcular_gasto_hora(request.user, contrato.id, horas),
                 empleado_id=Empleado.objects.filter(usuario__username=request.user)[0].id,
-                contrato_id=contrato.id
+                contrato_id=contrato.id,
+                registro_id=registro_id
             )
             gasto_horas.save()
-            contrato.save()
-            
-            form.save(request)
-            #return redirect('proyectos:registrohoras-listar')
-            return listar_registroHoras(request, request.user)
+
+            return redirect('proyectos:registrohoras-listar')
 
     context = {'form':form}
     return render(request, 'registroHoras/crear.html', context)
 
-
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_registrohora')
-def listar_registroHoras(request, empleado__usuario__username):
-    '''Lista las horas cargadas por el usuario '''
-    if empleado__usuario__username == request.user:
-        registros = RegistroHora.objects.filter(empleado__usuario__username=empleado__usuario__username)
-        return render(request, 'registroHoras/listar.html', {'registros':registros})
-        
-    else:
-        registros = RegistroHora.objects.filter(empleado__usuario__username=request.user)
-        return render(request, 'registroHoras/listar.html', {'registros':registros})
-
-
-login_required(login_url='empleados/login')
-@allowed_users(action='view_registrohora')
-def listar2(request):
+def listar_registroHoras(request):
     '''Lista las horas cargadas por el usuario '''
     registros = RegistroHora.objects.filter(empleado__usuario__username=request.user)
-    return render(request, 'registroHoras/listar.html', {'registros':registros})        
+    #empleado = Empleado.objects.get(usuario__username=request.user)
+    #registros = empleado.registrohora_set.all()
+    filtros = RegistroHoraFilter(request.GET, queryset=registros)
 
-@login_required(login_url='empleados/login')
+    registros = filtros.qs
+
+    paginator = Paginator(registros, 10)
+
+    page = request.GET.get('page')
+
+    registros = paginator.get_page(page)
+
+    return render(request, 'registroHoras/listar.html', {'registros':registros, 'filtros':filtros})        
+
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_registrohora')
 def actualizar_registroHora(request, pk):
 
@@ -106,55 +108,41 @@ def actualizar_registroHora(request, pk):
     if request.method == 'POST':
         #Se utilizara la accion DELETE para borrar la anterior hora cargada
         contrato = Contrato.objects.filter(id=form['contrato'].value())[0]
-        horas = utils.calcular_horas(
+        horas_anteriores = utils.calcular_horas(
             
             str(form['hora_inicio'].value()), 
             str(form['hora_fin'].value()),
             'DELETE'
         )
-        gasto_horas = Gasto.objects.create(
-            motivo='HONORARIOS', 
-            detalle=registro.detalle,
-            gasto=utils.calcular_gasto_hora(request.user, registro.contrato.id, horas),
-            empleado_id=Empleado.objects.filter(usuario__username=request.user)[0].id,
-            contrato_id=registro.contrato.id
-        )
-        gastos = utils.calcular_gasto_hora(request.user, contrato.id, horas)
-        contrato.maestro_calculos(horas, gastos)
-        #contrato.save()
-        gasto_horas.save()
+        gastos = utils.calcular_gasto_hora(request.user, contrato.id, horas_anteriores)
+        contrato.sumar_horas(horas_anteriores)
+        contrato.sumar_gastos(gastos)
+        contrato.save()
 
         form = RegistroForm(request.POST, instance=registro)
         if form.is_valid():
             #Se utilizara la accion INSERT para cargar las horas actualizadas
+            contrato = Contrato.objects.filter(id=form['contrato'].value())[0]
+            gasto_horas = Gasto.objects.filter(registro__id=pk)[0]
             horas = utils.calcular_horas(
                 
                 form['hora_inicio'].value(), 
                 form['hora_fin'].value(),
                 'INSERT'
             )
-            gasto_horas = Gasto.objects.create(
-                motivo='HONORARIOS', 
-                detalle=form['detalle'].value(),
-                fecha=form['fecha'].value(),
-                gasto=utils.calcular_gasto_hora(request.user, contrato.id, horas),
-                empleado_id=Empleado.objects.filter(usuario__username=request.user)[0].id,
-                contrato_id=contrato.id
-            )
-            contrato = Contrato.objects.filter(id=form['contrato'].value())[0]
-            #contrato.sumar_horas(horas)
-            #contrato.save()
+
             gastos = utils.calcular_gasto_hora(request.user, contrato.id, horas)
             contrato.maestro_calculos(horas, gastos)
+            gasto_horas.gasto = gastos
             gasto_horas.save()
+            contrato.save()
             form.save()
-            return listar_registroHoras(request, request.user)
+            return redirect('proyectos:registrohoras-listar')
 
     context = {'form':form}
     return render(request, 'registroHoras/modificar.html', context)
 
-
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_registrohora')
 def borrar_registroHora(request, pk):
 
@@ -168,23 +156,17 @@ def borrar_registroHora(request, pk):
             )
         gastos = utils.calcular_gasto_hora(request.user, contrato.id, horas)
         contrato.maestro_calculos(horas, gastos)
-        '''contrato.sumar_horas(horas)
-        contrato.sumar_gastos(gastos)
-        contrato.calcular_rentabilidad_horas()
-        contrato.calcular_rentabilidad_presupuesto()'''
-
-        gasto_horas = Gasto.objects.create(
-            motivo='HONORARIOS', 
-            detalle=registro.detalle,
-            gasto=utils.calcular_gasto_hora(request.user, registro.contrato.id, horas),
-            empleado_id=Empleado.objects.filter(usuario__username=request.user)[0].id,
-            contrato_id=registro.contrato.id
-        )
-        
+        gasto_horas = Gasto.objects.filter(registro__id=pk)
         contrato.save()
-        gasto_horas.save()
+        gasto_horas.delete()
         registro.delete()
-        return redirect('proyectos:registrohoras-listar2')
+        return redirect('proyectos:registrohoras-listar')
         
     context = {'registro':registro}
     return render(request, 'registroHoras/borrar.html', context)
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_registrohora')
+def resumen_horas_empleado(request):
+    '''Resumen de horas trabajadas totales del empleado.'''
+    pass

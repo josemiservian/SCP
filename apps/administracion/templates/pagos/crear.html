@@ -1,11 +1,19 @@
-{% block container %}
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+    <div class="col col-md-5">
 
-    <form method="POST" action="{% url "administracion:pagos-crear" %}">
-        {% csrf_token %}
+        <h5>Crear Pago:</h5>
+        <p></p>
+        
+        <form method="POST" action="{% url "administracion:pagos-crear" %}">
+            {% csrf_token %}
 
-        {{form.as_p}}
-        <input type="submit" value="Crea">
-        <a class="btn btn-warning" href="{% url 'administracion:pagos-listar' %}">Cancelar</a>
-    </form>
+            {{form.as_p}}
+            <input type="submit" value="Crear">
+            <a class="btn btn-warning" href="{% url 'administracion:pagos-listar' %}">Cancelar</a>
+        </form>
+    </div>    
+        
 
 {% endblock %}

@@ -1,0 +1,19 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+    <div class="col col-md-5">
+
+        <h5>Crear gasto:</h5>
+        <p></p>
+        
+        <form method="POST" action="{% url "administracion:gastos-crear" %}">
+            {% csrf_token %}
+
+            {{form.as_p}}
+            <input type="submit" value="Crear">
+            <a class="btn btn-warning" href="{% url 'administracion:gastos-listar' %}">Cancelar</a>
+        </form>
+    </div>    
+        
+
+{% endblock %}

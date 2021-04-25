@@ -1,0 +1,101 @@
+{%  extends 'main.html' %}
+{% block head_content %}
+<title>{{ request.user.username }} | Configurar datos del empleado</title>
+{% endblock %}
+
+{% block content %}
+
+<br>
+
+
+<div class="container">
+
+    <div class="row justify-content-md-center">
+        <div class="col-6 p-4" id="profile-box">
+
+            <form action="{% url 'cuentas:configuracion' %}" method="POST" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <div class="media">
+
+                    <div class="media-body">
+                        <h5 class="ml-4">{{ user.email }} | {{ empleado.nombre }} {{ empleado.apellido }}</h5>
+                    </div>
+                </div>
+                <hr><br>
+
+                {# Nombre field #}
+                <div class="form-group">
+                    <label>Nombre</label>
+                    <input
+                        class="form-control {% if form.nombre.errors %}is-invalid{% endif %}"
+                        type="text"
+                        name="nombre"
+                        placeholder="Nombre"
+                        value="{% if form.errors %}{{ form.nombre.value }}{% else %}{{ empleado.nombre }}{% endif %}"
+                    />
+                    <div class="invalid-feedback">
+                        {% for error in form.nombre.errors %}
+                            {{ error }}
+                        {% endfor%}
+                    </div>
+                </div>
+
+                {# Apellido field #}
+                <div class="form-group">
+                    <label>Apellido</label>
+                    <textarea
+                        class="form-control {% if form.apellido.errors %}is-invalid{% endif %}"
+                        name="apellido"
+                    >{% if form.errors %}{{ form.apellido.value }}{% else %}{{ empleado.apellido }}{% endif %}</textarea>
+
+                    <div class="invalid-feedback">
+                        {% for error in form.apellido.errors %}
+                            {{ error }}
+                        {% endfor%}
+                    </div>
+                </div>
+
+                {# Direccion field #}
+                <div class="form-group">
+                    <label>Direccion</label>
+                    <input
+                        class="form-control {% if form.direccion.errors %}is-invalid{% endif %}"
+                        type="text"
+                        name="direccion"
+                        placeholder="Direccion"
+                        value="{% if form.errors %}{{ form.direccion.value }}{% else %}{{ empleado.direccion }}{% endif %}"
+                    />
+                    <div class="invalid-feedback">
+                        {% for error in form.direccion.errors %}
+                            {{ error }}
+                        {% endfor%}
+                    </div>
+                </div>
+
+                {# Fecha Nacimiento field #}
+                <div class="form-group">
+                    <label>Fecha de Nacimiento</label>
+                    <input
+                        class="form-control {% if form.fecha_nacimiento.errors %}is-invalid{% endif %}"
+                        type="date"
+                        name="fecha_nacimiento"
+                        placeholder="Fecha de Nacimiento"
+                        value="{% if form.errors %}{{ form.fecha_nacimiento.value }}{% else %}{{ empleado.fecha_nacimiento }}{% endif %}"
+                    />
+                    <div class="invalid-feedback">
+                        {% for error in form.fecha_nacimiento.errors %}
+                            {{ error }}
+                        {% endfor%}
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary btn-block mt-5">Actualizar</button>
+                    <a  href="{% url "cuentas:inicio" %}" class="cancellink-box">Cancelar</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+{% endblock %}

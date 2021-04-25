@@ -30,7 +30,7 @@ class CrearSeguimiento(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_seguimiento')
 def crear_seguimiento(request):
 
@@ -45,14 +45,14 @@ def crear_seguimiento(request):
 	context = {'form':form}
 	return render(request, 'seguimientos/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_seguimiento')
 def listar_seguimientos(request):
 
     seguimientos = Seguimiento.objects.all()
     return render(request, 'seguimientos/listar.html', {'seguimientos':seguimientos})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='update_seguimiento')
 def actualizar_seguimiento(request, pk):
 
@@ -69,7 +69,7 @@ def actualizar_seguimiento(request, pk):
 	return render(request, 'seguimientos/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_seguimiento')
 def borrar_seguimiento(request, pk):
 	

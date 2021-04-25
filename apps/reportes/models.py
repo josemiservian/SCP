@@ -9,7 +9,7 @@ class Seguimiento(models.Model):
     estado_final = models.CharField(null=False, max_length=15)
     cant_horas_invertidas = models.IntegerField(null=False)
     contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
-    empleado = models.ForeignKey('gestion.Empleado', on_delete=models.CASCADE)
+    empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     registro = models.ForeignKey('proyectos.RegistroHora', on_delete=models.CASCADE)
 
     def __str__(self):

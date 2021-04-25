@@ -44,55 +44,35 @@ class AddMiembro(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_miembroequipoproyecto')
 def add_integrante(request, pk):
-    
-    form = FormAddMiembro
-
-    if request.method == 'POST':
-        form = FormAddMiembro(request.POST)
-        if form.is_valid():
-            #form.save(pk)
-            form.save(pk, request.user)
-            return listar_integrantes(request, pk)
-
-    context = {'form':form}
-    return render(request, 'equiposProyecto/add2.html', context)
-
-
-
-
-@login_required(login_url='empleados/login')
-@allowed_users(action='add_miembroequipoproyecto')
-def add_integrante2(request, pk):
 	
     MiembroFormSet = inlineformset_factory(
         EquipoProyecto, 
         MiembroEquipoProyecto,
         fields=('empleado','rol','tarifa_asignada'),
         can_delete=False,
-        extra=1)
+        extra=5)
     equipo = EquipoProyecto.objects.get(id=pk)
     formset = MiembroFormSet(queryset=MiembroEquipoProyecto.objects.none(),instance=equipo)
     if request.method =='POST':
-        #form = FormAddMiembro(request.POST)
         formset = MiembroFormSet(request.POST, instance=equipo)
         if formset.is_valid():
             formset.save()
-            return listar_integrantes(request, pk)
-            #return redirect('proyectos:squads-listar')
-    context = {'form':formset}
+            #return listar_integrantes(request, pk)
+            return redirect('proyectos:squads-listar')
+    context = {'formset':formset}
     return render(request, 'equiposProyecto/add2.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_miembroequipoproyecto')
 def listar_integrantes(request, pk):
 
     integrantes = MiembroEquipoProyecto.objects.filter(equipo_proyecto=pk)
     return render(request, 'equiposProyecto/integrantes.html', {'integrantes':integrantes,'pk':pk})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_miembroequipoproyecto')
 def borrar_integrante(request, pk):
 	
@@ -106,7 +86,7 @@ def borrar_integrante(request, pk):
     context = {'integrante':integrante}
     return render(request, 'equiposProyecto/borrar-integrante.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_equipoproyecto')
 def crear_equipo(request):
 
@@ -121,14 +101,14 @@ def crear_equipo(request):
 	context = {'form':form}
 	return render(request, 'equiposProyecto/crear-equipo.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_equipoproyecto')
 def listar_equipos(request):
 
     equipos = EquipoProyecto.objects.all()
     return render(request, 'equiposProyecto/equipos.html', {'equipos':equipos})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_equipoproyecto')
 def actualizar_equipo(request, pk):
 
@@ -146,7 +126,7 @@ def actualizar_equipo(request, pk):
 	return render(request, 'equiposProyecto/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_equipoproyecto')
 def borrar_equipo(request, pk):
 	

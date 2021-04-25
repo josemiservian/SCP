@@ -1,10 +1,14 @@
 from django.db import models
 import datetime as dt
+import uuid
 
 class Cliente(models.Model):
     '''Clientes de la consultora'''
 
     nombre = models.CharField(max_length=60, null=False, blank=False)
+    ruc = models.CharField(max_length=15, null=False, default='000000-0')
+    direccion = models.CharField(max_length=100, null=False, default='FPUNA')
+    telefono = models.CharField(max_length=20, null=False, default='0981111111')
     rubro = models.CharField(max_length=30, null=False, blank=False)
     estado = models.CharField(max_length=10, null=False, blank=False)
 
@@ -20,17 +24,19 @@ class Contrato(models.Model):
         -Excelente >1'''
 
     cliente = models.ForeignKey('proyectos.Cliente', on_delete=models.CASCADE)
+    propuesta = models.ForeignKey('proyectos.Propuesta', on_delete=models.CASCADE, null=True)
     nombre = models.CharField(max_length=30, null=False)
     descripcion = models.CharField(max_length=80, null=False)
-    monto = models.IntegerField(null=False)
+    monto = models.FloatField(null=False)
     horas_presupuestadas = models.IntegerField(default=0)
     fecha_inicio = models.DateField()
     fecha_fin = models.DateField()
     tipo_servicio = models.ForeignKey('gestion.Servicio', on_delete=models.CASCADE)
     horas_ejecutadas = models.IntegerField(null=True, default=0)
-    gastos = models.IntegerField(default=0)
+    gastos = models.FloatField(default=0)
     rentabilidad_horas = models.FloatField(null=True, default=1) 
     rentabilidad_presupuesto = models.FloatField(null=True, default=1)
+    #condiciones_pago =
     estado = models.CharField(max_length=15, null=False, default='Activo')
 
     created = models.DateTimeField(auto_now_add=True)
@@ -78,6 +84,30 @@ class Contrato(models.Model):
         return self.nombre
     
 
+class Entregable(models.Model):
+    '''Entregables que tendrá un proyecto'''
+    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    actividades = models.CharField(max_length=200, blank=False, null=False)
+    responsable = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
+    horas_asignadas = models.IntegerField()
+    fecha_inicio = models.DateField(null=False)
+    fecha_fin = models.DateField(null=False)
+
+
+    def __str__(self):
+        self.contrato.nombre + self.actividades
+
+
+class CondicionPago(models.Model):
+
+    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    descripcion = models.CharField(max_length=200, blank=False, null=False)
+    porcentaje_pago = models.DecimalField(null=False, max_digits=5, decimal_places=3, default=0.0)
+    monto_pagar = models.FloatField(null=False)
+    fecha_estimada = models.DateField(null=False)
+
+    def __str__(self):
+        self.contrato.nombre + self.descripcion
 
 
 class EquipoProyecto(models.Model):
@@ -86,7 +116,7 @@ class EquipoProyecto(models.Model):
     nombre = models.CharField(max_length=40, blank=True, null=True)
     descripcion = models.CharField(max_length=80, blank=True, null=True)
     contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
-    lider_proyecto = models.ForeignKey('gestion.Empleado', on_delete=models.CASCADE)
+    lider_proyecto = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     #rol = models.ForeignKey('roles.Rol', on_delete=models.CASCADE)
     #tarifa_asignada = models.FloatField(null=False)
 
@@ -98,7 +128,7 @@ class MiembroEquipoProyecto(models.Model):
     '''Empleados relacionados a cada equipo.'''
     
     equipo_proyecto = models.ForeignKey('proyectos.EquipoProyecto', on_delete=models.CASCADE)
-    empleado = models.ForeignKey('gestion.Empleado', on_delete=models.CASCADE)
+    empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     #rol = models.ForeignKey('gestion.Rol', on_delete=models.CASCADE)
     LIDER_PROYECTO = 'LPR'
     CONSULTOR = 'CON'
@@ -123,13 +153,56 @@ class RegistroHora(models.Model):
     '''Registro de horas de las tareas de los proyectos en los cuales se 
     encuentran los empleados de la consultora.'''
 
-    empleado = models.ForeignKey('gestion.Empleado', on_delete=models.CASCADE)
+    empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=60, null=False)
     detalle = models.CharField(max_length=250, null=False)
     fecha = models.DateField(null=False)
     hora_inicio =  models.TimeField(default=dt.time(00, 00), null=False)
     hora_fin =  models.TimeField(default=dt.time(00, 00), null=False)
+    horas_trabajadas = models.CharField(
+        max_length=8, 
+        default='00:00', 
+        help_text='Horas trabajadas en formato HH:MM',
+        null=True
+    )
 
     def __str__(self):
         return self.nombre
+
+
+class Propuesta(models.Model):
+    '''Propuesta hecha al cliente por parte de la empresa'''
+    
+    area = models.ForeignKey('gestion.Area', on_delete=models.CASCADE)
+    gerente = models.ForeignKey('cuentas.empleado', on_delete=models.CASCADE)
+    nombre = models.CharField(max_length=60, null=False, blank=False)
+    horas_totales = models.IntegerField(null=True)
+    total = models.FloatField(null=True)
+    porcentaje_ganancia = models.DecimalField(null=False, max_digits=5, decimal_places=3, default=0.0)
+    ganancia_esperada = models.FloatField(null=True)
+    ESTADO_CHOICES = [
+        ('P', 'Pendiente'),
+        ('A', 'Aceptado'),
+        ('R', 'Rechazado')
+    ]
+    estado = models.CharField(max_length=20, null=False, choices=ESTADO_CHOICES, default='P')
+    #aceptado = models.BooleanField(null=True, default=False)
+    fecha_aceptacion = models.DateField(null=True, default=None)
+    
+    def __str__(self):
+        return self.area.nombre + ' - ' + self.nombre
+
+class PropuestaDetalle(models.Model):
+    '''Detalle de la propuesta. Personas que participaran, etc.'''
+    
+    propuesta = models.ForeignKey('proyectos.Propuesta', on_delete=models.CASCADE)
+    servicio = models.ForeignKey('gestion.Servicio', on_delete=models.CASCADE)
+    descripcion = models.CharField(max_length=500, null=False, blank=False)
+    cargo = models.ForeignKey('gestion.Cargo', on_delete=models.CASCADE) #ver porque pueden ser varios cargos 
+    horas_servicio = models.IntegerField(null=False)
+    tarifa = models.FloatField(null=False)
+    total = models.FloatField(null=False)
+
+    def __str__(self):
+        return self.propuesta.nombre + ' - ' + self.servicio.detalle + ' - ' + self.cargo.cargo

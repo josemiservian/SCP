@@ -2,44 +2,56 @@
 from django import forms
 
 # Models
-from apps.proyectos.models import Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora
-from apps.gestion.models import Empleado, Rol, Servicio
+from apps.proyectos.models import Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora, Propuesta, PropuestaDetalle
+from apps.cuentas.models import Empleado
+from apps.gestion.models import Area, Cargo, Rol, Servicio
 import datetime as dt
 
 #Constantes
 HOUR_CHOICES = [(dt.time(hour=x), '{:02d}:00'.format(x)) for x in range(0, 24)] #Para desplegar una lista de horas
+HORAS = ['%02d:%s' % (h, m)  for h in (list(range(0,24))) for m in ('00', '30')]
+HORAS = tuple([(hora,hora) for hora in HORAS])
 
 
 #Formularios para Clientes
 class FormCrearCliente(forms.Form):
     
     nombre = forms.CharField(min_length=3, max_length=30)
+    ruc = forms.CharField(min_length=8)
+    direccion = forms.CharField(min_length=6)
+    telefono = forms.CharField(min_length=6)
     rubro = forms.CharField(min_length=4, max_length=50)
     estado = forms.CharField(max_length=15)
 
     def save(self):
         """Crea y guarda un cliente"""
         data = self.cleaned_data
-        cliente = Cliente(nombre=data['nombre'], rubro=data['rubro'],estado=data['estado'],)
+        cliente = Cliente(
+            nombre=data['nombre'], 
+            ruc=data['ruc'],
+            direccion=data['direccion'],
+            telefono=data['telefono'],
+            rubro=data['rubro'],estado=data['estado'],)
         cliente.save()
 
 
 class ClienteForm(forms.ModelForm):
     """Formulario de Cliente."""
-
+    
     class Meta:
         
         model = Cliente
-        fields = ('nombre', 'rubro','estado')
+        fields = ('__all__')
 
 
 #Formularios para Contratos
 class FormCrearContrato(forms.Form):
     
+    propuestas = forms.ModelChoiceField(queryset=Propuesta.objects.all())#Traer solo las propuestas aceptadas
     cliente = forms.ModelChoiceField(queryset=Cliente.objects.all())
     nombre = forms.CharField(min_length=4, max_length=30)
     descripcion = forms.CharField(max_length=80)
-    monto = forms.CharField(max_length=8)
+    monto = forms.FloatField()
     horas_presupuestadas = forms.IntegerField()
     fecha_inicio = forms.DateField(widget=forms.SelectDateWidget)
     fecha_fin = forms.DateField(widget=forms.SelectDateWidget)
@@ -79,6 +91,7 @@ class FormCrearRegistroHora(forms.Form):
     fecha = forms.DateField(widget=forms.SelectDateWidget)
     hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
     hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
+    horas_trabajadas = forms.CharField(min_length=5, max_length=5, help_text='Horas trabajadas (HH:MM)')
 
     def save(self, request):
         """Crea y guarda un registro"""
@@ -87,11 +100,22 @@ class FormCrearRegistroHora(forms.Form):
         registro = RegistroHora(empleado=empleado, contrato=data['contrato'],
                                 nombre=data['nombre'], detalle=data['detalle'],
                                 fecha=data['fecha'], hora_inicio=data['hora_inicio'],
-                                hora_fin=data['hora_fin'],)
+                                hora_fin=data['hora_fin'],
+                                horas_trabajadas=data['horas_trabajadas'])
         registro.save()
+        return registro.id
 
 
 class RegistroForm(forms.ModelForm):
+    
+    contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    nombre = forms.CharField(min_length=3, max_length=30)
+    detalle = forms.CharField(min_length=3, max_length=50)
+    fecha = forms.DateField(widget=forms.SelectDateWidget)
+    hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
+    hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
+
+    
     class Meta: 
         model = RegistroHora
         fields = ('contrato', 'nombre','detalle','fecha','hora_inicio','hora_fin')
@@ -153,3 +177,83 @@ class MiembroForm(forms.ModelForm):
         model = MiembroEquipoProyecto
         fields = ('empleado','rol')#'equipo_proyecto',,'tarifa_asignada'
 
+
+#Formularios para Propuestas
+class FormCrearPropuesta(forms.Form):
+    
+    area = forms.ModelChoiceField(queryset=Area.objects.all())
+    gerente = forms.ModelChoiceField(queryset=Empleado.objects.all())
+    nombre = forms.CharField(min_length=4, max_length=60)
+
+    def save(self):
+        """Crea y guarda el contrato"""
+        data = self.cleaned_data
+        print(data)
+        propuesta = Propuesta(area=data['area'], gerente=data['gerente'],
+                            nombre=data['nombre'])
+        propuesta.save()
+
+        return propuesta.id
+
+
+class PropuestaForm(forms.ModelForm):
+    
+    area = forms.ModelChoiceField(queryset=Area.objects.all())
+    gerente = forms.ModelChoiceField(queryset=Empleado.objects.all())
+    nombre = forms.CharField(min_length=4, max_length=60)
+    horas_totales = forms.IntegerField(initial=0)
+    total = forms.FloatField(initial=0)
+    ganancia_esperada = forms.FloatField(initial=0)
+    aceptado = forms.BooleanField(initial=False)
+    fecha_aceptacion = forms.DateField(widget=forms.SelectDateWidget)
+    
+    class Meta:
+        
+        model = Propuesta
+        fields = ('area','gerente','nombre','horas_totales','total',
+                  'ganancia_esperada','aceptado','fecha_aceptacion')
+
+
+#formularios para Propuesta Detalle
+class FormCrearPropuestaDetalle(forms.Form):
+    
+    servicio = forms.ModelChoiceField(queryset=Servicio.objects.all())
+    descripcion = forms.CharField(max_length=500)
+    horas_servicio = forms.IntegerField(initial=0)
+    cargo = forms.ModelChoiceField(queryset=Cargo.objects.all())
+    tarifa = forms.FloatField()
+    total = forms.FloatField()
+    #porcentaje_ganancia
+    ganancia = forms.FloatField()
+    total_ventas = forms.FloatField()
+
+    def save(self, propuesta):
+        """Crea y guarda el detalle de la propuesta"""
+        data = self.cleaned_data
+        propuesta_detalle = PropuestaDetalle(
+            propuesta=Propuesta.objects.get(id=propuesta), 
+            servicio=data['servicio'],
+            descripcion=data['descripcion'],
+            horas_servicio=data['horas_servicio'],
+            cargo=data['cargo'],
+            tarifa=data['tarifa'],
+            total=data['total']
+            )
+        propuesta_detalle.save()
+
+
+class PropuestaDetalleForm(forms.ModelForm):
+    
+    '''area = forms.ModelChoiceField(queryset=Area.objects.all())
+    gerente = forms.ModelChoiceField(queryset=Empleado.objects.all())
+    nombre = forms.CharField(min_length=4, max_length=60)
+    horas_totales = forms.IntegerField(initial=0)
+    total = forms.FloatField(initial=0)
+    ganancia_esperada = forms.FloatField(initial=0)
+    aceptado = forms.BooleanField(initial=False)
+    fecha_aceptacion = forms.DateField(widget=forms.SelectDateWidget)'''
+    
+    class Meta:
+        
+        model = PropuestaDetalle
+        fields = ('__all__')

@@ -1,9 +1,31 @@
 from django.urls import path
-from apps.administracion.views import facturaciones, pagos
+from apps.administracion.views import gastos, facturaciones, pagos
 
 
 urlpatterns = [
 	
+    #gastos
+    path(
+        route='gastos/crear',
+        view=gastos.crear_gasto,#CrearFactura.as_view(),
+        name='gastos-crear'
+    ),
+    path(
+        route='gastos/modificar/<str:pk>',
+        view=gastos.actualizar_gasto,
+        name='gastos-modificar'
+    ),
+    path(
+        route='gastos/borrar/<str:pk>',
+        view=gastos.borrar_gasto,
+        name='gastos-borrar'
+    ),
+    path(
+        route='gastos/listar',
+        view=gastos.listar_gastos,
+        name='gastos-listar'
+    ),
+    
     #facturaciones
     path(
         route='facturaciones/crear',

@@ -29,7 +29,7 @@ class CrearCliente(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_cliente')
 def crear_cliente(request):
 
@@ -44,14 +44,14 @@ def crear_cliente(request):
 	context = {'form':form}
 	return render(request, 'clientes/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_cliente')
 def listar_clientes(request):
 
     clientes = Cliente.objects.all()
     return render(request, 'clientes/listar.html', {'clientes':clientes})
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_cliente')
 def actualizar_cliente(request, pk):
 
@@ -68,7 +68,7 @@ def actualizar_cliente(request, pk):
 	return render(request, 'clientes/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_cliente')
 def borrar_cliente(request, pk):
 	

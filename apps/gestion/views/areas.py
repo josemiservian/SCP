@@ -29,7 +29,7 @@ class CrearArea(FormView):
 
 
 #FUNCIONES
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='add_area')
 def crear_area(request):
 
@@ -44,7 +44,7 @@ def crear_area(request):
 	context = {'form':form}
 	return render(request, 'areas/crear.html', context)
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_area')
 def listar_areas(request):
 
@@ -52,7 +52,7 @@ def listar_areas(request):
     return render(request, 'areas/listar.html', {'areas':areas})
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='change_area')
 def actualizar_area(request, pk):
 
@@ -69,7 +69,7 @@ def actualizar_area(request, pk):
 	return render(request, 'areas/modificar.html', context)
 
 
-@login_required(login_url='empleados/login')
+@login_required(login_url='cuentas:login')
 @allowed_users(action='delete_area')
 def borrar_area(request, pk):
 	

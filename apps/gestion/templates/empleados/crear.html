@@ -1,13 +1,17 @@
-{% block container %}
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+    <div class="col col-md-5"></div>    
+        <h5>Crear empleado:</h5>
+        <p></p>
 
-    <form method="POST" action="{% url "gestion:empleados-crear" %}">
-        {% csrf_token %}
+        <form method="POST" action="{% url "gestion:empleados-crear" %}">
+            {% csrf_token %}
 
-        {{form.as_p}}
-        <div>
-            <input type="submit" value="Crear">
-            <a  href="{% url "gestion:empleados-listar" %}" class="cancellink-box">Cancelar</a>
-        </div>
-    </form>
+            {{form.as_p}}
+
+                <input type="submit" value="Crear">
+                <a  href="{% url "gestion:empleados-listar" %}" class="cancellink-box">Cancelar</a>
+        </form>
 
 {% endblock %}

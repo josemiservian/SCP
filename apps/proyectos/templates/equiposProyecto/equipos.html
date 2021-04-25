@@ -1,13 +1,13 @@
-{%  include 'navbar.html' %}
+{%  extends 'main.html' %}
 {% block content %}
+<br>
 
 <br>
 
 <div class="row">
 	<div class="col-md-5">
-		<h5>Equipo:</h5>
+		<h5>Equipos:</h5>
 		<hr>
-		<div class="card card-body">
 			
 			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
 			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'proyectos:squads-crear'%}">Crear equipo</a>
@@ -35,15 +35,7 @@
 				{% endfor %}
 
 			</table>
-		</div>
 	</div>
-
-	
-		
-			</table>
-		</div>
-	</div>
-
 </div>
 
 {% endblock %}

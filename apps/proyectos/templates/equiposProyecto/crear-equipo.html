@@ -1,11 +1,18 @@
-{% block container %}
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+    <div class="col col-md-5">
+        <h5>Crear equipo</h5>
+        <p></p>
+        <form method="POST" action="{% url "proyectos:squads-crear" %}">
+            {% csrf_token %}
 
-    <form method="POST" action="{% url "proyectos:squads-crear" %}">
-        {% csrf_token %}
+            {{form.as_p}}
+            <input type="submit" value="Crear">
+            <a  href="{% url "proyectos:squads-listar" %}" class="cancellink-box">Cancelar</a>
+        </form>
+    </div>
 
-        {{form.as_p}}
-        <input type="submit" value="Crear">
-        <a  href="{% url "proyectos:squads-listar" %}" class="cancellink-box">Cancelar</a>
-    </form>
+        
 
 {% endblock %}
