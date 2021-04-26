@@ -76,9 +76,27 @@ def actualizar_propuesta(request, pk):
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')
 def detalle_propuesta(request, pk):
-	
+
     propuesta = Propuesta.objects.get(id=pk)
     return render(request, 'propuestas/detalle.html', {'propuesta':propuesta})
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_propuesta')
+def estado_propuesta(request, pk, estado):
+    	
+    propuesta = Propuesta.objects.get(id=pk)
+
+    if request.method == 'POST':
+        if estado == 'A':
+            propuesta.aceptar_propuesta()
+        else:
+            propuesta.rechazar_propuesta()
+        propuesta.save()
+
+        return render(request, 'propuestas/detalle.html', {'propuesta':propuesta})
+    
+    context = {'propuesta':propuesta, 'estado':estado}
+    return render(request, 'propuestas/estado_propuesta.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='delete_propuesta')

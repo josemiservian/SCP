@@ -42,6 +42,9 @@ class Contrato(models.Model):
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-id']
+    
     def sumar_horas(self, cantidad_horas):
         '''Aumenta la cantidad de horas ejecutadas en base a los cargado
         por los analistas.'''
@@ -192,6 +195,12 @@ class Propuesta(models.Model):
     
     def __str__(self):
         return self.area.nombre + ' - ' + self.nombre
+
+    def aceptar_propuesta(self):
+        self.estado = 'A'
+    
+    def rechazar_propuesta(self):
+        self.estado = 'R'
 
 class PropuestaDetalle(models.Model):
     '''Detalle de la propuesta. Personas que participaran, etc.'''
