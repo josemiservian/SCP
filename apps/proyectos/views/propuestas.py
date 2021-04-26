@@ -4,6 +4,7 @@ from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.forms.models import inlineformset_factory
+from django.core.paginator import Paginator
 
 #Decoradores
 from scp.decorators import allowed_users
@@ -13,6 +14,9 @@ from apps.proyectos.models import Propuesta, PropuestaDetalle
 
 # Forms
 from apps.proyectos.forms import FormCrearPropuesta, PropuestaForm, FormCrearPropuestaDetalle, PropuestaDetalleForm
+
+#Filtros
+from apps.proyectos.filtros import PropuestaFilter
 
 # Create your views here.
 
@@ -54,7 +58,20 @@ def crear_propuesta(request):
 def listar_propuestas(request):
 
     propuestas = Propuesta.objects.all() #queryset
-    return render(request, 'propuestas/listar.html', {'propuestas':propuestas})
+
+    filtros = PropuestaFilter(request.GET, queryset=propuestas)
+
+    propuestas = filtros.qs
+
+    paginator = Paginator(propuestas, 10)
+
+    page = request.GET.get('page')
+
+    propuestas = paginator.get_page(page)
+
+
+    return render(request, 'propuestas/listar.html', {'propuestas':propuestas, 'filtros':filtros})
+    
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_propuesta')
