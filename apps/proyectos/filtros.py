@@ -3,7 +3,7 @@ import django_filters
 from django_filters import DateFilter, CharFilter, NumberFilter
 
 #Modelos
-from apps.proyectos.models import Contrato, RegistroHora, Propuesta
+from apps.proyectos.models import Contrato, RegistroHora, Propuesta, EquipoProyecto
 
 class RegistroHoraFilter(django_filters.FilterSet):
     
@@ -44,4 +44,14 @@ class PropuestaFilter(django_filters.FilterSet):
     class Meta:
         model = Propuesta
         fields =  ['area', 'estado']#('__all__')
+        #exclude = ['nombre', 'created', 'modified', 'rentabilidad_presupuesto', 'descripcion', 'monto']
+
+
+class EquipoProyectoFilter(django_filters.FilterSet):
+
+    nombre = CharFilter(field_name='nombre', label= 'Nombre', lookup_expr='icontains')
+
+    class Meta:
+        model = EquipoProyecto
+        fields =  ['contrato', 'lider_proyecto']#('__all__')
         #exclude = ['nombre', 'created', 'modified', 'rentabilidad_presupuesto', 'descripcion', 'monto']
