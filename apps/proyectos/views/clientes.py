@@ -3,12 +3,16 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.core.paginator import Paginator
 
 #Decoradores
 from scp.decorators import allowed_users
 
 #Modelos
 from apps.proyectos.models import Cliente
+
+#Filters
+from apps.proyectos.filtros import ClienteFilter
 
 # Forms
 from apps.proyectos.forms import FormCrearCliente, ClienteForm
@@ -49,7 +53,16 @@ def crear_cliente(request):
 def listar_clientes(request):
 
     clientes = Cliente.objects.all()
-    return render(request, 'clientes/listar.html', {'clientes':clientes})
+    filtros = ClienteFilter(request.GET, queryset=clientes)
+
+    clientes = filtros.qs
+
+    paginator = Paginator(clientes, 10)
+
+    page = request.GET.get('page')
+
+    clientes = paginator.get_page(page)
+    return render(request, 'clientes/listar.html', {'clientes':clientes, 'filtros':filtros})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_cliente')
