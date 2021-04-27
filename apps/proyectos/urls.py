@@ -121,7 +121,7 @@ urlpatterns = [
         name='propuestas-borrar'
     ),
     path(
-        route='propuestas/listar',
+        route='propuestas/listar/<str:estado>',
         view=propuestas.listar_propuestas,
         name='propuestas-listar'
     ),

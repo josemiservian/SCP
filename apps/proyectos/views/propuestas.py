@@ -51,10 +51,19 @@ def crear_propuesta(request):
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')
-def listar_propuestas(request):
+def listar_propuestas(request, estado):
 
-    propuestas = Propuesta.objects.all() #queryset
-    return render(request, 'propuestas/listar.html', {'propuestas':propuestas})
+
+    propuestas = Propuesta.objects.all()
+    
+    if estado == 'P':
+        propuestas = propuestas.filter(estado='P')
+    elif estado == 'A':
+        propuestas = propuestas.filter(estado='A')
+    else:
+        propuestas = propuestas.filter(estado='R')
+    
+    return render(request, 'propuestas/listar.html', {'propuestas':propuestas, 'estado':estado})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_propuesta')
@@ -67,9 +76,10 @@ def actualizar_propuesta(request, pk):
 		form = PropuestaForm(request.POST, instance=propuesta)
 		if form.is_valid():
 			form.save()
-			return redirect('proyectos:propuestas-listar')
+            #form.estado.values()
+			return redirect('proyectos:propuestas-listar', form.estado.values())
 
-	context = {'form':form, 'propuesta':pk}
+	context = {'form':form, 'propuesta':pk, 'estado':propuesta.estado}
 	return render(request, 'propuestas/modificar.html', context)
 
 
@@ -93,7 +103,7 @@ def estado_propuesta(request, pk, estado):
             propuesta.rechazar_propuesta()
         propuesta.save()
 
-        return render(request, 'propuestas/detalle.html', {'propuesta':propuesta})
+        return redirect('proyectos:propuestas-detalle', propuesta.id)
     
     context = {'propuesta':propuesta, 'estado':estado}
     return render(request, 'propuestas/estado_propuesta.html', context)
@@ -104,8 +114,9 @@ def borrar_propuesta(request, pk):
 	
     propuesta = Propuesta.objects.get(id=pk)
     if request.method == "POST":
+        estado = propuesta.estado
         propuesta.delete()
-        return redirect('proyectos:propuestas-listar')
+        return redirect('proyectos:propuestas-listar', estado)
         
     context = {'propuesta':propuesta}
     return render(request, 'propuestas/borrar.html', context)
@@ -121,7 +132,7 @@ def crear_propuestaDetalle2(request, pk):
 		form = FormCrearPropuestaDetalle(request.POST)
 		if form.is_valid():
 			form.save(pk)
-			return redirect('proyectos:propuestas-listar')
+			return redirect('proyectos:propuestas-listar', 'P')
 
 	context = {'form':form}
 	return render(request, 'propuestas/crear_propuestaDetalle.html', context)
@@ -146,7 +157,7 @@ def crear_propuestaDetalle(request, pk):
         formset = PropuestaDetalleFormSet(request.POST, instance=propuesta)
         if formset.is_valid():
             formset.save()
-            return redirect('proyectos:propuestas-listar')
+            return redirect('proyectos:propuestas-listar', 'P')
             
     context = {'formset':formset}
     return render(request, 'propuestas/crear_propuestaDetalle.html', context)
@@ -176,7 +187,7 @@ def actualizar_propuestaDetalle(request, pk):
 		form = PropuestaDetalleForm(request.POST, instance=propuestas_detalle)
 		if form.is_valid():
 			form.save()
-			return redirect('proyectos:propuestas-listar')
+			return redirect('proyectos:propuestas-listar', 'P')
 
 	context = {'form':form}
 	return render(request, 'propuestas/modificar_propuestaDetalle.html', context)
@@ -189,7 +200,7 @@ def borrar_propuestaDetalle(request, pk):
     propuesta_detalle = PropuestaDetalle.objects.get(id=pk)
     if request.method == "POST":
         propuesta_detalle.delete()
-        return redirect('proyectos:propuestas-listar')
+        return redirect('proyectos:propuestas-listar', 'P')
         
     context = {'propuesta_detalle':propuesta_detalle}
     return render(request, 'propuestas/borrar_propuestaDetalle.html', context)

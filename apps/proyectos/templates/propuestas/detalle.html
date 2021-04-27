@@ -32,7 +32,7 @@
         <a class="btn btn-danger" href="{% url 'proyectos:propuestas-estado' propuesta.id 'R'%}">Rechazar propuesta</a>
     {% endif %}
     <a class="btn btn-primary" href="{% url 'proyectos:propuestas-modificar' propuesta.id%}">Actualizar</a>
-    <a class="btn btn-secondary" href="{% url 'proyectos:propuestas-listar'%}">Cancelar</a>
+    <a class="btn btn-secondary" href="{% url 'proyectos:propuestas-listar' propuesta.estado%}">Cancelar</a>
 </div>
 
 

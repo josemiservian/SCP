@@ -2,13 +2,20 @@
 {% block content %}
 <br>
 
-
 <div class="row">
 	<div class="col d-flex justify-content-between">
 		<h5>Propuestas:</h5>
-		<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-crear'%}">Añadir propuesta</a>	
-		<a class="btn btn-primary" id="crear-registro" href="#">Ver propuestas aceptadas</a>	
-		<a class="btn btn-primary" id="crear-registro" href="#">Ver propuestas rechazadas</a>	
+		<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-crear' %}">Añadir propuesta</a>	
+		{% if estado == 'P' %}
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'A' %}">Ver propuestas aceptadas</a>	
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'R' %}">Ver propuestas rechazadas</a>	
+		{% elif estado == 'A' %}
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'P' %}">Ver propuestas pendientes</a>	
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'R' %}">Ver propuestas rechazadas</a>
+		{% else %}
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'P' %}">Ver propuestas pendientes</a>	
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'A' %}">Ver propuestas aceptadas</a>	
+		{% endif %}
 	</div>
 </div>
 <hr>
