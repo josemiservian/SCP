@@ -3,6 +3,8 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.forms.models import inlineformset_factory
+from django.core.paginator import Paginator
 
 #Decoradores
 from scp.decorators import allowed_users
@@ -12,6 +14,9 @@ from apps.gestion.models import Servicio
 
 #Formularios
 from apps.gestion.forms import ServicioForm, FormCrearServicio
+
+#Filtros
+from apps.gestion.filtros import ServicioFilter
 
 # Create your views here.
 
@@ -49,7 +54,18 @@ def crear_servicio(request):
 def listar_servicios(request):
 
     servicios = Servicio.objects.all()
-    return render(request, 'servicios/listar.html', {'servicios':servicios})
+    
+    filtros = ServicioFilter(request.GET, queryset=servicios)
+
+    servicios = filtros.qs
+
+    paginator = Paginator(servicios, 10)
+
+    page = request.GET.get('page')
+
+    servicios = paginator.get_page(page)
+
+    return render(request, 'servicios/listar.html', {'servicios':servicios, 'filtros':filtros})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_servicio')
