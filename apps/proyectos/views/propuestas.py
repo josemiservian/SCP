@@ -97,10 +97,7 @@ def estado_propuesta(request, pk, estado):
     propuesta = Propuesta.objects.get(id=pk)
 
     if request.method == 'POST':
-        if estado == 'A':
-            propuesta.aceptar_propuesta()
-        else:
-            propuesta.rechazar_propuesta()
+        propuesta.definir_estado(estado)
         propuesta.save()
 
         return redirect('proyectos:propuestas-detalle', propuesta.id)

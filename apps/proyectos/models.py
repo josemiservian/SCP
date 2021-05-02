@@ -1,4 +1,5 @@
 from django.db import models
+from django.utils import timezone
 import datetime as dt
 import uuid
 
@@ -24,7 +25,12 @@ class Contrato(models.Model):
         -Excelente >1'''
 
     cliente = models.ForeignKey('proyectos.Cliente', on_delete=models.CASCADE)
-    propuesta = models.ForeignKey('proyectos.Propuesta', on_delete=models.CASCADE, null=True)
+    propuesta = models.ForeignKey(
+        'proyectos.Propuesta', 
+        on_delete=models.CASCADE, 
+        limit_choices_to={'estado': 'A'},
+        null=True
+    )
     nombre = models.CharField(max_length=30, null=False)
     descripcion = models.CharField(max_length=80, null=False)
     monto = models.FloatField(null=False)
@@ -84,7 +90,7 @@ class Contrato(models.Model):
 
     def __str__(self):
         """Retorna nombre de Proyecto."""
-        return self.nombre
+        return self.cliente.nombre + ' - ' + self.nombre
     
 
 class Entregable(models.Model):
@@ -196,11 +202,10 @@ class Propuesta(models.Model):
     def __str__(self):
         return self.area.nombre + ' - ' + self.nombre
 
-    def aceptar_propuesta(self):
-        self.estado = 'A'
-    
-    def rechazar_propuesta(self):
-        self.estado = 'R'
+    def definir_estado(self, estado):
+        self.estado = estado
+        self.fecha_aceptacion = timezone.now()
+
 
 class PropuestaDetalle(models.Model):
     '''Detalle de la propuesta. Personas que participaran, etc.'''

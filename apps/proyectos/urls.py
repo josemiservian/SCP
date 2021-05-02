@@ -47,6 +47,11 @@ urlpatterns = [
         view=contratos.listar_contratos,
         name='contratos-listar'
     ),
+    path(
+        route='contratos/<str:pk>',
+        view=contratos.detalle_contrato,
+        name='contratos-detalle'
+    ),
     #Equipos de Proyecto
     path(
         route='squads/crear',

@@ -47,11 +47,11 @@ class ClienteForm(forms.ModelForm):
 #Formularios para Contratos
 class FormCrearContrato(forms.Form):
     
-    propuestas = forms.ModelChoiceField(queryset=Propuesta.objects.all())#Traer solo las propuestas aceptadas
+    propuestas = forms.ModelChoiceField(queryset=Propuesta.objects.filter(estado='A'))
     cliente = forms.ModelChoiceField(queryset=Cliente.objects.all())
     nombre = forms.CharField(min_length=4, max_length=30)
     descripcion = forms.CharField(max_length=80)
-    monto = forms.FloatField()
+    monto = forms.FloatField(localize=True)
     horas_presupuestadas = forms.IntegerField()
     fecha_inicio = forms.DateField(widget=forms.SelectDateWidget)
     fecha_fin = forms.DateField(widget=forms.SelectDateWidget)
@@ -77,9 +77,8 @@ class ContratoForm(forms.ModelForm):
     class Meta:
         
         model = Contrato
-        fields = ('cliente','nombre','descripcion','monto','horas_presupuestadas',
-                  'fecha_inicio','fecha_fin','tipo_servicio')#,'estado','rentabilidad',
-                  #'horas_ejecutadas')
+        fields = ('cliente', 'propuesta','nombre', 'descripcion','monto','horas_presupuestadas',
+                  'fecha_inicio','fecha_fin','tipo_servicio')
 
 
 #Formularios para Registro de horas

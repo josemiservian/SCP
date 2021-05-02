@@ -26,13 +26,16 @@
 </div>
 <br>
 
-<div class="col justify-content-between">
-    {% if propuesta.estado == 'P' %}
-        <a class="btn btn-success" href="{% url 'proyectos:propuestas-estado' propuesta.id 'A'%}">Aceptar propuesta</a>
-        <a class="btn btn-danger" href="{% url 'proyectos:propuestas-estado' propuesta.id 'R'%}">Rechazar propuesta</a>
-    {% endif %}
-    <a class="btn btn-primary" href="{% url 'proyectos:propuestas-modificar' propuesta.id%}">Actualizar</a>
-    <a class="btn btn-secondary" href="{% url 'proyectos:propuestas-listar' propuesta.estado%}">Cancelar</a>
+<div class="col d-flex justify-content-between">
+    <div class="col justify-content-between">
+        {% if propuesta.estado == 'P' %}
+            <a class="btn btn-success" href="{% url 'proyectos:propuestas-estado' propuesta.id 'A'%}">Aceptar propuesta</a>
+            <a class="btn btn-warning" href="{% url 'proyectos:propuestas-estado' propuesta.id 'R'%}">Rechazar propuesta</a>
+        {% endif %}
+        <a class="btn btn-primary" href="{% url 'proyectos:propuestas-modificar' propuesta.id%}">Actualizar</a>
+        <a class="btn btn-secondary" href="{% url 'proyectos:propuestas-listar' propuesta.estado%}">Cancelar</a>
+    </div>
+    <a class="btn btn-danger" href="{% url 'proyectos:propuestas-borrar' propuesta.id%}">Eliminar</a>
 </div>
 
 

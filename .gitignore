@@ -72,3 +72,4 @@ apps/administracion/migrations/0002_auto_20210424_2305.py
 apps/proyectos/migrations/0002_entregable.py
 apps/proyectos/migrations/0003_condicionpago.py
 apps/proyectos/migrations/0004_auto_20210425_0201.py
+apps/proyectos/migrations/0005_auto_20210429_0057.py

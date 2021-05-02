@@ -50,6 +50,13 @@ def crear_contrato(request):
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_contrato')
+def detalle_contrato(request, pk):
+
+    contrato = Contrato.objects.get(id=pk)
+    return render(request, 'contratos/detalle.html', {'contrato':contrato})
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_contrato')
 def listar_contratos(request):
 
     contratos = Contrato.objects.all()

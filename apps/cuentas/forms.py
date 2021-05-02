@@ -93,5 +93,5 @@ class EmpleadoForm(forms.ModelForm):
     class Meta:
         
         model = Empleado
-        fields = ('cedula','nombre', 'apellido', 'direccion', 'fecha_nacimiento', 'cargo', 'tarifa', 'estado')
+        fields = ('cedula','nombre', 'apellido', 'direccion', 'fecha_nacimiento')#, 'cargo', 'tarifa', 'estado'
 
