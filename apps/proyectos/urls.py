@@ -142,17 +142,17 @@ urlpatterns = [
     ),
     #Propuestas Detalle
     path(
-        route='propuestas/<str:pk>/detalle/crear',#
+        route='propuestas/<str:pk>/detalle/crear',
         view=propuestas.crear_propuestaDetalle,
         name='propuestasDetalle-crear'
     ),
     path(
-        route='propuestas/<str:pk>/detalle/modificar',
+        route='propuestas/detalle/modificar/<str:pk>',
         view=propuestas.actualizar_propuestaDetalle,
         name='propuestasDetalle-modificar'
     ),
     path(
-        route='propuestas/<str:pk>/detalle/borrar',
+        route='propuestas/detalle/borrar/<str:pk>',
         view=propuestas.borrar_propuestaDetalle,
         name='propuestasDetalle-borrar'
     ),
@@ -165,5 +165,57 @@ urlpatterns = [
         route='propuestas/<str:pk>/detalle/listar',
         view=propuestas.listar_detalle_propuesta,
         name='propuestasDetalle-detallePorPropuesta'
+    ),
+    #Entregable
+    path(
+        route='contratos/<str:pk>/entregables/crear',
+        view=contratos.crear_entregable,
+        name='entregables-crear'
+    ),
+    path(
+        route='contratos/entregables/modificar/<str:pk>',
+        view=contratos.actualizar_entregable,
+        name='entregables-modificar'
+    ),
+    path(
+        route='contratos/entregables/borrar/<str:pk>',
+        view=contratos.borrar_entregable,
+        name='entregables-borrar'
+    ),
+    path(
+        route='contratos/entregables/listar',
+        view=contratos.listar_entregables,
+        name='entregables-listar'
+    ),
+    path(
+        route='contratos/entregables/<str:pk>',
+        view=contratos.detalle_entregable,
+        name='entregables-detalle'
+    ),
+    #Condiciones de Pago
+    path(
+        route='contratos/<str:pk>/condiciones-pago',
+        view=contratos.crear_condicionPago,
+        name='condicionPago-crear'
+    ),
+    path(
+        route='contratos/condiciones-pago/modificar/<str:pk>',
+        view=contratos.actualizar_condicionPago,
+        name='condicionPago-modificar'
+    ),
+    path(
+        route='contratos/condiciones-pago/borrar/<str:pk>',
+        view=contratos.borrar_condicionPago,
+        name='condicionPago-borrar'
+    ),
+    path(
+        route='contratos/<str:pk>/condiciones-pago/listar',
+        view=contratos.listar_condicionPagos,
+        name='condicionPago-listar'
+    ),
+    path(
+        route='contratos/condiciones-pago/<str:pk>',
+        view=contratos.detalle_condicionPago,
+        name='condicionPago-detalle'
     ),
 ]

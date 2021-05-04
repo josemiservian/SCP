@@ -10,13 +10,13 @@
 		<div class="card card-body">
 
 
-			<p>¿Está seguro de borrar la propuesta "{{propuesta}}"?</p>
+			<p>¿Está seguro de borrar la propuesta "{{propuesta_detalle}}"?</p>
 
-			<form action="{% url 'proyectos:propuestas-borrar' propuesta.id  %}" method="POST">
+			<form action="{% url 'proyectos:propuestasDetalle-borrar' propuesta_detalle.id  %}" method="POST">
 				
 				{% csrf_token %}
 				<input class="btn btn-danger" type="submit" name="Aceptar">
-				<a class="btn btn-warning" href="{% url 'proyectos:propuestas-listar' %}">Cancelar</a>
+				<a class="btn btn-warning" href="{% url 'proyectos:propuestasDetalle-detallePorPropuesta' propuesta %}">Cancelar</a>
 
 				
 			</form>

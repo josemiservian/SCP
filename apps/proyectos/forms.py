@@ -2,7 +2,7 @@
 from django import forms
 
 # Models
-from apps.proyectos.models import Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora, Propuesta, PropuestaDetalle
+from apps.proyectos.models import * #Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora, Propuesta, PropuestaDetalle
 from apps.cuentas.models import Empleado
 from apps.gestion.models import Area, Cargo, Rol, Servicio
 import datetime as dt
@@ -52,7 +52,7 @@ class FormCrearContrato(forms.Form):
     nombre = forms.CharField(min_length=4, max_length=30)
     descripcion = forms.CharField(max_length=80)
     monto = forms.FloatField(localize=True)
-    horas_presupuestadas = forms.IntegerField()
+    horas_presupuestadas = forms.IntegerField(min_value=0)
     fecha_inicio = forms.DateField(widget=forms.SelectDateWidget)
     fecha_fin = forms.DateField(widget=forms.SelectDateWidget)
     tipo_servicio = forms.ModelChoiceField(queryset=Servicio.objects.all())
@@ -71,6 +71,7 @@ class FormCrearContrato(forms.Form):
                             #estado=data['estado'],rentabilidad=data['rentabilidad'],
                             #horas_ejecutadas=data['horas_ejecutadas'])
         contrato.save()
+        return contrato.id
 
 
 class ContratoForm(forms.ModelForm):
@@ -79,6 +80,22 @@ class ContratoForm(forms.ModelForm):
         model = Contrato
         fields = ('cliente', 'propuesta','nombre', 'descripcion','monto','horas_presupuestadas',
                   'fecha_inicio','fecha_fin','tipo_servicio')
+
+
+#Formularios para Entregable
+class EntregableForm(forms.ModelForm):
+    class Meta:
+        
+        model = Entregable
+        fields = ('__all__')
+
+
+#Formularios para Condiciones de pago
+class CondicionPagoForm(forms.ModelForm):
+    class Meta:
+        
+        model = CondicionPago
+        fields = ('__all__')
 
 
 #Formularios para Registro de horas
@@ -183,13 +200,17 @@ class FormCrearPropuesta(forms.Form):
     area = forms.ModelChoiceField(queryset=Area.objects.all())
     gerente = forms.ModelChoiceField(queryset=Empleado.objects.all())
     nombre = forms.CharField(min_length=4, max_length=60)
+    porcentaje_ganancia = forms.DecimalField(max_digits=5, decimal_places=3)
 
     def save(self):
         """Crea y guarda el contrato"""
         data = self.cleaned_data
-        print(data)
-        propuesta = Propuesta(area=data['area'], gerente=data['gerente'],
-                            nombre=data['nombre'])
+        propuesta = Propuesta(
+            area=data['area'], 
+            gerente=data['gerente'],
+            nombre=data['nombre'], 
+            porcentaje_ganancia=data['porcentaje_ganancia']
+        )
         propuesta.save()
 
         return propuesta.id

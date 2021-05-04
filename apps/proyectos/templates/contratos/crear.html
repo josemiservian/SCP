@@ -2,15 +2,17 @@
 {% block content %}
 <br>
         
-    <div class="col col-md-5">
-        <h5>Crear contrato</h5>
-        <p></p>
-        <form method="POST" action="{% url "proyectos:contratos-crear" %}">
-            {% csrf_token %}
-            {{form.as_p}}
-            <input type="submit" value="Crear">
-            <a  href="{% url "proyectos:contratos-listar" %}" class="cancellink-box">Cancelar</a>
-        </form>
+    <div class="col col-md-10">
+        <div class="card card-body">
+            <h5>Crear contrato</h5>
+            <hr>
+            <form method="POST" action="{% url "proyectos:contratos-crear" %}">
+                {% csrf_token %}
+                {{form.as_p}}
+                <input type="submit" value="Siguiente">
+                <a  href="{% url "proyectos:contratos-listar" %}" class="cancellink-box">Cancelar</a>
+            </form>
+        </div>
     </div>
 
 {% endblock %}

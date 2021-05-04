@@ -1,0 +1,62 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<div class="row">
+	<div class="col d-flex justify-content-between">
+		<h5>Propuestas:</h5>
+		<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-crear' %}">Añadir propuesta</a>	
+		{% if estado == 'P' %}
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'A' %}">Ver propuestas aceptadas</a>	
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'R' %}">Ver propuestas rechazadas</a>	
+		{% elif estado == 'A' %}
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'P' %}">Ver propuestas pendientes</a>	
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'R' %}">Ver propuestas rechazadas</a>
+		{% else %}
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'P' %}">Ver propuestas pendientes</a>	
+			<a class="btn btn-primary" id="crear-registro" href="{% url 'proyectos:propuestas-listar' 'A' %}">Ver propuestas aceptadas</a>	
+		{% endif %}
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-md-5">
+		<h5>Propuestas:</h5>
+		<hr>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Area</th>
+                        <th>Gerente</th>
+                        <th>Nombre</th>
+						<th>Horas totales</th>
+						<th>Total</th>
+						<th>Ganancia esperada</th>
+						<th>Estado</th>
+						<th>Fecha de aceptacion</th>
+						<th>Accion</th>
+                    </tr>
+
+				{% for propuesta in propuestas %}
+					<tr>
+						<td>{{propuesta.id}}</td>
+                        <td>{{propuesta.area}}</td>
+                        <td>{{propuesta.gerente}}</td>
+						<td>{{propuesta.nombre}}</td>
+						<td>{{propuesta.horas_totales}}</td>
+                        <td>{{propuesta.total}}</td>
+                        <td>{{propuesta.ganancia_esperada}}</td>
+						<td>{{propuesta.estado}}</td>
+						<td>{{propuesta.fecha_aceptacion}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-detalle' propuesta.id%}">Detalle</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-modificar'  propuesta.id%}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-borrar'  propuesta.id%}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+	</div>
+</div>
+
+{% endblock %}
+

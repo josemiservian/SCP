@@ -1,0 +1,27 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<br>
+<div class="row">
+	<div class="col-md-6">
+		<h5>Borrar entregable</h5>
+		<p></p>
+		<div class="card card-body">
+
+
+			<p>¿Está seguro de borrar el entregable "{{entregable}}"?</p>
+
+			<form action="{% url 'proyectos:entregables-borrar' entregable.id  %}" method="POST">
+				
+				{% csrf_token %}
+				<input class="btn btn-danger" type="submit" name="Aceptar">
+				<a class="btn btn-warning" href="{% url 'proyectos:entregables-listar' %}">Cancelar</a>
+
+				
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
