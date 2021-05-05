@@ -56,9 +56,7 @@ class FormCrearContrato(forms.Form):
     fecha_inicio = forms.DateField(widget=forms.SelectDateWidget)
     fecha_fin = forms.DateField(widget=forms.SelectDateWidget)
     tipo_servicio = forms.ModelChoiceField(queryset=Servicio.objects.all())
-    #estado = forms.CharField(max_length=15)
-    #rentabilidad = forms.IntegerField()
-    #horas_ejecutadas = forms.IntegerField()
+
 
     def save(self):
         """Crea y guarda el contrato"""

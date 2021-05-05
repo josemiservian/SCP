@@ -16,10 +16,8 @@
                 {% endfor %}
         </div>
         <p></p>
-        <input type="submit" value="Seleccionar condiciones de pago">
-        <a  href="{% url 'proyectos:contratos-borrar' contrato %}" class="cancellink-box">Cancelar</a>
+        <input type="submit" value="Aceptar">
+        <a  href="{% url 'proyectos:contratos-detalle' contrato %}" class="cancellink-box">Cancelar</a>
         </form>
     </div>
-        
-
 {% endblock %}

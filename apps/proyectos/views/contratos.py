@@ -38,6 +38,21 @@ class CrearContrato(FormView):
 #Contratos
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_contrato')
+def crear_contrato2(request):
+
+    form = FormCrearContrato
+
+    if request.method == 'POST':
+        form = FormCrearContrato(request.POST)
+        if form.is_valid():
+            context = {'form':contrato_creado}
+            return render(request, 'contratos/crear.html', context)
+
+    context = {'form':form}
+    return render(request, 'contratos/crear.html', context)
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='add_contrato')
 def crear_contrato(request):
 
     form = FormCrearContrato
@@ -47,7 +62,6 @@ def crear_contrato(request):
         if form.is_valid():
             pk = form.save()
             return redirect(f'{pk}/entregables/crear')
-            #return redirect('proyectos:entregables-crear', form)
 
     context = {'form':form}
     return render(request, 'contratos/crear.html', context)
@@ -135,7 +149,7 @@ def crear_entregable(request, pk):
             formset.save()
             return redirect('proyectos:entregables-listar')
             
-    context = {'formset':formset}
+    context = {'formset':formset, 'contrato':contrato.id}
     return render(request, 'entregables/crear.html', context)
 
 @login_required(login_url='cuentas:login')
@@ -272,10 +286,10 @@ def actualizar_condicionPago(request, pk):
 @allowed_users(action='delete_condicionpago')
 def borrar_condicionPago(request, pk):
     
-    condicionpago = CondicionPago.objects.get(id=pk)
+    condicion = CondicionPago.objects.get(id=pk)
     if request.method == "POST":
-        condicionpago.delete()
+        condicion.delete()
         return redirect('proyectos:condicionPago-listar')
         
-    context = {'condicionpago':condicionpago}
-    return render(request, 'condicionpagos/borrar.html', context)
+    context = {'condicion':condicion}
+    return render(request, 'condicionPagos/borrar.html', context)

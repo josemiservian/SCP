@@ -43,7 +43,6 @@ class Contrato(models.Model):
     gastos = models.FloatField(default=0)
     rentabilidad_horas = models.FloatField(null=True, default=1) 
     rentabilidad_presupuesto = models.FloatField(null=True, default=1)
-    #condiciones_pago =
     estado = models.CharField(max_length=15, null=False, default='Activo')
 
     created = models.DateTimeField(auto_now_add=True)
