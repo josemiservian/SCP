@@ -1,6 +1,8 @@
+#Django
 from django.db import models
+from django.utils import timezone
 import datetime as dt
-import uuid
+from django.db.models import Sum
 
 class Cliente(models.Model):
     '''Clientes de la consultora'''
@@ -24,7 +26,12 @@ class Contrato(models.Model):
         -Excelente >1'''
 
     cliente = models.ForeignKey('proyectos.Cliente', on_delete=models.CASCADE)
-    propuesta = models.ForeignKey('proyectos.Propuesta', on_delete=models.CASCADE, null=True)
+    propuesta = models.ForeignKey(
+        'proyectos.Propuesta', 
+        on_delete=models.CASCADE, 
+        limit_choices_to={'estado': 'A'},
+        null=True
+    )
     nombre = models.CharField(max_length=30, null=False)
     descripcion = models.CharField(max_length=80, null=False)
     monto = models.FloatField(null=False)
@@ -36,12 +43,14 @@ class Contrato(models.Model):
     gastos = models.FloatField(default=0)
     rentabilidad_horas = models.FloatField(null=True, default=1) 
     rentabilidad_presupuesto = models.FloatField(null=True, default=1)
-    #condiciones_pago =
     estado = models.CharField(max_length=15, null=False, default='Activo')
 
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
 
+    class Meta:
+        ordering = ['-id']
+    
     def sumar_horas(self, cantidad_horas):
         '''Aumenta la cantidad de horas ejecutadas en base a los cargado
         por los analistas.'''
@@ -81,7 +90,7 @@ class Contrato(models.Model):
 
     def __str__(self):
         """Retorna nombre de Proyecto."""
-        return self.nombre
+        return self.cliente.nombre + ' - ' + self.nombre
     
 
 class Entregable(models.Model):
@@ -102,12 +111,12 @@ class CondicionPago(models.Model):
 
     contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
     descripcion = models.CharField(max_length=200, blank=False, null=False)
-    porcentaje_pago = models.DecimalField(null=False, max_digits=5, decimal_places=3, default=0.0)
+    porcentaje_pago = models.IntegerField(null=False)
     monto_pagar = models.FloatField(null=False)
     fecha_estimada = models.DateField(null=False)
 
     def __str__(self):
-        self.contrato.nombre + self.descripcion
+        self.contrato.nombre + ' - ' + self.descripcion
 
 
 class EquipoProyecto(models.Model):
@@ -193,10 +202,32 @@ class Propuesta(models.Model):
     def __str__(self):
         return self.area.nombre + ' - ' + self.nombre
 
+    def definir_estado(self, estado):
+        self.estado = estado
+        self.fecha_aceptacion = timezone.now()
+    
+    @property
+    def sumarizar_horas(self):
+        return self.detalle.aggregate(horas_servicio=Sum('horas_servicio'))['horas_servicio']
+    
+    @property
+    def sumarizar_totales(self):
+        return self.detalle.aggregate(total=Sum('total'))['total']
+    
+    def calcular_totales(self):
+        self.horas_totales = self.sumarizar_horas
+        self.total = self.sumarizar_totales
+        self.ganancia_esperada = self.total * float(self.porcentaje_ganancia)
+        
+
 class PropuestaDetalle(models.Model):
     '''Detalle de la propuesta. Personas que participaran, etc.'''
     
-    propuesta = models.ForeignKey('proyectos.Propuesta', on_delete=models.CASCADE)
+    propuesta = models.ForeignKey(
+        'proyectos.Propuesta', 
+        on_delete=models.CASCADE, 
+        related_name='detalle'
+    )
     servicio = models.ForeignKey('gestion.Servicio', on_delete=models.CASCADE)
     descripcion = models.CharField(max_length=500, null=False, blank=False)
     cargo = models.ForeignKey('gestion.Cargo', on_delete=models.CASCADE) #ver porque pueden ser varios cargos 
