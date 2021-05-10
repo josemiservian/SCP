@@ -147,7 +147,7 @@ def crear_entregable(request, pk):
         formset = EntregableFormSet(request.POST, instance=contrato)
         if formset.is_valid():
             formset.save()
-            return redirect('proyectos:entregables-listar')
+            return redirect('proyectos:condicionPagos-crear', contrato.id)
             
     context = {'formset':formset, 'contrato':contrato.id}
     return render(request, 'entregables/crear.html', context)
@@ -161,9 +161,11 @@ def detalle_entregable(request, pk):
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_entregable')
-def listar_entregables(request):
+def listar_entregables(request, pk):
 
-    entregables = Entregable.objects.all()
+    entregables = Entregable.objects.filter(contrato__id=pk)
+
+    contrato = Contrato.objects.get(id=pk)
     
     #filtros = entregableFilter(request.GET, queryset=entregables)
 
@@ -175,7 +177,7 @@ def listar_entregables(request):
 
     #entregables = paginator.get_page(page)
     
-    return render(request, 'entregables/listar.html', {'entregables':entregables})#, 'filtros':filtros
+    return render(request, 'entregables/listar.html', {'entregables':entregables, 'contrato':contrato.id})#, 'filtros':filtros
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_entregable')
@@ -216,11 +218,10 @@ def crear_condicionPago(request, pk):
         Contrato, 
         CondicionPago,
         fields=(
-            'actividades', 
-            'responsable', 
-            'horas_asignadas',
-            'fecha_inicio',
-            'fecha_fin'
+            'descripcion', 
+            'porcentaje_pago', 
+            'monto_pagar',
+            'fecha_estimada'
         ),
         can_delete=False,
         extra=5
@@ -234,10 +235,10 @@ def crear_condicionPago(request, pk):
         formset = CondicionPagoFormSet(request.POST, instance=contrato)
         if formset.is_valid():
             formset.save()
-            return redirect('proyectos:contratos-detalle', pk)
+            return redirect('proyectos:contratos-detalle', contrato.id)
             
-    context = {'formset':formset}
-    return render(request, 'contratos/detalle.html', context)
+    context = {'formset':formset, 'contrato':contrato.id}
+    return render(request, 'condicionPagos/crear.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_condicionpago')
@@ -276,7 +277,7 @@ def actualizar_condicionPago(request, pk):
         form = CondicionPagoForm(request.POST, instance=condicion)
         if form.is_valid():
             form.save()
-            return redirect('proyectos:condicionPago-listar')
+            return redirect('proyectos:condicionPagos-listar')
 
     context = {'form':form}
     return render(request, 'condicionpagos/modificar.html', context)
@@ -289,7 +290,7 @@ def borrar_condicionPago(request, pk):
     condicion = CondicionPago.objects.get(id=pk)
     if request.method == "POST":
         condicion.delete()
-        return redirect('proyectos:condicionPago-listar')
+        return redirect('proyectos:condicionPagos-listar')
         
     context = {'condicion':condicion}
     return render(request, 'condicionPagos/borrar.html', context)

@@ -3,12 +3,13 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.http import JsonResponse
 
 #Decoradores
 from scp.decorators import allowed_users
 
 #Models
-from apps.gestion.models import Rol
+from apps.gestion.models import Rol, Cargo
 
 #Formularios
 from apps.gestion.forms import RolForm, FormCrearRol
@@ -43,6 +44,14 @@ def crear_roles(request):
 
 	context = {'form':form}
 	return render(request, 'roles/crear.html', context)
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_cargo')
+def cargo_json(request, pk):
+    '''Retorna un cargo dado, en formato JSON'''
+    
+    cargo = list(Cargo.objects.filter(id=pk).values('id', 'tarifa_gs'))
+    return JsonResponse(cargo, safe=False)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_rol')

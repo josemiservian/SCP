@@ -4,7 +4,7 @@
     <div class="col col-md-10">
         <div class="card card-body">
 
-            <h5>Crear entregables:</h5>
+            <h5>Crear condiciones de pago:</h5>
             <hr>
             <form method="POST" %}">
                 {% csrf_token %}
@@ -17,7 +17,7 @@
         </div>
         <p></p>
         <input type="submit" value="Aceptar">
-        <a  href="{% url 'proyectos:contratos-detalle' contrato %}" class="cancellink-box">Cancelar</a>
+        <a  href="{% url 'proyectos:contratos-listar' %}" class="cancellink-box">Cancelar</a>
         </form>
     </div>
 {% endblock %}

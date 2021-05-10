@@ -136,6 +136,10 @@ urlpatterns = [
         name='propuestas-detalle'
     ),
     path(
+        route='propuestas/json/<str:pk>',
+        view=propuestas.propuesta_json
+    ),
+    path(
         route='propuestas/<str:pk>/estado?<str:estado>',
         view=propuestas.estado_propuesta,
         name='propuestas-estado'
@@ -183,7 +187,7 @@ urlpatterns = [
         name='entregables-borrar'
     ),
     path(
-        route='contratos/entregables/listar',
+        route='contratos/entregables/listar/<str:pk>',
         view=contratos.listar_entregables,
         name='entregables-listar'
     ),
@@ -196,26 +200,26 @@ urlpatterns = [
     path(
         route='contratos/<str:pk>/condiciones-pago',
         view=contratos.crear_condicionPago,
-        name='condicionPago-crear'
+        name='condicionPagos-crear'
     ),
     path(
         route='contratos/condiciones-pago/modificar/<str:pk>',
         view=contratos.actualizar_condicionPago,
-        name='condicionPago-modificar'
+        name='condicionPagos-modificar'
     ),
     path(
         route='contratos/condiciones-pago/borrar/<str:pk>',
         view=contratos.borrar_condicionPago,
-        name='condicionPago-borrar'
+        name='condicionPagos-borrar'
     ),
     path(
         route='contratos/<str:pk>/condiciones-pago/listar',
         view=contratos.listar_condicionPagos,
-        name='condicionPago-listar'
+        name='condicionPagos-listar'
     ),
     path(
         route='contratos/condiciones-pago/<str:pk>',
         view=contratos.detalle_condicionPago,
-        name='condicionPago-detalle'
+        name='condicionPagos-detalle'
     ),
 ]

@@ -116,7 +116,7 @@ class CondicionPago(models.Model):
     fecha_estimada = models.DateField(null=False)
 
     def __str__(self):
-        self.contrato.nombre + self.descripcion
+        self.contrato.nombre + ' - ' + self.descripcion
 
 
 class EquipoProyecto(models.Model):

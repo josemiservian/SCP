@@ -4,6 +4,7 @@ from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.forms.models import inlineformset_factory
+from django.http import JsonResponse
 
 #Decoradores
 from scp.decorators import allowed_users
@@ -87,6 +88,19 @@ def detalle_propuesta(request, pk):
 
     propuesta = Propuesta.objects.get(id=pk)
     return render(request, 'propuestas/detalle.html', {'propuesta':propuesta})
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_propuesta')
+def propuesta_json(request, pk):
+    '''Retorna una propuesta dada en formato JSON'''
+    
+    propuesta = list(Propuesta.objects.filter(id=pk).values(
+        'id', 
+        'nombre', 
+        'horas_totales', 
+        'ganancia_esperada'
+    ))
+    return JsonResponse(propuesta, safe=False)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')

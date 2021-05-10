@@ -47,7 +47,7 @@ class ClienteForm(forms.ModelForm):
 #Formularios para Contratos
 class FormCrearContrato(forms.Form):
     
-    propuestas = forms.ModelChoiceField(queryset=Propuesta.objects.filter(estado='A'))
+    propuesta = forms.ModelChoiceField(queryset=Propuesta.objects.filter(estado='A'))
     cliente = forms.ModelChoiceField(queryset=Cliente.objects.all())
     nombre = forms.CharField(min_length=4, max_length=30)
     descripcion = forms.CharField(max_length=80)
@@ -61,7 +61,7 @@ class FormCrearContrato(forms.Form):
     def save(self):
         """Crea y guarda el contrato"""
         data = self.cleaned_data
-        contrato = Contrato(cliente=data['cliente'],nombre=data['nombre'],
+        contrato = Contrato(propuesta=data['propuesta'],cliente=data['cliente'],nombre=data['nombre'],
                             descripcion=data['descripcion'],monto=data['monto'],
                             horas_presupuestadas=data['horas_presupuestadas'],
                             fecha_inicio=data['fecha_inicio'],

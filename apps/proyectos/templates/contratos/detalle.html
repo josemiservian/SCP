@@ -1,11 +1,17 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-
 <div class="col">
 	<div class="card card-body">
-		<h5><strong>Detalle del contrato {{contrato.nombre}}:</strong></h5>
+        <div class="d-flex justify-content-between">
+            <h5><strong>Detalle del contrato {{contrato.nombre}}:</strong></h5>            
+            <div class="justify-content-between">
+                <a class="btn btn-primary" href="{% url 'proyectos:entregables-listar' contrato.id %}">Ver entregables</a>
+                <a class="btn btn-primary" href="{% url 'proyectos:condicionPagos-listar' contrato.id %}">Ver condiciones de pago</a>    
+            </div>
+        </div>
 		<hr>
+        <p><strong>Propuesta</strong>: {{contrato.propuesta.nombre}}</p>
         <p><strong>Cliente</strong>: {{contrato.cliente}}</p>
         <p><strong>Nombre</strong>: {{contrato.nombre}}</p>
         <p><strong>Descripcion</strong>: {{contrato.descripcion}}</p>
@@ -26,9 +32,9 @@
 <br>
 <div class="col d-flex justify-content-between">
     <div class="col justify-content-between">
-        <a class="btn btn-primary" href="{% url 'proyectos:contratos-modificar' contrato.id%}">Modificar</a>
-        <a class="btn btn-secondary" href="{% url 'proyectos:contratos-listar' %}">Cancelar</a>
+        <a class="btn btn-primary" href="{% url 'proyectos:contratos-modificar' contrato.id %}">Modificar</a>
+        <a class="btn btn-secondary" href="{% url 'proyectos:contratos-listar' %}">Volver</a>
     </div>
-    <a class="btn btn-danger" href="{% url 'proyectos:contratos-borrar' contrato.id%}">Eliminar</a>    
+    <a class="btn btn-danger" href="{% url 'proyectos:contratos-borrar' contrato.id %}">Eliminar</a>    
 </div>
 {% endblock %}
