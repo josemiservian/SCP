@@ -4,14 +4,16 @@ from django.utils import timezone
 
 class Facturacion(models.Model):
     '''Modelo para generacion de facturas.'''
-    detalle = models.CharField(max_length=30, blank=True, null=False)
-    descripcion = models.CharField(max_length=60, blank=True, null=False, default='')
+    nro_factura = models.IntegerField()
+    nro_timbrado = models.IntegerField()
+    vigencia_desde =  models.DateField(null=False)
+    vigencia_hasta =  models.DateField(null=False)
+    ruc = models.CharField(max_length=15, null=False)
     forma_pago = models.CharField(max_length=15, null=False)
     fecha_emision = models.DateField(null=False)
     fecha_vencimiento = models.DateField(null=False)
-    monto_total = models.FloatField(null=False)
     monto_facturacion = models.FloatField(null=False)
-    saldo_facturacion = models.FloatField(null=False)
+    descripcion = models.CharField(max_length=60, blank=True, null=False, default='')
     estado = models.CharField(max_length=10)
 
     def __str__(self):

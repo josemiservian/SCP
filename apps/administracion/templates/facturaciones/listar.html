@@ -16,14 +16,16 @@
 			<table class="table table-sm">
                     <tr>
                         <th></th>
-                        <th>Detalle</th>
-						<th>Descripcion</th>
+                        <th>Nro</th>
+						<th>Timbrado</th>
+						<th>Vigencia Desde</th>
+						<th>Vigencia Hasta</th>
+						<th>RUC</th>
 						<th>Forma Pago</th>
-						<th>Fecha Emision</th>
-						<th>Fecha Vencimiento</th>
-						<th>Monto Total</th>
-						<th>Monto Facturacion</th>
-						<th>Saldo Facturacion</th>
+						<th>Emision</th>
+						<th>Vencimiento</th>
+						<th>Monto</th>
+						<th>Descripcion</th>
 						<th>Estado</th>
 						<th>Accion</th>
                     </tr>
@@ -31,14 +33,16 @@
 				{% for factura in facturas %}
 					<tr>
 						<td>{{factura.id}}</td>
-						<td>{{factura.detalle}}</td>
-                        <td>{{factura.descripcion}}</td>
+						<td>{{factura.nro_factura}}</td>
+                        <td>{{factura.nro_timbrado}}</td>
+                        <td>{{factura.vigencia_desde}}</td>
+                        <td>{{factura.vigencia_hasta}}</td>
+                        <td>{{factura.ruc}}</td>
                         <td>{{factura.forma_pago}}</td>
                         <td>{{factura.fecha_emision}}</td>
                         <td>{{factura.fecha_vencimiento}}</td>
-						<td>{{factura.monto_total}}</td>
 						<td>{{factura.monto_facturacion}}</td>
-						<td>{{factura.saldo_facturacion}}</td>
+						<td>{{factura.descripcion}}</td>
 						<td>{{factura.estado}}</td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:facturaciones-modificar'  factura.id%}">Actualizar</a></td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:facturaciones-borrar'  factura.id%}">Borrar</a></td>
