@@ -89,7 +89,7 @@ def inicio(request):
 		#Total de horas mensuales
 		total_horas_mensuales = registro_horas.aggregate(Sum('horas'))
 		total_horas_mensuales = total_horas_mensuales['horas__sum']
-		total_horas_mensuales = int(total_horas_mensuales.days *24 + total_horas_mensuales.seconds/3600)
+		total_horas_mensuales = 0 #int(total_horas_mensuales.days *24 + total_horas_mensuales.seconds/3600)
 
 		#Total de tareas realizadas en el mes
 		total_tareas_mensuales = registro_horas.values('nombre').distinct().count()

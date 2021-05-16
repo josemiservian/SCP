@@ -18,6 +18,25 @@
 		{% endif %}
 	</div>
 </div>
+
+<hr>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<h5>Filtros:</h5>
+			<form method="GET">
+				{{filtros.form}}
+
+		    <button class="btn btn-primary" type="submit">Buscar</button>
+			
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<br>
+
 <hr>
 <div class="row">
 	<div class="col-md-5">
@@ -57,5 +76,29 @@
 	</div>
 </div>
 
-{% endblock %}
 
+<div class="pagination">
+    {% if propuestas.has_previous %}
+        <a class="pagination-action" href="?page=1">
+            <i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+        <a class="pagination-action" href="?page={{ propuestas.previous_page_number }}">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </a>
+    {% endif %}
+    {% for num in propuestas.paginator.page_range %}
+        {% if propuestas.number == num %}
+            <span class="pagination-number pagination-current">{{ num }}</span>
+        {% elif num > propuestas.number|add:'-3' and num < propuestas.number|add:'3' %}
+            <a class="pagination-number" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+    {% if propuestas.has_next %}
+        <a class="pagination-action" href="?page={{ propuestas.next_page_number }}">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </a>
+        <a class="pagination-action" href="?page={{ propuestas.paginator.num_pages }}">
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+        </a>
+    {% endif %}
+</div>
+{% endblock %}
