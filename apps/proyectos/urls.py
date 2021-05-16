@@ -47,6 +47,11 @@ urlpatterns = [
         view=contratos.listar_contratos,
         name='contratos-listar'
     ),
+    path(
+        route='contratos/<str:pk>',
+        view=contratos.detalle_contrato,
+        name='contratos-detalle'
+    ),
     #Equipos de Proyecto
     path(
         route='squads/crear',
@@ -121,28 +126,37 @@ urlpatterns = [
         name='propuestas-borrar'
     ),
     path(
-        route='propuestas/listar',
+        route='propuestas/listar/<str:estado>',
         view=propuestas.listar_propuestas,
         name='propuestas-listar'
     ),
-    #Propuestas Detalle
     path(
         route='propuestas/<str:pk>',
         view=propuestas.detalle_propuesta,
         name='propuestas-detalle'
     ),
     path(
-        route='propuestas/<str:pk>/detalle/crear',#
+        route='propuestas/json/<str:pk>',
+        view=propuestas.propuesta_json
+    ),
+    path(
+        route='propuestas/<str:pk>/estado?<str:estado>',
+        view=propuestas.estado_propuesta,
+        name='propuestas-estado'
+    ),
+    #Propuestas Detalle
+    path(
+        route='propuestas/<str:pk>/detalle/crear',
         view=propuestas.crear_propuestaDetalle,
         name='propuestasDetalle-crear'
     ),
     path(
-        route='propuestas/<str:pk>/detalle/modificar',
+        route='propuestas/detalle/modificar/<str:pk>',
         view=propuestas.actualizar_propuestaDetalle,
         name='propuestasDetalle-modificar'
     ),
     path(
-        route='propuestas/<str:pk>/detalle/borrar',
+        route='propuestas/detalle/borrar/<str:pk>',
         view=propuestas.borrar_propuestaDetalle,
         name='propuestasDetalle-borrar'
     ),
@@ -155,5 +169,57 @@ urlpatterns = [
         route='propuestas/<str:pk>/detalle/listar',
         view=propuestas.listar_detalle_propuesta,
         name='propuestasDetalle-detallePorPropuesta'
+    ),
+    #Entregable
+    path(
+        route='contratos/<str:pk>/entregables/crear',
+        view=contratos.crear_entregable,
+        name='entregables-crear'
+    ),
+    path(
+        route='contratos/entregables/modificar/<str:pk>',
+        view=contratos.actualizar_entregable,
+        name='entregables-modificar'
+    ),
+    path(
+        route='contratos/entregables/borrar/<str:pk>',
+        view=contratos.borrar_entregable,
+        name='entregables-borrar'
+    ),
+    path(
+        route='contratos/entregables/listar/<str:pk>',
+        view=contratos.listar_entregables,
+        name='entregables-listar'
+    ),
+    path(
+        route='contratos/entregables/<str:pk>',
+        view=contratos.detalle_entregable,
+        name='entregables-detalle'
+    ),
+    #Condiciones de Pago
+    path(
+        route='contratos/<str:pk>/condiciones-pago',
+        view=contratos.crear_condicionPago2,
+        name='condicionPagos-crear'
+    ),
+    path(
+        route='contratos/condiciones-pago/modificar/<str:pk>',
+        view=contratos.actualizar_condicionPago,
+        name='condicionPagos-modificar'
+    ),
+    path(
+        route='contratos/condiciones-pago/borrar/<str:pk>',
+        view=contratos.borrar_condicionPago,
+        name='condicionPagos-borrar'
+    ),
+    path(
+        route='contratos/<str:pk>/condiciones-pago/listar',
+        view=contratos.listar_condicionPagos,
+        name='condicionPagos-listar'
+    ),
+    path(
+        route='contratos/condiciones-pago/<str:pk>',
+        view=contratos.detalle_condicionPago,
+        name='condicionPagos-detalle'
     ),
 ]

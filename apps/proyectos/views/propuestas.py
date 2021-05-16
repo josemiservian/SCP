@@ -4,6 +4,7 @@ from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.forms.models import inlineformset_factory
+from django.http import JsonResponse
 
 #Decoradores
 from scp.decorators import allowed_users
@@ -42,19 +43,26 @@ def crear_propuesta(request):
 		form = FormCrearPropuesta(request.POST)
 		if form.is_valid():
 			pk = form.save()
-			#context = {'propuesta':pk}
 			return redirect(str(pk) + '/detalle/crear')
-			#return render(request, 'propuestas/crear_propuestaDetalle.html', context)
 
 	context = {'form':form}
 	return render(request, 'propuestas/crear.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')
-def listar_propuestas(request):
+def listar_propuestas(request, estado):
 
-    propuestas = Propuesta.objects.all() #queryset
-    return render(request, 'propuestas/listar.html', {'propuestas':propuestas})
+
+    propuestas = Propuesta.objects.all()
+    
+    if estado == 'P':
+        propuestas = propuestas.filter(estado='P')
+    elif estado == 'A':
+        propuestas = propuestas.filter(estado='A')
+    else:
+        propuestas = propuestas.filter(estado='R')
+    
+    return render(request, 'propuestas/listar.html', {'propuestas':propuestas, 'estado':estado})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_propuesta')
@@ -67,18 +75,47 @@ def actualizar_propuesta(request, pk):
 		form = PropuestaForm(request.POST, instance=propuesta)
 		if form.is_valid():
 			form.save()
-			return redirect('proyectos:propuestas-listar')
+            #form.estado.values()
+			return redirect('proyectos:propuestas-listar', form.estado.values())
 
-	context = {'form':form, 'propuesta':pk}
+	context = {'form':form, 'propuesta':pk, 'estado':propuesta.estado}
 	return render(request, 'propuestas/modificar.html', context)
 
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')
 def detalle_propuesta(request, pk):
-	
+
     propuesta = Propuesta.objects.get(id=pk)
     return render(request, 'propuestas/detalle.html', {'propuesta':propuesta})
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_propuesta')
+def propuesta_json(request, pk):
+    '''Retorna una propuesta dada en formato JSON'''
+    
+    propuesta = list(Propuesta.objects.filter(id=pk).values(
+        'id', 
+        'nombre', 
+        'horas_totales', 
+        'ganancia_esperada'
+    ))
+    return JsonResponse(propuesta, safe=False)
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_propuesta')
+def estado_propuesta(request, pk, estado):
+    	
+    propuesta = Propuesta.objects.get(id=pk)
+
+    if request.method == 'POST':
+        propuesta.definir_estado(estado)
+        propuesta.save()
+
+        return redirect('proyectos:propuestas-detalle', propuesta.id)
+    
+    context = {'propuesta':propuesta, 'estado':estado}
+    return render(request, 'propuestas/estado_propuesta.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='delete_propuesta')
@@ -86,28 +123,14 @@ def borrar_propuesta(request, pk):
 	
     propuesta = Propuesta.objects.get(id=pk)
     if request.method == "POST":
+        estado = propuesta.estado
         propuesta.delete()
-        return redirect('proyectos:propuestas-listar')
+        return redirect('proyectos:propuestas-listar', estado)
         
     context = {'propuesta':propuesta}
     return render(request, 'propuestas/borrar.html', context)
 
 #Propuesta Detalle
-@login_required(login_url='cuentas:login')
-@allowed_users(action='add_propuestadetalle')
-def crear_propuestaDetalle2(request, pk):
-
-	form = FormCrearPropuestaDetalle
-
-	if request.method == 'POST':
-		form = FormCrearPropuestaDetalle(request.POST)
-		if form.is_valid():
-			form.save(pk)
-			return redirect('proyectos:propuestas-listar')
-
-	context = {'form':form}
-	return render(request, 'propuestas/crear_propuestaDetalle.html', context)
-
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_propuestadetalle')
 def crear_propuestaDetalle(request, pk):
@@ -128,7 +151,9 @@ def crear_propuestaDetalle(request, pk):
         formset = PropuestaDetalleFormSet(request.POST, instance=propuesta)
         if formset.is_valid():
             formset.save()
-            return redirect('proyectos:propuestas-listar')
+            propuesta.calcular_totales()
+            propuesta.save()
+            return redirect('proyectos:propuestas-listar', 'P')
             
     context = {'formset':formset}
     return render(request, 'propuestas/crear_propuestaDetalle.html', context)
@@ -151,17 +176,20 @@ def listar_detalle_propuesta(request, pk):
 @allowed_users(action='change_propuesta')
 def actualizar_propuestaDetalle(request, pk):
 
-	propuestas_detalle = PropuestaDetalle.objects.get(id=pk)
-	form = PropuestaDetalleForm(instance=propuestas_detalle)
+    propuestas_detalle = PropuestaDetalle.objects.get(id=pk)
+    form = PropuestaDetalleForm(instance=propuestas_detalle)
 
-	if request.method == 'POST':
-		form = PropuestaDetalleForm(request.POST, instance=propuestas_detalle)
-		if form.is_valid():
-			form.save()
-			return redirect('proyectos:propuestas-listar')
+    if request.method == 'POST':
+        form = PropuestaDetalleForm(request.POST, instance=propuestas_detalle)
+        if form.is_valid():
+            propuesta = Propuesta.objects.get(id=propuestas_detalle.propuesta.id)
+            form.save()
+            propuesta.calcular_totales()
+            propuesta.save()
+            return redirect('proyectos:propuestas-listar', 'P')
 
-	context = {'form':form}
-	return render(request, 'propuestas/modificar_propuestaDetalle.html', context)
+    context = {'form':form}
+    return render(request, 'propuestas/modificar_propuestaDetalle.html', context)
 
 
 @login_required(login_url='cuentas:login')
@@ -170,8 +198,11 @@ def borrar_propuestaDetalle(request, pk):
 	
     propuesta_detalle = PropuestaDetalle.objects.get(id=pk)
     if request.method == "POST":
+        propuesta = Propuesta.objects.get(id=propuesta_detalle.propuesta.id)
         propuesta_detalle.delete()
-        return redirect('proyectos:propuestas-listar')
+        propuesta.calcular_totales()
+        propuesta.save()
+        return redirect('proyectos:propuestasDetalle-detallePorPropuesta', propuesta.id)
         
-    context = {'propuesta_detalle':propuesta_detalle}
+    context = {'propuesta_detalle':propuesta_detalle, 'propuesta':propuesta_detalle.propuesta.id}
     return render(request, 'propuestas/borrar_propuestaDetalle.html', context)

@@ -1,8 +1,9 @@
 # Django
 from django import forms
+from django.forms import formset_factory
 
 # Models
-from apps.proyectos.models import Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora, Propuesta, PropuestaDetalle
+from apps.proyectos.models import * #Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora, Propuesta, PropuestaDetalle
 from apps.cuentas.models import Empleado
 from apps.gestion.models import Area, Cargo, Rol, Servicio
 import datetime as dt
@@ -47,23 +48,21 @@ class ClienteForm(forms.ModelForm):
 #Formularios para Contratos
 class FormCrearContrato(forms.Form):
     
-    propuestas = forms.ModelChoiceField(queryset=Propuesta.objects.all())#Traer solo las propuestas aceptadas
+    propuesta = forms.ModelChoiceField(queryset=Propuesta.objects.filter(estado='A'))
     cliente = forms.ModelChoiceField(queryset=Cliente.objects.all())
     nombre = forms.CharField(min_length=4, max_length=30)
     descripcion = forms.CharField(max_length=80)
-    monto = forms.FloatField()
-    horas_presupuestadas = forms.IntegerField()
+    monto = forms.FloatField(localize=True)
+    horas_presupuestadas = forms.IntegerField(min_value=0)
     fecha_inicio = forms.DateField(widget=forms.SelectDateWidget)
     fecha_fin = forms.DateField(widget=forms.SelectDateWidget)
     tipo_servicio = forms.ModelChoiceField(queryset=Servicio.objects.all())
-    #estado = forms.CharField(max_length=15)
-    #rentabilidad = forms.IntegerField()
-    #horas_ejecutadas = forms.IntegerField()
+
 
     def save(self):
         """Crea y guarda el contrato"""
         data = self.cleaned_data
-        contrato = Contrato(cliente=data['cliente'],nombre=data['nombre'],
+        contrato = Contrato(propuesta=data['propuesta'],cliente=data['cliente'],nombre=data['nombre'],
                             descripcion=data['descripcion'],monto=data['monto'],
                             horas_presupuestadas=data['horas_presupuestadas'],
                             fecha_inicio=data['fecha_inicio'],
@@ -71,15 +70,41 @@ class FormCrearContrato(forms.Form):
                             #estado=data['estado'],rentabilidad=data['rentabilidad'],
                             #horas_ejecutadas=data['horas_ejecutadas'])
         contrato.save()
+        return contrato.id
 
 
 class ContratoForm(forms.ModelForm):
     class Meta:
         
         model = Contrato
-        fields = ('cliente','nombre','descripcion','monto','horas_presupuestadas',
-                  'fecha_inicio','fecha_fin','tipo_servicio')#,'estado','rentabilidad',
-                  #'horas_ejecutadas')
+        fields = ('cliente', 'propuesta','nombre', 'descripcion','monto','horas_presupuestadas',
+                  'fecha_inicio','fecha_fin','tipo_servicio')
+
+
+#Formularios para Entregable
+class EntregableForm(forms.ModelForm):
+    class Meta:
+        
+        model = Entregable
+        fields = ('__all__')
+
+
+class FormCondicionPago(forms.Form):
+    contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    forma_pago = forms.ChoiceField(widget=forms.Select(choices=[('CRE', 'Crédito'),('CON', 'Contado')]))
+    monto_total = forms.FloatField()
+    cantidad_pagos = forms.IntegerField(initial=1, min_value=1)
+    dias_vencimiento = forms.IntegerField(initial=10)
+
+CondicionPagoFormset = formset_factory(FormCondicionPago, extra=0)
+
+
+#Formularios para Condiciones de pago
+class CondicionPagoForm(forms.ModelForm):
+    class Meta:
+        
+        model = CondicionPago
+        fields = ('__all__')
 
 
 #Formularios para Registro de horas
@@ -184,13 +209,17 @@ class FormCrearPropuesta(forms.Form):
     area = forms.ModelChoiceField(queryset=Area.objects.all())
     gerente = forms.ModelChoiceField(queryset=Empleado.objects.all())
     nombre = forms.CharField(min_length=4, max_length=60)
+    porcentaje_ganancia = forms.DecimalField(max_digits=5, decimal_places=3)
 
     def save(self):
         """Crea y guarda el contrato"""
         data = self.cleaned_data
-        print(data)
-        propuesta = Propuesta(area=data['area'], gerente=data['gerente'],
-                            nombre=data['nombre'])
+        propuesta = Propuesta(
+            area=data['area'], 
+            gerente=data['gerente'],
+            nombre=data['nombre'], 
+            porcentaje_ganancia=data['porcentaje_ganancia']
+        )
         propuesta.save()
 
         return propuesta.id

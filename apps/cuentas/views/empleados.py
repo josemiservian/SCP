@@ -140,3 +140,18 @@ def resumen(request):
 	}
 
 	return render(request, 'cuentas/resumen.html',context)'''
+
+@login_required(login_url='login')
+def actualizar_perfil(request, username):
+
+	empleado = Empleado.objects.get(usuario__username=request.user)
+	form = EmpleadoForm(instance=empleado)
+
+	if request.method == 'POST':
+		form = EmpleadoForm(request.POST, instance=empleado)
+		if form.is_valid():
+			form.save()
+			return redirect('/')
+
+	context = {'form':form}
+	return render(request, 'cuentas/configuracion.html', context)

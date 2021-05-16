@@ -25,8 +25,8 @@ urlpatterns = [
         name='logout'
     ),
     path(
-        route='configuracion',
-        view=empleados.VistaActualizarPerfil.as_view(),
+        route='configuracion/<str:username>',
+        view=empleados.actualizar_perfil,
         name='configuracion'
     ),
 ]

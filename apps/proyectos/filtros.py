@@ -1,9 +1,9 @@
 #Django
 import django_filters
-from django_filters import DateFilter, CharFilter, NumberFilter
+from django_filters import DateFilter, CharFilter, NumberFilter, ModelChoiceFilter
 
 #Modelos
-from apps.proyectos.models import Contrato, RegistroHora, Cliente
+from apps.proyectos.models import Contrato, Propuesta, RegistroHora
 
 class RegistroHoraFilter(django_filters.FilterSet):
     
@@ -29,19 +29,11 @@ class RegistroHoraFilter(django_filters.FilterSet):
 
 class ContratoFilter(django_filters.FilterSet):
 
+    propuesta = ModelChoiceFilter(
+        field_name='propuesta', queryset=Propuesta.objects.filter(estado='A'),
+    )
     nombre = CharFilter(field_name='nombre', label= 'Nombre', lookup_expr='icontains')
 
     class Meta:
         model = Contrato
-        fields =  ['cliente', 'propuesta', 'tipo_servicio']#('__all__')
-        #exclude = ['nombre', 'created', 'modified', 'rentabilidad_presupuesto', 'descripcion', 'monto']
-
-
-class ClienteFilter(django_filters.FilterSet):
-
-    nombre = CharFilter(field_name='nombre', label= 'Nombre', lookup_expr='icontains')
-
-    class Meta:
-        model = Cliente
-        fields =  ['ruc']#('__all__')
-        #exclude = ['nombre', 'created', 'modified', 'rentabilidad_presupuesto', 'descripcion', 'monto']
+        fields =  ['cliente',  'tipo_servicio']

@@ -1,0 +1,29 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<div class="col">
+	<div class="card card-body">
+        {% if estado == "A" %} 
+            <h5><strong>¿Desea aceptar la propuesta {{propuesta.nombre}}?</strong></h5>
+        {% else %}
+            <h5><strong>¿Desea rechazar la propuesta {{propuesta.nombre}}?</strong></h5>
+        {% endif %}
+		
+		<hr>
+        <form method="POST">	
+            {% csrf_token %}
+            <input class="btn btn-danger" type="submit" name="Aceptar">
+            <a class="btn btn-warning" href="{% url 'proyectos:propuestas-detalle' propuesta.id%}">Cancelar</a>
+        </form>
+            
+	</div>
+</div>
+<br>
+
+
+
+
+{% endblock %}
+
+

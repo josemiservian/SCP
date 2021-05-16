@@ -4,7 +4,7 @@ from django import forms
 # Models
 from django.contrib.auth.models import User, Group, Permission
 from apps.cuentas.models import Empleado
-from apps.gestion.models import Area, Rol, Servicio
+from apps.gestion.models import Area, Cargo, Rol, Servicio
 
 #Constantes
 GRUPOS = tuple([(grupo.id, grupo.name) for grupo in Group.objects.all()])
@@ -39,7 +39,7 @@ class AreaForm(forms.ModelForm):
 class FormularioRegistro(forms.Form):
 
     username = forms.CharField(min_length=4, max_length=50)
-    grupo = forms.ChoiceField(choices=GRUPOS)
+    grupo = forms.ModelChoiceField(queryset=Group.objects.all())#choices=GRUPOS
 
     password = forms.CharField(
         max_length=70,
@@ -61,7 +61,7 @@ class FormularioRegistro(forms.Form):
     apellido = forms.CharField(label= 'Apellido')
     direccion = forms.CharField(label= 'Direccion')
     fecha_nacimiento = forms.DateField(label= 'Fecha de Nacimiento', widget=forms.widgets.DateInput(attrs={'type': 'date'}))
-    cargo = forms.CharField(label= 'Cargo')
+    cargo = forms.ModelChoiceField(queryset=Cargo.objects.all())
     tarifa = forms.FloatField(label= 'Tarifa')
     estado = forms.CharField(label= 'Estado')
 

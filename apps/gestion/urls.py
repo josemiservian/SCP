@@ -90,6 +90,7 @@ urlpatterns = [
         view=roles.listar_roles,
         name='roles-listar'
     ),
+     path(route='cargos/json/<str:pk>', view=roles.cargo_json),
 
     #Servicios
     path(
