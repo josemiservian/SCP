@@ -1,23 +1,24 @@
 {%  extends 'main.html' %}
+{% load static %}
 {% block content %}
 <br>
-    <div class="col col-md-10">
-        <div class="card card-body">
-
-            <h5>Crear condiciones de pago:</h5>
-            <hr>
-            <form method="POST" %}">
-                {% csrf_token %}
-    
-                {{ formset.management_form }}
-                {% for form in formset %}
-                    {{form}}
-                <hr>
-                {% endfor %}
-        </div>
-        <p></p>
-        <input type="submit" value="Aceptar">
-        <a  href="{% url 'proyectos:contratos-listar' %}" class="cancellink-box">Cancelar</a>
-        </form>
-    </div>
+<link rel="stylesheet" type="text/css" href="{% static '/css/app.css' %}" />
+<!-- Form Oculto que queres clonar -->
+<div id="form_oculto" class="d-none">
+    <form method="POST">
+      {{ formset.management_form }}
+      {{ formset.empty_form.as_p }}
+    </form>
+  </div>
+  
+  <!-- Boton para clonar a voluntad -->
+  <form id="add_form">
+    <input type="number" id="number_forms">
+    <button type="submit">+ Añadir formularios</button>
+  </form>
+  
+  <!-- Div donde vamos a colocar los forms -->
+  <div id="forms_container"></div>
+  <script src="{% static '/js/generarFormularios.js'%}"></script>
 {% endblock %}
+<!--style="display:none;"-->

@@ -16,7 +16,7 @@ from apps.proyectos.models import Contrato, Entregable, CondicionPago
 from apps.proyectos.filtros import ContratoFilter
 
 # Forms
-from apps.proyectos.forms import FormCrearContrato, ContratoForm, EntregableForm, CondicionPagoForm
+from apps.proyectos.forms import FormCrearContrato, ContratoForm, EntregableForm, CondicionPagoForm, CondicionPagoFormset
 
 # Create your views here.
 
@@ -239,6 +239,21 @@ def crear_condicionPago(request, pk):
             
     context = {'formset':formset, 'contrato':contrato.id}
     return render(request, 'condicionPagos/crear.html', context)
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='add_condicionpago')
+def crear_condicionPago2(request, pk):
+    
+    contrato = Contrato.objects.get(id=pk)
+    if request.method == 'POST':
+        print('post')
+        formset = CondicionPagoFormset(request.POST)
+        for form in formset.forms:
+            print("You've picked {0}").format(form.cleaned_data['forma_pago'])
+    else:
+        print('get')
+        formset = CondicionPagoFormset()
+    return render(request, 'condicionPagos/crear.html', {'formset': formset, 'contrato':contrato.id})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_condicionpago')

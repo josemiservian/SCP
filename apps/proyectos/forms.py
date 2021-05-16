@@ -1,5 +1,6 @@
 # Django
 from django import forms
+from django.forms import formset_factory
 
 # Models
 from apps.proyectos.models import * #Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora, Propuesta, PropuestaDetalle
@@ -86,6 +87,16 @@ class EntregableForm(forms.ModelForm):
         
         model = Entregable
         fields = ('__all__')
+
+
+class FormCondicionPago(forms.Form):
+    contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    forma_pago = forms.ChoiceField(widget=forms.Select(choices=[('CRE', 'Crédito'),('CON', 'Contado')]))
+    monto_total = forms.FloatField()
+    cantidad_pagos = forms.IntegerField(initial=1, min_value=1)
+    dias_vencimiento = forms.IntegerField(initial=10)
+
+CondicionPagoFormset = formset_factory(FormCondicionPago, extra=0)
 
 
 #Formularios para Condiciones de pago

@@ -199,7 +199,7 @@ urlpatterns = [
     #Condiciones de Pago
     path(
         route='contratos/<str:pk>/condiciones-pago',
-        view=contratos.crear_condicionPago,
+        view=contratos.crear_condicionPago2,
         name='condicionPagos-crear'
     ),
     path(

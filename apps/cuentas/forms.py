@@ -51,6 +51,15 @@ class FormularioRegistro(forms.Form):
             raise forms.ValidationError('Username is already in use.')
         return username
 
+    def clean_cedula(self):
+        '''Valida la unicidad del numero de cedula'''
+
+        cedula = self.cleaned_data.get('cedula')
+        
+        if Empleado.objects.filter(cedula=cedula).exists():
+            raise forms.ValidationError(f'El número de cédula {cedula} ya se encuentra registrado.') 
+        return cedula
+
     def clean(self):
         """Verify password confirmation match."""
         data = super().clean()
@@ -74,17 +83,17 @@ class FormularioRegistro(forms.Form):
         #al usuario es el total de permisos entonces se le asignara el 
         #estado de "staff" y podrá acceder a la intefaz de administracion
         #de Django
-        grupo = Group.objects.filter(pk=data['grupo'])
+        grupo = Group.objects.filter(pk=data['grupo'].id)
 
         if grupo[0].permissions.count() == Permission.objects.count():
             user.is_staff = True
-        user.save()
 
         empleado = Empleado(usuario=user, cedula=data['cedula'], nombre=data['nombre'], 
                             apellido=data['apellido'], direccion=data['direccion'], 
                             fecha_nacimiento=data['fecha_nacimiento'], 
                             cargo=data['cargo'], tarifa=data['tarifa'],
                             estado=data['estado'])
+        user.save()
         empleado.save()
 
 

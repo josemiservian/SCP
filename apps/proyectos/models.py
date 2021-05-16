@@ -104,19 +104,29 @@ class Entregable(models.Model):
 
 
     def __str__(self):
-        self.contrato.nombre + self.actividades
+        return self.contrato.nombre + ' - ' + self.actividades
 
 
 class CondicionPago(models.Model):
 
     contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
-    descripcion = models.CharField(max_length=200, blank=False, null=False)
-    porcentaje_pago = models.IntegerField(null=False)
-    monto_pagar = models.FloatField(null=False)
-    fecha_estimada = models.DateField(null=False)
+    CREDITO = 'CRE'
+    CONTADO = 'CON'
+    PAGOS_CHOICES = [
+        (CREDITO, 'Crédito'),
+        (CONTADO, 'Contado')
+    ]
+    forma_pago = models.CharField(max_length=3, choices=PAGOS_CHOICES, default=CREDITO)
+    monto_total = models.FloatField(null=False, default=0)
+    cantidad_pagos = models.IntegerField(null=False, default=1)
+    dias_vencimiento = models.IntegerField(null=False, default=0)
+    #descripcion = models.CharField(max_length=200, blank=False, null=False)
+    #porcentaje_pago = models.IntegerField(null=False)
+    #monto_pagar = models.FloatField(null=False)
+    #fecha_estimada = models.DateField(null=False)
 
     def __str__(self):
-        self.contrato.nombre + ' - ' + self.descripcion
+        return self.contrato.nombre + ' - ' + self.forma_pago
 
 
 class EquipoProyecto(models.Model):
