@@ -1,5 +1,5 @@
 from django.contrib import admin
-from apps.administracion.models import Facturacion, Gasto, Pago
+from apps.administracion.models import Facturacion, Gasto, Pago, PlanFacturacion
 
 # Register your models here.
 @admin.register(Gasto)
@@ -13,3 +13,4 @@ class GastoAdmin(admin.ModelAdmin):
 admin.site.register(Facturacion)
 #admin.site.register(Gasto)
 admin.site.register(Pago)
+admin.site.register(PlanFacturacion)

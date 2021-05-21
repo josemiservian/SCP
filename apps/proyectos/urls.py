@@ -144,6 +144,11 @@ urlpatterns = [
         view=propuestas.estado_propuesta,
         name='propuestas-estado'
     ),
+    path(
+        route='propuestas/<str:pk>/asociar-cliente',
+        view=propuestas.asociar_cliente_propuesta,
+        name='propuestas-asociar-cliente'
+    ),
     #Propuestas Detalle
     path(
         route='propuestas/<str:pk>/detalle/crear',
@@ -199,7 +204,7 @@ urlpatterns = [
     #Condiciones de Pago
     path(
         route='contratos/<str:pk>/condiciones-pago',
-        view=contratos.crear_condicionPago2,
+        view=contratos.crear_condicionPago,
         name='condicionPagos-crear'
     ),
     path(

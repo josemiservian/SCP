@@ -194,7 +194,8 @@ class Propuesta(models.Model):
     '''Propuesta hecha al cliente por parte de la empresa'''
     
     area = models.ForeignKey('gestion.Area', on_delete=models.CASCADE)
-    gerente = models.ForeignKey('cuentas.empleado', on_delete=models.CASCADE)
+    gerente = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
+    cliente = models.ForeignKey('proyectos.Cliente', on_delete=models.CASCADE, null=True)
     nombre = models.CharField(max_length=60, null=False, blank=False)
     horas_totales = models.IntegerField(null=True)
     total = models.FloatField(null=True)
@@ -207,7 +208,7 @@ class Propuesta(models.Model):
     ]
     estado = models.CharField(max_length=20, null=False, choices=ESTADO_CHOICES, default='P')
     #aceptado = models.BooleanField(null=True, default=False)
-    fecha_aceptacion = models.DateField(null=True, default=None)
+    fecha_aceptacion = models.DateField(null=True, default=None, blank=True)
     
     def __str__(self):
         return self.area.nombre + ' - ' + self.nombre
