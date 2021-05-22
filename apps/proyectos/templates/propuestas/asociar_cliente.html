@@ -1,0 +1,23 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+    <div class="col">
+        <div class="card card-body">
+
+            <h5>Asocie un cliente a la propuesta "{{propuesta.nombre}}":</h5>
+            <p></p>
+            <hr>
+            <p></p>
+            <form method="POST" %}">
+                {% csrf_token %}
+    
+                {{form.as_p}}
+                <hr>
+                <input type="submit" value="Asociar">
+                <a  href="{% url 'proyectos:propuestas-detalle' propuesta.id %}" class="cancellink-box">Cancelar</a>
+            </form>
+        </div>
+    </div>
+        
+
+{% endblock %}

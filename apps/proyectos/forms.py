@@ -1,6 +1,8 @@
 # Django
 from django import forms
 from django.forms import formset_factory
+from django.contrib.admin import site as admin_site, widgets
+from django.db.models import ManyToOneRel
 
 # Models
 from apps.proyectos.models import * #Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora, Propuesta, PropuestaDetalle
@@ -9,6 +11,7 @@ from apps.gestion.models import Area, Cargo, Rol, Servicio
 import datetime as dt
 
 #Constantes
+from scp.choices import PAGOS_CHOICES
 HOUR_CHOICES = [(dt.time(hour=x), '{:02d}:00'.format(x)) for x in range(0, 24)] #Para desplegar una lista de horas
 HORAS = ['%02d:%s' % (h, m)  for h in (list(range(0,24))) for m in ('00', '30')]
 HORAS = tuple([(hora,hora) for hora in HORAS])
@@ -43,7 +46,7 @@ class ClienteForm(forms.ModelForm):
         
         model = Cliente
         fields = ('__all__')
-
+        
 
 #Formularios para Contratos
 class FormCrearContrato(forms.Form):
@@ -90,11 +93,23 @@ class EntregableForm(forms.ModelForm):
 
 
 class FormCondicionPago(forms.Form):
-    contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
-    forma_pago = forms.ChoiceField(widget=forms.Select(choices=[('CRE', 'Crédito'),('CON', 'Contado')]))
+    #contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    forma_pago = forms.CharField(widget=forms.Select(choices=PAGOS_CHOICES))
     monto_total = forms.FloatField()
     cantidad_pagos = forms.IntegerField(initial=1, min_value=1)
     dias_vencimiento = forms.IntegerField(initial=10)
+
+    def save(self, contrato):
+        data = self.cleaned_data
+        condicion_pago = CondicionPago(
+            contrato=contrato,
+            forma_pago=data['forma_pago'],
+            monto_total=data['monto_total'],
+            cantidad_pagos=data['cantidad_pagos'],
+            dias_vencimiento=data['dias_vencimiento']
+        )  
+        condicion_pago.save()
+        return condicion_pago.cantidad_pagos
 
 CondicionPagoFormset = formset_factory(FormCondicionPago, extra=0)
 
@@ -227,20 +242,34 @@ class FormCrearPropuesta(forms.Form):
 
 class PropuestaForm(forms.ModelForm):
     
-    area = forms.ModelChoiceField(queryset=Area.objects.all())
-    gerente = forms.ModelChoiceField(queryset=Empleado.objects.all())
-    nombre = forms.CharField(min_length=4, max_length=60)
-    horas_totales = forms.IntegerField(initial=0)
-    total = forms.FloatField(initial=0)
-    ganancia_esperada = forms.FloatField(initial=0)
-    aceptado = forms.BooleanField(initial=False)
-    fecha_aceptacion = forms.DateField(widget=forms.SelectDateWidget)
-    
     class Meta:
         
         model = Propuesta
-        fields = ('area','gerente','nombre','horas_totales','total',
-                  'ganancia_esperada','aceptado','fecha_aceptacion')
+        fields = ('area', 'gerente', 'nombre', 'porcentaje_ganancia')
+
+
+class PropuestaAsociarCliente(forms.ModelForm):
+    
+    cliente = forms.ModelChoiceField(queryset=Cliente.objects.all())
+
+    class Meta:
+        
+        model = Propuesta
+        fields = ('cliente',)
+
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['cliente'].widget = widgets.RelatedFieldWidgetWrapper(
+            self.fields['cliente'].widget,
+            self.instance._meta.get_field('cliente').remote_field,
+            admin_site
+        ) 
+
+    #def save(self, pk):
+    #    data = self.cleaned_data()
+    #    propuesta = Propuesta.objects.get(id=pk)
+    #    propuesta.cliente = data['cliente']
+    #    propuesta.save()
 
 
 #formularios para Propuesta Detalle

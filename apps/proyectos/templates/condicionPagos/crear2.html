@@ -9,11 +9,8 @@
             <form method="POST" %}">
                 {% csrf_token %}
     
-                {{ formset.management_form }}
-                {% for form in formset %}
-                    {{form}}
+                {{form.as_p}}
                 <hr>
-                {% endfor %}
         </div>
         <p></p>
         <input type="submit" value="Aceptar">

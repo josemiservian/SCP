@@ -15,6 +15,7 @@
 		<hr>
         <p><strong>Area</strong>: {% if propuesta.area is None %} - {% else %} {{propuesta.area}} {% endif %}</p>
         <p><strong>Gerente</strong>: {% if propuesta.gerente is None %} - {% else %} {{propuesta.gerente}} {% endif %}</p>
+        <p><strong>Cliente</strong>: {% if propuesta.cliente is None %} - {% else %} {{propuesta.cliente}} {% endif %}</p>
         <p><strong>Nombre</strong>: {% if propuesta.nombre is None %} - {% else %} {{propuesta.nombre}} {% endif %}</p>
         <p><strong>Horas totales</strong>: {% if propuesta.horas_totales is None %} - {% else %} {{propuesta.horas_totales}} {% endif %}</p>
         <p><strong>Total</strong>: {% if propuesta.total is None %} - {% else %} {{propuesta.total}} {% endif %}</p>

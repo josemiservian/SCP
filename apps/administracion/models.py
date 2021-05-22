@@ -1,6 +1,12 @@
 #Django
+from datetime import datetime
 from django.db import models
 from django.utils import timezone
+from scp.choices import FACTURA_CHOICES
+
+#Modelos
+from apps.proyectos.models import Contrato
+
 
 class Facturacion(models.Model):
     '''Modelo para generacion de facturas.'''
@@ -78,3 +84,19 @@ class Pago(models.Model):
 
     def __str__(self):
         return self.detalle
+
+
+class PlanFacturacion(models.Model):
+    
+    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    descripcion = models.CharField(max_length=60, null=False)
+    fecha_emision = models.DateField(null=False)
+    fecha_vencimiento = models.DateField(null=False)
+    monto_facturar = models.FloatField(null=False)
+    estado = models.CharField(max_length=25, choices=FACTURA_CHOICES, default='PENDIENTE FACTURACION')
+
+    class Meta:
+        verbose_name = 'Plan de Facturacione'
+
+    def __str__(self):
+        return self.descripcion
