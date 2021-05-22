@@ -144,6 +144,11 @@ urlpatterns = [
         view=propuestas.estado_propuesta,
         name='propuestas-estado'
     ),
+    path(
+        route='propuestas/<str:pk>/asociar-cliente',
+        view=propuestas.asociar_cliente_propuesta,
+        name='propuestas-asociar-cliente'
+    ),
     #Propuestas Detalle
     path(
         route='propuestas/<str:pk>/detalle/crear',

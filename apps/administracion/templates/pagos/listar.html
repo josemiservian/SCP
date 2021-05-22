@@ -2,28 +2,25 @@
 {% block content %}
 <br>
 
-<br>
+<div class="row">
+	<div class="col d-flex justify-content-between">
+		<h5>Pagos:</h5>
+		<a class="btn btn-primary " href="{% url 'administracion:pagos-crear'%}" type="submit">Añadir pago</a>
+	</div>
+</div>
+<hr>
 <div class="row">
 	<div class="col">
 		<div class="card card-body">
-			<h5>Pagos:</h5>
+			<h5>Filtros:</h5>
 			
 			<form method="GET">
 				{{filtros.form}}
 
 		    <button class="btn btn-primary" type="submit">Buscar</button>
-		  </form>
+			</form>
 
-		</div>
-	</div>
-	
-</div>
-<br>
-
-<div class="row">
-	<div class="col">
-		<div class="card card-body">
-			<a class="btn btn-primary " href="{% url 'administracion:pagos-crear'%}" type="submit">Crear Pago</a>
+			<p></p>
 			<table class="table table-sm">
 				<tr>
 					<th></th>

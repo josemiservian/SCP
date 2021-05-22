@@ -84,3 +84,6 @@ pagination {
 .pagination-next {
   color: #007bff;
 }
+.d-none{
+  display: none;
+}

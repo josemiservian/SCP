@@ -1,0 +1,20 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+    <div class="col col-md-10">
+        <div class="card card-body">
+
+            <h5>Crear condiciones de pago:</h5>
+            <hr>
+            <form method="POST" %}">
+                {% csrf_token %}
+    
+                {{form.as_p}}
+                <hr>
+        </div>
+        <p></p>
+        <input type="submit" value="Aceptar">
+        <a  href="{% url 'proyectos:contratos-listar' %}" class="cancellink-box">Cancelar</a>
+        </form>
+    </div>
+{% endblock %}

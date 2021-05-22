@@ -1,4 +1,5 @@
 from django.db import models
+from django import forms
 from django.contrib.auth.models import User
 
 # Create your models here.
@@ -21,3 +22,8 @@ class Empleado(models.Model):
 
     def __str__(self):
         return self.nombre + ' ' + self.apellido
+
+    #def save(self, *args, **kwargs):
+    #    '''Valida la unicidad de los numeros de cedula.'''
+    #    self.validate_unique()
+    #    super(Empleado, self).save(*args, **kwargs)
