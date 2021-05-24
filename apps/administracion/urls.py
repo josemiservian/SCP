@@ -47,7 +47,16 @@ urlpatterns = [
         view=facturaciones.listar_facturas,
         name='facturaciones-listar'
     ),
-
+    path(
+        route='facturaciones/plan-facturacion/<str:pk>/emitir-factura',
+        view=facturaciones.emitir_factura,
+        name='facturaciones-emitir_factura'
+    ),
+    path(
+        route='facturaciones/plan-facturacion/<str:pk>/factura',
+        view=facturaciones.detalle_factura,
+        name='facturaciones-detalle'
+    ),
     #Pagos
     path(
         route='pagos/crear',

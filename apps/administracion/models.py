@@ -1,27 +1,31 @@
 #Django
 from datetime import datetime
 from django.db import models
+from django.db.models.deletion import CASCADE
 from django.utils import timezone
-from scp.choices import FACTURA_CHOICES
+from scp.choices import FACTURA_CHOICES, PAGOS_CHOICES
 
 #Modelos
-from apps.proyectos.models import Contrato
+
 
 
 class Facturacion(models.Model):
     '''Modelo para generacion de facturas.'''
-    detalle = models.CharField(max_length=30, blank=True, null=False)
+    nro_factura = models.CharField(null=False, max_length=15, default='001-001-1234567')
+    nro_timbrado = models.IntegerField(null=False, default=123456789)
+    vigencia_desde =  models.DateField(null=False, default=timezone.now)
+    vigencia_hasta =  models.DateField(null=False, default=timezone.now)
+    ruc = models.CharField(max_length=15, null=False, default='111111-1')
+    forma_pago = models.CharField(max_length=15, null=False, choices=PAGOS_CHOICES)
+    fecha_emision = models.DateField(null=False, default=timezone.now)
+    fecha_vencimiento = models.DateField(null=False, default=timezone.now)
+    monto_facturacion = models.FloatField(null=False, default=11111)
     descripcion = models.CharField(max_length=60, blank=True, null=False, default='')
-    forma_pago = models.CharField(max_length=15, null=False)
-    fecha_emision = models.DateField(null=False)
-    fecha_vencimiento = models.DateField(null=False)
-    monto_total = models.FloatField(null=False)
-    monto_facturacion = models.FloatField(null=False)
-    saldo_facturacion = models.FloatField(null=False)
-    estado = models.CharField(max_length=10)
+    estado = models.CharField(max_length=20, choices=PAGOS_CHOICES, default='PENDIENTE DE PAGO')
+    plan_facturacion = models.ForeignKey('administracion.PlanFacturacion', null=True ,on_delete=CASCADE)
 
     def __str__(self):
-        return self.detalle
+        return f'{self.nro_factura}'
 
 
 class Gasto(models.Model):
@@ -94,9 +98,16 @@ class PlanFacturacion(models.Model):
     fecha_vencimiento = models.DateField(null=False)
     monto_facturar = models.FloatField(null=False)
     estado = models.CharField(max_length=25, choices=FACTURA_CHOICES, default='PENDIENTE FACTURACION')
+    condicion_pago = models.ForeignKey('proyectos.CondicionPago', on_delete=models.CASCADE, null=True)
 
     class Meta:
         verbose_name = 'Plan de Facturacione'
 
     def __str__(self):
         return self.descripcion
+
+    def emitir_factura(self):
+        self.estado = 'FACTURADO'
+
+    def emitir_pago(self):
+        self.estado = 'PAGADO'

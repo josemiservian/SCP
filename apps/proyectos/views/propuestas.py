@@ -119,14 +119,13 @@ def asociar_cliente_propuesta(request, pk):
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')
-def estado_propuesta(request, pk):
+def estado_propuesta(request, pk, estado):
         
     propuesta = Propuesta.objects.get(id=pk)
 
     if request.method == 'POST':
-        propuesta.asociar_cliente(cliente)
+        propuesta.definir_estado(estado)
         propuesta.save()
-
         return redirect('proyectos:propuestas-detalle', propuesta.id)
     
     context = {'propuesta':propuesta, 'estado':estado}

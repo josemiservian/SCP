@@ -76,16 +76,25 @@ CARGOS_CHOICES = [
 #FACTURAS
 FACTURADO = 'FACTURADO'
 PENDIENTE_FACTURACION = 'PENDIENTE FACTURACION'
-
+PAGADO = 'PAGADO'
 FACTURA_CHOICES = [
     (FACTURADO, 'Facturado'),
-    (PENDIENTE_FACTURACION, 'Pendiente de facturación')
+    (PENDIENTE_FACTURACION, 'Pendiente de facturación'),
+    (PAGADO, 'Pagado')
 ]
 
 #Condiciones de pago
-CREDITO = 'CRE'
-CONTADO = 'CON'
+CREDITO = 'CREDITO'
+CONTADO = 'CONTADO'
 PAGOS_CHOICES = [
     (CREDITO, 'Crédito'),
     (CONTADO, 'Contado')
+]
+
+#Estados de pago
+PENDIENTE_PAGO = 'PENDIENTE DE PAGO'
+PAGADO = 'PAGADO'
+ESTADOS_PAGO = [
+    (PENDIENTE_PAGO, 'Pendiente de pago'),
+    (PAGADO, 'Pagado')
 ]
