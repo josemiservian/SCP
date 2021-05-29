@@ -80,3 +80,11 @@ apps/proyectos/migrations/0005_auto_20210429_0057.py
 apps/proyectos/migrations/0006_auto_20210503_1419.py
 apps/proyectos/migrations/0007_auto_20210503_1616.py
 apps/proyectos/migrations/0008_auto_20210504_1435.py
+apps/administracion/migrations/0004_auto_20210522_2300.py
+apps/administracion/migrations/0005_auto_20210523_2038.py
+apps/administracion/migrations/0006_auto_20210523_2118.py
+apps/administracion/migrations/0007_auto_20210523_2222.py
+apps/gestion/migrations/0002_parametro.py
+apps/proyectos/migrations/0004_auto_20210521_1942.py
+apps/proyectos/migrations/0005_registrohora_entregable.py
+apps/proyectos/migrations/0006_auto_20210527_2208.py

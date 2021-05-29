@@ -63,10 +63,11 @@ def crear_registroHoras(request):
             contrato.maestro_calculos(horas, gastos)
             contrato.save()
             registro_id = form.save(request)
+            registro = RegistroHora.objects.get(id=registro_id)
             gasto_horas = Gasto.objects.create(
                 motivo='HONORARIOS', 
-                detalle=form['detalle'].value(),
-                fecha=form['fecha'].value(),
+                detalle=registro.detalle,
+                fecha=registro.fecha,
                 gasto=utils.calcular_gasto_hora(request.user, contrato.id, horas),
                 empleado_id=Empleado.objects.filter(usuario__username=request.user)[0].id,
                 contrato_id=contrato.id,
@@ -77,7 +78,7 @@ def crear_registroHoras(request):
             return redirect('proyectos:registrohoras-listar')
 
     context = {'form':form}
-    return render(request, 'registroHoras/crear.html', context)
+    return render(request, 'registroHoras/crear2.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_registrohora')

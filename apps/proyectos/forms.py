@@ -1,5 +1,6 @@
 # Django
 from django import forms
+from django.db.models.fields.related import RECURSIVE_RELATIONSHIP_CONSTANT
 from django.forms import formset_factory
 from django.contrib.admin import site as admin_site, widgets
 from django.db.models import ManyToOneRel
@@ -9,6 +10,9 @@ from apps.proyectos.models import * #Cliente, Contrato, EquipoProyecto, MiembroE
 from apps.cuentas.models import Empleado
 from apps.gestion.models import Area, Cargo, Rol, Servicio
 import datetime as dt
+
+#Python
+from datetime import datetime
 
 #Constantes
 from scp.choices import PAGOS_CHOICES
@@ -126,6 +130,7 @@ class CondicionPagoForm(forms.ModelForm):
 class FormCrearRegistroHora(forms.Form):
     
     contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    entregable = forms.ModelChoiceField(queryset=Entregable.objects.all())
     nombre = forms.CharField(min_length=3, max_length=30)
     detalle = forms.CharField(min_length=3, max_length=50)
     fecha = forms.DateField(widget=forms.SelectDateWidget)
@@ -133,15 +138,30 @@ class FormCrearRegistroHora(forms.Form):
     hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
     horas_trabajadas = forms.CharField(min_length=5, max_length=5, help_text='Horas trabajadas (HH:MM)')
 
+    def clean_horas_trabajadas(self):
+        '''Valida que la hora sea válida'''
+        horas_trabajadas = self.cleaned_data['horas_trabajadas']
+        try:
+            datetime.strptime(horas_trabajadas, '%H:%M')
+            return horas_trabajadas
+        except:
+            raise forms.ValidationError(f'{horas_trabajadas} no corresponde al formato HH:MM.')
+
+    def clean(self):
+        """Verify password confirmation match."""
+        data = super().clean()
+
+        return data
+
     def save(self, request):
         """Crea y guarda un registro"""
         data = self.cleaned_data
-        empleado = Empleado.objects.filter(usuario__username=request.user)[0]
-        registro = RegistroHora(empleado=empleado, contrato=data['contrato'],
-                                nombre=data['nombre'], detalle=data['detalle'],
-                                fecha=data['fecha'], hora_inicio=data['hora_inicio'],
-                                hora_fin=data['hora_fin'],
-                                horas_trabajadas=data['horas_trabajadas'])
+        empleado = Empleado.objects.get(usuario__username=request.user)
+        registro = RegistroHora(
+            empleado=empleado, contrato=data['contrato'], entregable=data['entregable'],
+            nombre=data['nombre'], detalle=data['detalle'], fecha=data['fecha'], 
+            hora_inicio=data['hora_inicio'], hora_fin=data['hora_fin'], 
+            horas_trabajadas=data['horas_trabajadas'])
         registro.save()
         return registro.id
 
@@ -149,6 +169,7 @@ class FormCrearRegistroHora(forms.Form):
 class RegistroForm(forms.ModelForm):
     
     contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    entregable = forms.ModelChoiceField(queryset=Entregable.objects.all())
     nombre = forms.CharField(min_length=3, max_length=30)
     detalle = forms.CharField(min_length=3, max_length=50)
     fecha = forms.DateField(widget=forms.SelectDateWidget)
@@ -158,7 +179,7 @@ class RegistroForm(forms.ModelForm):
     
     class Meta: 
         model = RegistroHora
-        fields = ('contrato', 'nombre','detalle','fecha','hora_inicio','hora_fin')
+        fields = ('contrato', 'entregable','nombre','detalle','fecha','hora_inicio','hora_fin')
 
 
 #Formularios de Equipos de Proyecto

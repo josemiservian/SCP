@@ -49,11 +49,7 @@
 					<td>{{plan.fecha_vencimiento}}</td>
 					<td>{{plan.monto_facturar}}</td>
 					<td>{{plan.estado}}</td>
-					{% if plan.estado == 'PENDIENTE FACTURACION' %}
-						<td><a class="btn btn-primary" href="{% url 'administracion:facturaciones-emitir_factura' plan.id %}">Emitir factura</a></td>
-					{% else %}
-					<td><a class="btn btn-primary" href="{% url 'administracion:facturaciones-detalle' plan.id %}">Ver factura</a></td>
-					{% endif %}
+					<td><a class="btn btn-primary" href="#">Emitir factura</a></td>
 				<tr>
 				{% endfor %}
 			</table>

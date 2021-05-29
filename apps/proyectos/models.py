@@ -173,7 +173,10 @@ class RegistroHora(models.Model):
     encuentran los empleados de la consultora.'''
 
     empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
-    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    contrato = models.ForeignKey(
+        'proyectos.Contrato', 
+        on_delete=models.CASCADE)
+    entregable = models.ForeignKey('proyectos.Entregable', on_delete=models.CASCADE, null=True)
     nombre = models.CharField(max_length=60, null=False)
     detalle = models.CharField(max_length=250, null=False)
     fecha = models.DateField(null=False)
@@ -185,6 +188,9 @@ class RegistroHora(models.Model):
         help_text='Horas trabajadas en formato HH:MM',
         null=True
     )
+
+    class Meta:
+        ordering = ['-id']
 
     def __str__(self):
         return self.nombre
