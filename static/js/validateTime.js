@@ -1,3 +1,6 @@
+let horas_validar = document.querySelector("#id_horas_trabajadas");
+horas_validar.addEventListener("onblur", validateTime(obj));
+
 function validateTime(obj)
 {
     var timeValue = obj.value;
