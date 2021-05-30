@@ -88,3 +88,5 @@ apps/gestion/migrations/0002_parametro.py
 apps/proyectos/migrations/0004_auto_20210521_1942.py
 apps/proyectos/migrations/0005_registrohora_entregable.py
 apps/proyectos/migrations/0006_auto_20210527_2208.py
+apps/administracion/migrations/0008_auto_20210529_2040.py
+apps/proyectos/migrations/0007_auto_20210529_2040.py

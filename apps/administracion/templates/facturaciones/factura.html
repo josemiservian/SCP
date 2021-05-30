@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+<style>
+    .img-invoice {
+        width: 50px;
+        text-align: center;
+        margin: 0 auto;
+    }
+
+    .head {
+        text-align: center;
+        text-transform: uppercase;
+    }
+
+    #invoice thead tr th {
+        text-align: left;
+        border-bottom: 1px solid black;
+        border-top: 1px solid black;
+        padding-top: 4px;
+    }
+
+    #invoice thead tr {
+        margin-bottom: 0;
+        padding-bottom: 0;
+    }
+
+    #invoice tbody tr {
+        padding: 0;
+    }
+
+    .text-center{
+        text-align: center;
+    }
+</style>
+<body>
+<img src="{{ icon }}" class="img-invoice">
+<p class="head">
+    {{ comp.name|upper }}<br>
+    {{ comp.ruc }}<br>
+    {{ comp.address|upper }}
+</p>
+<p>
+    <b>Factura:</b> {{ factura.id }}<br>
+    <b>Fecha de emisión:</b> {{ factura.fecha_emision }}<br>
+    <b>Cliente:</b> {{ factura.plan_facturacion.condicion_pago.contrato.cliente.nombre|upper }}<br>
+    <b>RUC:</b> {{ factura.plan_facturacion.condicion_pago.contrato.cliente.ruc }}<br>
+</p>
+<table id="invoice">
+    <thead>
+        <tr>
+            <th style="width: 40%;">Descripcion</th>
+            <th style="width: 10%;">Cantidad</th>
+            <th style="width: 15%;">Precion Unitario</th>
+            <th style="width: 10%;">Exentas</th>
+            <th style="width: 10%;">5%</th>
+            <th style="width: 15%;">10%</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr {% if forloop.first %}style="padding-top: 3px;" {% endif %}></tr>
+            <td>{{ factura.descripcion}}</td>
+            <td class="text-center">{{ 1 }}</td>
+            <td class="text-center">{{ factura.monto_facturacion }}</td>
+            <td>{{ 0 }}</td>
+            <td>{{ 0 }}</td>
+            <td style="text-align: right;">{{ factura.monto_facturacion }}</td>
+        </tr>
+    <tr style="border-top: 1px solid black; padding-top: 4px;">
+        <td colspan="5"><b>Subtotal:</b></td>
+        <td style="text-align: right">{{factura.monto_facturacion}}</td>
+    </tr>
+    <tr style="padding-top: 0px;">
+        <td colspan="5"><b>Total a pagar:</b></td>
+        <td style="text-align: right">{{factura.monto_facturacion}}</td>
+    </tr>
+    <tr style="padding-top: 0px;">
+            <td colspan="0"><b>Liquidacion del IVA: (5%)</b></td>
+            <td style="text-align: bottom"></td>
+            <td colspan="0"><b>(10%)</b></td>
+            <td style="text-align: bottom">{{factura.monto_facturacion}}</td>
+            <td colspan="0"><b>Total IVA</b></td>
+            <td style="text-align: right">{{factura.monto_facturacion}}</td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

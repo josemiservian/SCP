@@ -40,22 +40,22 @@ def calcular_gasto_hora(usuario, contrato, horas):
     return gasto
 
 
-def generar_planes(contrato, monto_total, cantidad_pagos):
+def generar_planes(condicion_pago):
         '''Genera los planes de facturacion basado en la cantidad de pagos.
         Se generará para un contrato tantos planes como cantidad de pagos se tenga'''
         hoy = datetime.date.today()
+        cantidad_pagos = condicion_pago.cantidad_pagos
+        monto_total = condicion_pago.monto_total
         numero_pago = 1
 
-        while numero_pago <= cantidad_pagos:
+        while numero_pago <= condicion_pago.cantidad_pagos:
             
-            contrato=contrato
-            descripcion=contrato.nombre + ' - ' + f'{numero_pago}/{cantidad_pagos}'
+            descripcion=condicion_pago.contrato.nombre + ' - ' + f'{numero_pago}/{cantidad_pagos}'
             fecha_emision=hoy+relativedelta.relativedelta(months=numero_pago)
             fecha_vencimiento=fecha_emision+relativedelta.relativedelta(days=10)
             monto_facturar=monto_total/cantidad_pagos
 
             plan = PlanFacturacion(
-                contrato=contrato,
                 descripcion=descripcion,
                 fecha_emision=fecha_emision,
                 fecha_vencimiento=fecha_vencimiento,

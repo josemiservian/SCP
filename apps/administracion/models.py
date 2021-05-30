@@ -15,6 +15,7 @@ class Facturacion(models.Model):
     nro_timbrado = models.IntegerField(null=False, default=123456789)
     vigencia_desde =  models.DateField(null=False, default=timezone.now)
     vigencia_hasta =  models.DateField(null=False, default=timezone.now)
+    nombre_cliente = models.CharField(null=True, max_length=100)
     ruc = models.CharField(max_length=15, null=False, default='111111-1')
     forma_pago = models.CharField(max_length=15, null=False, choices=PAGOS_CHOICES)
     fecha_emision = models.DateField(null=False, default=timezone.now)
@@ -91,8 +92,7 @@ class Pago(models.Model):
 
 
 class PlanFacturacion(models.Model):
-    
-    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+
     descripcion = models.CharField(max_length=60, null=False)
     fecha_emision = models.DateField(null=False)
     fecha_vencimiento = models.DateField(null=False)

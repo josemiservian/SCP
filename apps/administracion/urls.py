@@ -1,3 +1,4 @@
+from django.db import router
 from django.urls import path
 from apps.administracion.views import gastos, facturaciones, pagos
 
@@ -48,6 +49,11 @@ urlpatterns = [
         name='facturaciones-listar'
     ),
     path(
+        route='facturaciones/planes/listar',
+        view=facturaciones.listar_planes_facturacion,
+        name='facturaciones-listar_planes'
+    ),
+    path(
         route='facturaciones/plan-facturacion/<str:pk>/emitir-factura',
         view=facturaciones.emitir_factura,
         name='facturaciones-emitir_factura'
@@ -56,6 +62,11 @@ urlpatterns = [
         route='facturaciones/plan-facturacion/<str:pk>/factura',
         view=facturaciones.detalle_factura,
         name='facturaciones-detalle'
+    ),
+    path(
+        route='facturaciones/pdf/<str:pk>',
+        view=facturaciones.FacturaPdf.as_view(),
+        name='pdf'
     ),
     #Pagos
     path(

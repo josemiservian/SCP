@@ -222,11 +222,8 @@ def crear_condicionPago(request, pk):
     if request.method == 'POST':
         form = FormCondicionPago(request.POST)
         if form.is_valid():
-            cantidad_pagos = form.save(contrato)
-            utils.generar_planes(
-                contrato,
-                int(form['monto_total'].value()),
-                cantidad_pagos)
+            condicion_pago = form.save(contrato)
+            utils.generar_planes(condicion_pago)
             return redirect('proyectos:contratos-detalle', pk)
 
     context = {'form':form}
@@ -292,7 +289,7 @@ def listar_condicionPagos(request, pk):
     
     condiciones = CondicionPago.objects.filter(contrato__id=pk)
     contrato = Contrato.objects.get(id=pk)
-    planes_facturacion = PlanFacturacion.objects.filter(contrato__id=pk)
+    planes_facturacion = PlanFacturacion.objects.filter(condicion_pago__contrato__id=pk)
 
     context = {
         'condiciones':condiciones, 

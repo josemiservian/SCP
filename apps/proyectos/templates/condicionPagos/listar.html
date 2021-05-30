@@ -20,6 +20,7 @@
 					<th>Monto total</th>
 					<th>Cantidad de pagos</th>
 					<th>Días de vencimiento</th>
+					<th>Accion</th>
 				</tr>
 
 				{% for condicion in condiciones %}
@@ -29,6 +30,7 @@
 						<td>{{condicion.monto_total}}</td>
 						<td>{{condicion.cantidad_pagos}}</td>
 						<td>{{condicion.dias_vencimiento}}</td>
+						<td><a class="btn btn-primary" href="{% url 'administracion:facturaciones-listar_planes' %}">Ver plan de facturacion</a></td>
 					</tr>
 				{% endfor %}
 			</table>

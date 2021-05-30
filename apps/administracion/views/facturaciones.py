@@ -4,9 +4,15 @@ from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
+from django.views.generic import View
+from django.template.loader import get_template
+from django.http import HttpResponse
+from django.http import HttpResponseRedirect
+from xhtml2pdf import pisa
 
 #Python
 from dateutil import relativedelta
+import io
 
 #Decoradores
 from scp.decorators import allowed_users
@@ -99,6 +105,7 @@ def emitir_factura(request, pk):
             nro_timbrado = 123456789,
             vigencia_desde = plan.fecha_emision, 
             vigencia_hasta = plan.fecha_emision + relativedelta.relativedelta(months=12),
+            nombre = plan.contrato.cliente.nombre,
             ruc = plan.contrato.cliente.ruc,
             forma_pago = condicion.forma_pago,
             fecha_emision = plan.fecha_emision,
@@ -124,3 +131,51 @@ def detalle_factura(request, pk):
     factura = Facturacion.objects.get(plan_facturacion__id=pk)
     context = {'factura':factura, 'condicion_pago':factura.plan_facturacion.condicion_pago}
     return render(request, 'facturaciones/detalle.html', context)
+
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_planfacturacion')
+def listar_planes_facturacion(request):
+    '''Lista los planes de facturacion'''
+    
+    planes_facturacion = PlanFacturacion.objects.all()
+    context = {'planes_facturacion':planes_facturacion}
+    return render(request, 'planesFacturacion/listar.html', context)
+
+def some_view(request):
+    # Create a file-like buffer to receive PDF data.
+    buffer = io.BytesIO()
+
+    # Create the PDF object, using the buffer as its "file."
+    p = canvas.Canvas(buffer)
+
+    # Draw things on the PDF. Here's where the PDF generation happens.
+    # See the ReportLab documentation for the full list of functionality.
+    p.drawString(100, 100, "Hello world.")
+
+    # Close the PDF object cleanly, and we're done.
+    p.showPage()
+    p.save()
+
+    # FileResponse sets the Content-Disposition header so that browsers
+    # present the option to save the file.
+    buffer.seek(0)
+    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+
+
+class FacturaPdf(View):
+
+    def get(self, request, *args, **kwargs):
+        try:
+            template = get_template('facturaciones/factura.html')
+            context = {
+                'factura':Facturacion.objects.get(id=self.kwargs['pk'])
+            }
+            html = template.render(context)
+            response = HttpResponse(content_type='application/pdf')
+            #response['Content-Disposition'] = 'attachment; filename="report.pdf"'
+            pisaStatus = pisa.CreatePDF(html, dest=response)
+            return response
+        except:
+            pass
+        return HttpResponseRedirect(reverse_lazy('administracion:facturaciones-listar'))

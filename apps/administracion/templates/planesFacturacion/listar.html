@@ -11,27 +11,6 @@
 <div class="row">
 	<div class="col">
 		<div class="card card-body">
-			<h5>Condiciones de pago del contrato "{{contrato.nombre}}":</h5>
-			<p></p>
-			<table class="table table-sm">
-				<tr>
-					<th></th>
-					<th>Forma de pago</th>
-					<th>Monto total</th>
-					<th>Cantidad de pagos</th>
-					<th>Días de vencimiento</th>
-				</tr>
-
-				{% for condicion in condiciones %}
-					<tr>
-						<th></th>
-						<td>{{condicion.forma_pago}}</td>
-						<td>{{condicion.monto_total}}</td>
-						<td>{{condicion.cantidad_pagos}}</td>
-						<td>{{condicion.dias_vencimiento}}</td>
-					</tr>
-				{% endfor %}
-			</table>
 			<h5>Planes de facturación</h5>
 			<table class="table table-sm">
 				<tr>
@@ -41,6 +20,7 @@
 					<th>Monto a Facturar</th>
 					<th>Estado</th>
 					<th>Accion</th>
+					<th></th>
 				
 				{% for plan in planes_facturacion %}
 				</tr>
@@ -49,7 +29,17 @@
 					<td>{{plan.fecha_vencimiento}}</td>
 					<td>{{plan.monto_facturar}}</td>
 					<td>{{plan.estado}}</td>
-					<td><a class="btn btn-primary" href="#">Emitir factura</a></td>
+					{% if plan.estado == 'PENDIENTE FACTURACION' %}
+						<td><a class="btn btn-primary" href="{% url 'administracion:facturaciones-emitir_factura' plan.id %}">Emitir factura</a></td>
+						<td></td>
+					{% else %}
+						{% if plan.estado == 'FACTURADO' %}
+							<td><a class="btn btn-primary" href="#">Registrar pago</a></td>
+						{% elif plan.estado == 'PAGADO' %}
+							<td><a class="btn btn-primary" href="#">Ver pago</a></td>
+						{% endif %}
+						<td><a class="btn btn-primary" href="#">Ver factura</a></td>
+					{% endif %}
 				<tr>
 				{% endfor %}
 			</table>
@@ -59,7 +49,7 @@
 <br>
 <div class="col justify-content-between">
 	<a class="btn btn-primary" href="#">Modificar</a>
-	<a class="btn btn-secondary" href="{% url 'proyectos:contratos-detalle' contrato.id %}">Volver</a>
+	<a class="btn btn-secondary" href="#">Volver</a>
 </div>
 
 {% endblock %}

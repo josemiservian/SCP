@@ -113,7 +113,7 @@ class FormCondicionPago(forms.Form):
             dias_vencimiento=data['dias_vencimiento']
         )  
         condicion_pago.save()
-        return condicion_pago.cantidad_pagos
+        return condicion_pago
 
 CondicionPagoFormset = formset_factory(FormCondicionPago, extra=0)
 
