@@ -17,7 +17,7 @@
                 {% endfor %}
                 
                 <input type="submit" value="Crear">
-                <a  href="{% url 'proyectos:propuestas-listar' 'P' %}" class="cancellink-box">Cancelar</a>
+                <a  href="{% url 'proyectos:propuestas-detalle' propuesta.id %}" class="cancellink-box">Cancelar</a>
             </form>
             
 

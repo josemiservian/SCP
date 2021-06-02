@@ -9,6 +9,7 @@ from django.template.loader import get_template
 from django.http import HttpResponse
 from django.http import HttpResponseRedirect
 from xhtml2pdf import pisa
+from django.utils import timezone
 
 #Python
 from dateutil import relativedelta
@@ -18,7 +19,7 @@ import io
 from scp.decorators import allowed_users
 
 #Models
-from apps.administracion.models import Facturacion, PlanFacturacion
+from apps.administracion.models import Facturacion, PlanFacturacion, Pago
 
 #Formularios
 from apps.administracion.forms import FacturaForm, FormCrearFacturacion
@@ -96,7 +97,7 @@ def borrar_factura(request, pk):
 def emitir_factura(request, pk):
         
     plan = PlanFacturacion.objects.get(id=pk)
-    condicion = CondicionPago.objects.get(contrato=plan.contrato)
+    condicion = CondicionPago.objects.get(contrato=plan.condicion_pago.contrato)
 
     if request.method == 'POST':
         plan.emitir_factura()
@@ -105,8 +106,8 @@ def emitir_factura(request, pk):
             nro_timbrado = 123456789,
             vigencia_desde = plan.fecha_emision, 
             vigencia_hasta = plan.fecha_emision + relativedelta.relativedelta(months=12),
-            nombre = plan.contrato.cliente.nombre,
-            ruc = plan.contrato.cliente.ruc,
+            nombre_cliente = condicion.contrato.cliente.nombre,
+            ruc = condicion.contrato.cliente.ruc,
             forma_pago = condicion.forma_pago,
             fecha_emision = plan.fecha_emision,
             fecha_vencimiento = plan.fecha_vencimiento,
@@ -118,7 +119,7 @@ def emitir_factura(request, pk):
         plan.save()
         factura.save()
 
-        return redirect('proyectos:condicionPagos-listar', plan.contrato.id)
+        return redirect('administracion:facturaciones-listar_planes', condicion.contrato.id)
     
     context = {'plan':plan}
     return render(request, 'facturaciones/emitir_factura.html', context)
@@ -135,32 +136,40 @@ def detalle_factura(request, pk):
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_planfacturacion')
-def listar_planes_facturacion(request):
-    '''Lista los planes de facturacion'''
+def listar_planes_facturacion(request, pk):
+    '''Lista los planes de facturacion de un contrato'''
     
-    planes_facturacion = PlanFacturacion.objects.all()
-    context = {'planes_facturacion':planes_facturacion}
+    planes_facturacion = PlanFacturacion.objects.filter(condicion_pago__contrato__id=pk)
+    context = {'planes_facturacion':planes_facturacion, 'contrato':pk}
     return render(request, 'planesFacturacion/listar.html', context)
 
-def some_view(request):
-    # Create a file-like buffer to receive PDF data.
-    buffer = io.BytesIO()
+@login_required(login_url='cuentas:login')
+@allowed_users(action='add_pago')
+def registrar_pago(request, pk):
+    '''Registra el pago de una factura'''
+    
+    factura = Facturacion.objects.get(id=pk)
+    plan = PlanFacturacion.objects.get(id=factura.plan_facturacion.id)
+    
 
-    # Create the PDF object, using the buffer as its "file."
-    p = canvas.Canvas(buffer)
+    if request.method == 'POST':
+        factura.registrar_pago()
+        plan.emitir_pago()
+        pago = Pago(
+            contrato = factura.plan_facturacion.condicion_pago.contrato,
+            factura = factura,
+            detalle = factura.descripcion,
+            descripcion = factura.descripcion,
+            monto = factura.monto_facturacion,
+            fecha = timezone.now(),
+            estado = 'P'
+        )
+        pago.save()
+        plan.save()
+        return redirect('administracion:facturaciones-listar_planes', factura.plan_facturacion.condicion_pago.contrato.id)
 
-    # Draw things on the PDF. Here's where the PDF generation happens.
-    # See the ReportLab documentation for the full list of functionality.
-    p.drawString(100, 100, "Hello world.")
-
-    # Close the PDF object cleanly, and we're done.
-    p.showPage()
-    p.save()
-
-    # FileResponse sets the Content-Disposition header so that browsers
-    # present the option to save the file.
-    buffer.seek(0)
-    return FileResponse(buffer, as_attachment=True, filename='hello.pdf')
+    context = {'factura':factura}
+    return render(request, 'facturaciones/registrar_pago.html', context)
 
 
 class FacturaPdf(View):

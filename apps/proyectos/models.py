@@ -3,14 +3,19 @@ from django.db import models
 from django.utils import timezone
 import datetime as dt
 from django.db.models import Sum
+from django.db.models.functions import Coalesce
+
+#Utils
+from scp.choices import PAGOS_CHOICES
+
 
 class Cliente(models.Model):
     '''Clientes de la consultora'''
 
     nombre = models.CharField(max_length=60, null=False, blank=False)
-    ruc = models.CharField(max_length=15, null=False, default='000000-0')
-    direccion = models.CharField(max_length=100, null=False, default='FPUNA')
-    telefono = models.CharField(max_length=20, null=False, default='0981111111')
+    ruc = models.CharField(max_length=15, null=False)
+    direccion = models.CharField(max_length=100, null=False)
+    telefono = models.CharField(max_length=20, null=False)
     rubro = models.CharField(max_length=30, null=False, blank=False)
     estado = models.CharField(max_length=10, null=False, blank=False)
 
@@ -30,8 +35,7 @@ class Contrato(models.Model):
         'proyectos.Propuesta', 
         on_delete=models.CASCADE, 
         limit_choices_to={'estado': 'A'},
-        null=True
-    )
+        null=True)
     nombre = models.CharField(max_length=30, null=False)
     descripcion = models.CharField(max_length=80, null=False)
     monto = models.FloatField(null=False)
@@ -97,7 +101,7 @@ class Entregable(models.Model):
     '''Entregables que tendrá un proyecto'''
     contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
     actividades = models.CharField(max_length=200, blank=False, null=False)
-    responsable = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
+    #responsable = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     horas_asignadas = models.IntegerField()
     fecha_inicio = models.DateField(null=False)
     fecha_fin = models.DateField(null=False)
@@ -110,13 +114,8 @@ class Entregable(models.Model):
 class CondicionPago(models.Model):
 
     contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
-    CREDITO = 'CRE'
-    CONTADO = 'CON'
-    PAGOS_CHOICES = [
-        (CREDITO, 'Crédito'),
-        (CONTADO, 'Contado')
-    ]
-    forma_pago = models.CharField(max_length=3, choices=PAGOS_CHOICES, default=CREDITO)
+
+    forma_pago = models.CharField(max_length=10, choices=PAGOS_CHOICES, default='CRÉDITO')
     monto_total = models.FloatField(null=False, default=0)
     cantidad_pagos = models.IntegerField(null=False, default=1)
     dias_vencimiento = models.IntegerField(null=False, default=0)
@@ -173,15 +172,11 @@ class RegistroHora(models.Model):
     encuentran los empleados de la consultora.'''
 
     empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
-    contrato = models.ForeignKey(
-        'proyectos.Contrato', 
-        on_delete=models.CASCADE)
+    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE, null=True)
     entregable = models.ForeignKey('proyectos.Entregable', on_delete=models.CASCADE, null=True)
     nombre = models.CharField(max_length=60, null=False)
     detalle = models.CharField(max_length=250, null=False)
     fecha = models.DateField(null=False)
-    hora_inicio =  models.TimeField(default=dt.time(00, 00), null=False)
-    hora_fin =  models.TimeField(default=dt.time(00, 00), null=False)
     horas_trabajadas = models.CharField(
         max_length=8, 
         default='00:00', 
@@ -225,15 +220,20 @@ class Propuesta(models.Model):
     
     @property
     def sumarizar_horas(self):
-        return self.detalle.aggregate(horas_servicio=Sum('horas_servicio'))['horas_servicio']
+        return self.detalle.aggregate(horas_servicio=Coalesce(Sum('horas_servicio'), 0))['horas_servicio']
     
     @property
     def sumarizar_totales(self):
-        return self.detalle.aggregate(total=Sum('total'))['total']
+        return self.detalle.aggregate(total=Coalesce(Sum('total'), 0))['total']
+    
+    @property
+    def sumarizar_gastos(self):
+        return self.gasto_propuesta.aggregate(gasto=Coalesce(Sum('gasto'), 0))['gasto']
+        
     
     def calcular_totales(self):
         self.horas_totales = self.sumarizar_horas
-        self.total = self.sumarizar_totales
+        self.total = self.sumarizar_totales + self.sumarizar_gastos
         self.ganancia_esperada = self.total * float(self.porcentaje_ganancia)
         
 

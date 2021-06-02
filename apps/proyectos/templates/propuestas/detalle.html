@@ -4,8 +4,16 @@
 
 <div class="row">
 	<div class="col d-flex justify-content-between">
-		<a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-crear' propuesta.id%}">Agregar detalles</a>
-		<a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-detallePorPropuesta' propuesta.id%}">Ver detalles</a>
+        {% if propuesta.estado == 'P' %}
+        <div class="justify-content-between">
+            <a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-crear' propuesta.id%}">Agregar detalles</a>
+            <a class="btn btn-primary" href="{% url 'proyectos:propuestas-anadir-gastos' propuesta.id %}">Agregar gastos</a>
+        </div>
+        {% endif %}
+		<div class="justify-content-between">
+            <a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-detallePorPropuesta' propuesta.id%}">Ver detalles</a>
+            <a class="btn btn-primary" href="{% url 'proyectos:propuestas-ver-gastos' propuesta.id%}">Ver gastos</a>
+        </div>
 	</div>
 </div>
 <br>
@@ -36,7 +44,12 @@
         <a class="btn btn-primary" href="{% url 'proyectos:propuestas-modificar' propuesta.id%}">Actualizar</a>
         <a class="btn btn-secondary" href="{% url 'proyectos:propuestas-listar' propuesta.estado%}">Cancelar</a>
     </div>
-    <a class="btn btn-danger" href="{% url 'proyectos:propuestas-borrar' propuesta.id%}">Eliminar</a>
+    <div class="justify-content-between">
+        <!--{% if propuesta.cliente == None %}-->
+            <!--<a class="btn btn-primary" href="{% url 'proyectos:propuestas-asociar-cliente' propuesta.id%}">Asociar cliente</a>-->
+        {% endif %}
+        <a class="btn btn-danger" href="{% url 'proyectos:propuestas-borrar' propuesta.id%}">Eliminar</a>
+    </div>
 </div>
 
 

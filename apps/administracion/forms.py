@@ -88,9 +88,9 @@ class FormCrearPago(forms.Form):
     detalle = forms.CharField(min_length=3, max_length=30)
     descripcion = forms.CharField(min_length=3, max_length=60)
     monto = forms.FloatField()
-    nro_cuota = forms.IntegerField()
+    #nro_cuota = forms.IntegerField()
     fecha = forms.DateField(widget=forms.SelectDateWidget)
-    saldo = forms.FloatField()
+    #saldo = forms.FloatField()
     estado = forms.ChoiceField(
         choices=(('P', 'Pagado'), ('NP', 'No pagado')))
 
@@ -98,13 +98,13 @@ class FormCrearPago(forms.Form):
         """Crea y guarda un pago"""
         data = self.cleaned_data
         pago = Pago(detalle=data['detalle'], descripcion=data['descripcion'],
-                    monto=data['monto'], nro_cuota=data['nro_cuota'],
-                    fecha=data['fecha'], saldo=data['saldo'], estado=data['estado'],)
+                    monto=data['monto'], 
+                    fecha=data['fecha'], estado=data['estado'],)
         pago.save()
 
 
 class PagoForm(forms.ModelForm):
     class Meta: 
         model = Pago
-        fields = ('detalle','descripcion','monto','nro_cuota',
-                  'fecha','saldo','estado')
+        fields = ('detalle','descripcion','monto',
+                  'fecha','estado')

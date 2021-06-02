@@ -1,4 +1,5 @@
 {%  extends 'main.html' %}
+{% load static %}
 {% block content %}
 <br>
     <div class="col col-md-10">
@@ -17,4 +18,5 @@
         <a  href="{% url 'proyectos:contratos-listar' %}" class="cancellink-box">Cancelar</a>
         </form>
     </div>
+    <script src="{% static '/js/selectorMonto.js'%}"></script>
 {% endblock %}

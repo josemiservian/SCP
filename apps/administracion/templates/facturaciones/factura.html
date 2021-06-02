@@ -42,6 +42,9 @@
 </p>
 <p>
     <b>Factura:</b> {{ factura.id }}<br>
+    <b>Timbrado:</b>{{factura.nro_timbrado}}<br>
+    <b>Valido desde:</b>{{factura.vigencia_desde}}<br>
+    <b>Vigencia hasta:</b>{{factura.vigencia_hasta}}<br>
     <b>Fecha de emisión:</b> {{ factura.fecha_emision }}<br>
     <b>Cliente:</b> {{ factura.plan_facturacion.condicion_pago.contrato.cliente.nombre|upper }}<br>
     <b>RUC:</b> {{ factura.plan_facturacion.condicion_pago.contrato.cliente.ruc }}<br>

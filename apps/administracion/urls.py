@@ -49,7 +49,7 @@ urlpatterns = [
         name='facturaciones-listar'
     ),
     path(
-        route='facturaciones/planes/listar',
+        route='facturaciones/contrato/<str:pk>/planes',
         view=facturaciones.listar_planes_facturacion,
         name='facturaciones-listar_planes'
     ),
@@ -66,7 +66,12 @@ urlpatterns = [
     path(
         route='facturaciones/pdf/<str:pk>',
         view=facturaciones.FacturaPdf.as_view(),
-        name='pdf'
+        name='factura'
+    ),
+    path(
+        route='facturaciones/factura/<str:pk>/pagar',
+        view=facturaciones.registrar_pago,
+        name='facturaciones-registrar-pago'
     ),
     #Pagos
     path(
@@ -88,5 +93,10 @@ urlpatterns = [
         route='pagos/listar',
         view=pagos.listar_pagos,
         name='pagos-listar'
+    ),
+    path(
+        route='pagos/detalle/<str:pk>',
+        view=pagos.detalle_pago,
+        name='pagos-detalle'
     ),
 ]

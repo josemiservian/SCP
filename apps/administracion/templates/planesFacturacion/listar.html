@@ -34,11 +34,11 @@
 						<td></td>
 					{% else %}
 						{% if plan.estado == 'FACTURADO' %}
-							<td><a class="btn btn-primary" href="#">Registrar pago</a></td>
+							<td><a class="btn btn-primary" href="{% url 'administracion:facturaciones-registrar-pago' plan.facturacion_set.get.id %}">Registrar pago</a></td>
 						{% elif plan.estado == 'PAGADO' %}
-							<td><a class="btn btn-primary" href="#">Ver pago</a></td>
+							<td><a class="btn btn-primary" href="{% url 'administracion:pagos-detalle' plan.facturacion_set.get.pago_set.get.id %}">Ver pago</a></td>
 						{% endif %}
-						<td><a class="btn btn-primary" href="#">Ver factura</a></td>
+						<td><a class="btn btn-primary" href="{% url 'administracion:factura' plan.facturacion_set.get.id %}">Ver factura</a></td>
 					{% endif %}
 				<tr>
 				{% endfor %}
@@ -48,8 +48,7 @@
 </div>
 <br>
 <div class="col justify-content-between">
-	<a class="btn btn-primary" href="#">Modificar</a>
-	<a class="btn btn-secondary" href="#">Volver</a>
+	<a class="btn btn-secondary" href="{% url 'proyectos:condicionPagos-listar' contrato %}">Volver</a>
 </div>
 
 {% endblock %}

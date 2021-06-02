@@ -4,12 +4,12 @@
 
 <div class="col">
 	<div class="card card-body">
-        <h5><strong>¿Desea emitir la factura {{plan.descripcion}}, con valor de {{plan.monto_facturar}}?</strong></h5>
+        <h5><strong>¿Desea registar como pagada la factura {{factura.descripcion}}, con valor de {{factura.monto_facturacion}}?</strong></h5>
 		<hr>
         <form method="POST">	
             {% csrf_token %}
             <input class="btn btn-danger" type="submit" name="Aceptar">
-            <a class="btn btn-warning" href="{% url 'proyectos:condicionPagos-listar' plan.condicion_pago.contrato.id %}">Cancelar</a>
+            <a class="btn btn-warning" href="{% url 'administracion:facturaciones-listar_planes' factura.plan_facturacion.condicion_pago.contrato.id %}">Cancelar</a>
         </form>
             
 	</div>
