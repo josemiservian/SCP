@@ -52,6 +52,10 @@ urlpatterns = [
         view=contratos.detalle_contrato,
         name='contratos-detalle'
     ),
+    path(
+        route='contratos/json/<str:pk>',
+        view=contratos.contrato_json
+    ),
     #Equipos de Proyecto
     path(
         route='squads/crear',
@@ -144,6 +148,22 @@ urlpatterns = [
         view=propuestas.estado_propuesta,
         name='propuestas-estado'
     ),
+    path(
+        route='propuestas/<str:pk>/asociar-cliente',
+        view=propuestas.asociar_cliente_propuesta,
+        name='propuestas-asociar-cliente'
+    ),
+    path(
+        route='propuestas/<str:pk>/anadir-gastos',
+        view=propuestas.crear_gastos,
+        name='propuestas-anadir-gastos'
+    ),
+    path(
+
+        route='propuestas/<str:pk>/gastos',
+        view=propuestas.listar_propuestas_gastos,
+        name='propuestas-ver-gastos'
+    ),
     #Propuestas Detalle
     path(
         route='propuestas/<str:pk>/detalle/crear',
@@ -199,7 +219,7 @@ urlpatterns = [
     #Condiciones de Pago
     path(
         route='contratos/<str:pk>/condiciones-pago',
-        view=contratos.crear_condicionPago2,
+        view=contratos.crear_condicionPago,
         name='condicionPagos-crear'
     ),
     path(

@@ -1,0 +1,38 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<br>
+
+<div class="row">
+	<div class="col-md-10">
+		<div class="card card-body">
+			<h5>Gastos:</h5>
+			<table class="table table-sm">
+                    <tr>
+                        <th></th>
+                        <th>Motivo</th>
+                        <th>Detalle</th>
+						<th>Gasto</th>
+						<th>Accion</th>
+                    </tr>
+
+				{% for gasto in gastos %}
+					<tr>
+						<td>{{gasto.id}}</td>
+                        <td>{{gasto.motivo}}</td>
+                        <td>{{gasto.detalle}}</td>
+						<td>{{gasto.gasto}}</td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:gastos-modificar'  gasto.id %}">Actualizar</a></td>
+						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:gastos-borrar'  gasto.id %}">Borrar</a></td>
+					</tr>
+				{% endfor %}
+
+			</table>
+		</div>		
+		<br>
+		<a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-detalle' propuesta %}">Ver propuesta</a>
+	</div>
+</div>
+
+{% endblock %}

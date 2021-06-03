@@ -10,10 +10,12 @@ from django.http import JsonResponse
 from scp.decorators import allowed_users
 
 #Modelos
+from apps.administracion.models import Gasto
 from apps.proyectos.models import Propuesta, PropuestaDetalle
 
 # Forms
-from apps.proyectos.forms import FormCrearPropuesta, PropuestaForm, FormCrearPropuestaDetalle, PropuestaDetalleForm
+from apps.proyectos.forms import FormCrearPropuesta, PropuestaForm, PropuestaDetalleForm, PropuestaAsociarCliente
+from apps.administracion.forms import FormCrearGasto
 
 # Create your views here.
 
@@ -37,16 +39,17 @@ class Crearpropuesta(FormView):
 @allowed_users(action='add_propuesta')
 def crear_propuesta(request):
 
-	form = FormCrearPropuesta
+    form = FormCrearPropuesta
 
-	if request.method == 'POST':
-		form = FormCrearPropuesta(request.POST)
-		if form.is_valid():
-			pk = form.save()
-			return redirect(str(pk) + '/detalle/crear')
+    if request.method == 'POST':
+        form = FormCrearPropuesta(request.POST)
+        if form.is_valid():
+            pk = form.save()
+            return redirect('proyectos:propuestas-listar', 'P')
+            #return redirect(str(pk) + '/detalle/crear')
 
-	context = {'form':form}
-	return render(request, 'propuestas/crear.html', context)
+    context = {'form':form}
+    return render(request, 'propuestas/crear.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')
@@ -68,18 +71,17 @@ def listar_propuestas(request, estado):
 @allowed_users(action='change_propuesta')
 def actualizar_propuesta(request, pk):
 
-	propuesta = Propuesta.objects.get(id=pk)
-	form = PropuestaForm(instance=propuesta)
+    propuesta = Propuesta.objects.get(id=pk)
+    form = PropuestaForm(instance=propuesta)
 
-	if request.method == 'POST':
-		form = PropuestaForm(request.POST, instance=propuesta)
-		if form.is_valid():
-			form.save()
-            #form.estado.values()
-			return redirect('proyectos:propuestas-listar', form.estado.values())
+    if request.method == 'POST':
+        form = PropuestaForm(request.POST, instance=propuesta)
+        if form.is_valid():
+            form.save()
+            return redirect('proyectos:propuestas-detalle', propuesta.id)
 
-	context = {'form':form, 'propuesta':pk, 'estado':propuesta.estado}
-	return render(request, 'propuestas/modificar.html', context)
+    context = {'form':form, 'propuesta':pk}
+    return render(request, 'propuestas/modificar.html', context)
 
 
 @login_required(login_url='cuentas:login')
@@ -103,15 +105,30 @@ def propuesta_json(request, pk):
     return JsonResponse(propuesta, safe=False)
 
 @login_required(login_url='cuentas:login')
+@allowed_users(action='add_cliente')
+def asociar_cliente_propuesta(request, pk):
+
+    propuesta = Propuesta.objects.get(id=pk)
+    form = PropuestaAsociarCliente
+
+    if request.method == 'POST':
+        form = PropuestaAsociarCliente(request.POST)
+        if form.is_valid():
+            form.save(pk)
+            return redirect('proyectos:propuestas-detalle', pk)
+
+    context = {'form':form, 'propuesta':propuesta}
+    return render(request, 'propuestas/asociar_cliente.html', context)
+
+@login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')
 def estado_propuesta(request, pk, estado):
-    	
+        
     propuesta = Propuesta.objects.get(id=pk)
 
     if request.method == 'POST':
         propuesta.definir_estado(estado)
         propuesta.save()
-
         return redirect('proyectos:propuestas-detalle', propuesta.id)
     
     context = {'propuesta':propuesta, 'estado':estado}
@@ -120,7 +137,7 @@ def estado_propuesta(request, pk, estado):
 @login_required(login_url='cuentas:login')
 @allowed_users(action='delete_propuesta')
 def borrar_propuesta(request, pk):
-	
+    
     propuesta = Propuesta.objects.get(id=pk)
     if request.method == "POST":
         estado = propuesta.estado
@@ -134,28 +151,28 @@ def borrar_propuesta(request, pk):
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_propuestadetalle')
 def crear_propuestaDetalle(request, pk):
-	
+    
     PropuestaDetalleFormSet = inlineformset_factory(
         Propuesta, 
         PropuestaDetalle,
         fields=('servicio', 'descripcion', 'horas_servicio','cargo','tarifa','total'),
         can_delete=False,
         extra=5
-	)
+    )
     propuesta = Propuesta.objects.get(id=pk)
     formset = PropuestaDetalleFormSet(
-		queryset=PropuestaDetalle.objects.none(),
-		instance=propuesta
-	)
+        queryset=PropuestaDetalle.objects.none(),
+        instance=propuesta
+    )
     if request.method =='POST':
         formset = PropuestaDetalleFormSet(request.POST, instance=propuesta)
         if formset.is_valid():
             formset.save()
             propuesta.calcular_totales()
             propuesta.save()
-            return redirect('proyectos:propuestas-listar', 'P')
+            return redirect('proyectos:propuestas-detalle', pk)
             
-    context = {'formset':formset}
+    context = {'formset':formset, 'propuesta':propuesta}
     return render(request, 'propuestas/crear_propuestaDetalle.html', context)
 
 @login_required(login_url='cuentas:login')
@@ -163,14 +180,17 @@ def crear_propuestaDetalle(request, pk):
 def listar_propuestasDetalle(request):
 
     propuestas_detalle = PropuestaDetalle.objects.all() #queryset
-    return render(request, 'propuestas/listar_propuestaDetalle.html', {'propuestas_detalle':propuestas_detalle})
+    propuesta = propuestas_detalle[0].id
+    context = {'propuestas_detalle':propuestas_detalle, 'propuesta':propuesta}
+    return render(request, 'propuestas/listar_propuestaDetalle.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')
 def listar_detalle_propuesta(request, pk):
     '''Lista los detalles de propuestas dada una propuesta'''
     propuestas_detalle = PropuestaDetalle.objects.filter(propuesta__id=pk)
-    return render(request, 'propuestas/listar_propuestaDetalle.html', {'propuestas_detalle':propuestas_detalle})
+    context = {'propuestas_detalle':propuestas_detalle, 'propuesta':pk}
+    return render(request, 'propuestas/listar_propuestaDetalle.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_propuesta')
@@ -195,7 +215,7 @@ def actualizar_propuestaDetalle(request, pk):
 @login_required(login_url='cuentas:login')
 @allowed_users(action='delete_propuesta')
 def borrar_propuestaDetalle(request, pk):
-	
+    
     propuesta_detalle = PropuestaDetalle.objects.get(id=pk)
     if request.method == "POST":
         propuesta = Propuesta.objects.get(id=propuesta_detalle.propuesta.id)
@@ -206,3 +226,41 @@ def borrar_propuestaDetalle(request, pk):
         
     context = {'propuesta_detalle':propuesta_detalle, 'propuesta':propuesta_detalle.propuesta.id}
     return render(request, 'propuestas/borrar_propuestaDetalle.html', context)
+
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='add_gasto')
+def crear_gastos(request, pk):
+    '''Gastos asociados a una propuesta.'''
+
+    GastoFormSet = inlineformset_factory(
+        Propuesta, 
+        Gasto,
+        fields=('motivo', 'detalle', 'gasto'),
+        can_delete=False,
+        extra=5
+    )
+    propuesta = Propuesta.objects.get(id=pk)
+    formset = GastoFormSet(
+        queryset=Gasto.objects.none(),
+        instance=propuesta
+    )
+    if request.method =='POST':
+        formset = GastoFormSet(request.POST, instance=propuesta)
+        if formset.is_valid():
+            formset.save()
+            propuesta.calcular_totales()
+            propuesta.save()
+            return redirect('proyectos:propuestas-detalle', pk)
+            
+    context = {'formset':formset, 'propuesta':propuesta}
+    return render(request, 'propuestas/agregar_gasto.html', context)
+
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_gasto')
+def listar_propuestas_gastos(request, pk):
+    '''Gastos relacionados a una propuesta'''
+    gastos = Gasto.objects.filter(propuesta__id=pk) #queryset
+    context = {'gastos':gastos, 'propuesta':pk}
+    return render(request, 'propuestas/listar_gastos.html', context)

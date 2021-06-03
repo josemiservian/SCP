@@ -12,9 +12,9 @@
 			</div>
 			<table class="table table-sm">
 				<tr>
+					<th></th>
 					<th>Contrato</th>
 					<th>Actividades</th>
-					<th>Responsable</th>
 					<th>Horas asignadas</th>
 					<th>Fecha Inicio</th>
 					<th>Fecha Fin</th>
@@ -23,15 +23,13 @@
 				</tr>
 			{% for entregable in entregables %}
 				<tr>
+					<td>{{entregable.id}}</td>
 					<td>{{entregable.contrato}}</td>
 					<td>{{entregable.actividades}}</td>
-					<td>{{entregable.responsable}}</td>
 					<td>{{entregable.horas_asignadas}}</td>
 					<td>{{entregable.fecha_inicio}}</td>
 					<td>{{entregable.fecha_fin}}</td>
 					<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:entregables-detalle'  entregable.id%}">Detalle</a></td>
-					<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:entregables-modificar'  entregable.id%}">Actualizar</a></td>
-					<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:entregables-borrar'  entregable.id%}">Borrar</a></td>
 				</tr>
 			{% endfor %}
 

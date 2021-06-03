@@ -1,10 +1,13 @@
 # Django
+from scp import utils
+from apps.administracion.models import PlanFacturacion
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.forms.models import inlineformset_factory
 from django.core.paginator import Paginator
+from django.http import JsonResponse
 
 #Decoradores
 from scp.decorators import allowed_users
@@ -16,7 +19,7 @@ from apps.proyectos.models import Contrato, Entregable, CondicionPago
 from apps.proyectos.filtros import ContratoFilter
 
 # Forms
-from apps.proyectos.forms import FormCrearContrato, ContratoForm, EntregableForm, CondicionPagoForm, CondicionPagoFormset
+from apps.proyectos.forms import FormCrearContrato, ContratoForm, EntregableForm, CondicionPagoForm, CondicionPagoFormset, FormCondicionPago
 
 # Create your views here.
 
@@ -120,6 +123,19 @@ def borrar_contrato(request, pk):
     return render(request, 'contratos/borrar.html', context)
 
 
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_propuesta')
+def contrato_json(request, pk):
+    '''Retorna una propuesta dada en formato JSON'''
+    
+    contrato = list(Contrato.objects.filter(id=pk).values(
+        'id', 
+        'cliente', 
+        'monto', 
+    ))
+    return JsonResponse(contrato, safe=False)
+
+
 #Entregables del Contrato
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_entregable')
@@ -130,7 +146,6 @@ def crear_entregable(request, pk):
         Entregable,
         fields=(
             'actividades', 
-            'responsable', 
             'horas_asignadas',
             'fecha_inicio',
             'fecha_fin'
@@ -157,7 +172,7 @@ def crear_entregable(request, pk):
 def detalle_entregable(request, pk):
 
     entregable = Entregable.objects.get(id=pk)
-    return render(request, 'contratos/detalle.html', {'entregable':entregable})
+    return render(request, 'entregables/detalle.html', {'entregable':entregable})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_entregable')
@@ -190,9 +205,9 @@ def actualizar_entregable(request, pk):
         form = EntregableForm(request.POST, instance=entregable)
         if form.is_valid():
             form.save()
-            return redirect('proyectos:entregables-listar')
+            return redirect('proyectos:entregables-detalle', entregable.id)
 
-    context = {'form':form}
+    context = {'form':form, 'entregable':entregable}
     return render(request, 'entregables/modificar.html', context)
 
 
@@ -214,17 +229,35 @@ def borrar_entregable(request, pk):
 @allowed_users(action='add_condicionpago')
 def crear_condicionPago(request, pk):
     
+    form = FormCondicionPago
+    contrato = Contrato.objects.get(id=pk)
+    form = FormCondicionPago(initial={'contrato': contrato})
+    if request.method == 'POST':
+        form = FormCondicionPago(request.POST)
+        if form.is_valid():
+            condicion_pago = form.save(contrato)
+            utils.generar_planes(condicion_pago)
+            return redirect('proyectos:contratos-detalle', pk)
+
+    context = {'form':form}
+    
+    return render(request, 'condicionPagos/crear2.html', context)
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='add_condicionpago')
+def crear_condicionPago3(request, pk):
+    
     CondicionPagoFormSet = inlineformset_factory(
         Contrato, 
         CondicionPago,
         fields=(
-            'descripcion', 
-            'porcentaje_pago', 
-            'monto_pagar',
-            'fecha_estimada'
+            'forma_pago', 
+            'monto_total', 
+            'cantidad_pagos',
+            'dias_vencimiento'
         ),
         can_delete=False,
-        extra=5
+        extra=1
     )
     contrato = Contrato.objects.get(id=pk)
     formset = CondicionPagoFormSet(
@@ -238,7 +271,7 @@ def crear_condicionPago(request, pk):
             return redirect('proyectos:contratos-detalle', contrato.id)
             
     context = {'formset':formset, 'contrato':contrato.id}
-    return render(request, 'condicionPagos/crear.html', context)
+    return render(request, 'condicionPagos/crear2.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_condicionpago')
@@ -268,18 +301,12 @@ def listar_condicionPagos(request, pk):
     '''Detalles de condiciones de pago por Contrato'''
     
     condiciones = CondicionPago.objects.filter(contrato__id=pk)
+    contrato = Contrato.objects.get(id=pk)
+    planes_facturacion = PlanFacturacion.objects.filter(condicion_pago__contrato__id=pk)
+
+    context = {'condiciones':condiciones, 'contrato':contrato}#, 'planes_facturacion':planes_facturacion
     
-    #filtros = condicionpagoFilter(request.GET, queryset=condicionpagos)
-
-    #condicionpagos = filtros.qs
-
-    #paginator = Paginator(condicionpagos, 10)
-
-    #page = request.GET.get('page')
-
-    #condicionpagos = paginator.get_page(page)
-    
-    return render(request, 'condicionPagos/listar.html', {'condiciones':condiciones})#, 'filtros':filtros
+    return render(request, 'condicionPagos/listar.html', context)#, 'filtros':filtros
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_condicionpago')

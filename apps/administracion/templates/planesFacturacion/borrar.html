@@ -1,0 +1,27 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<br>
+<div class="row">
+	<div class="col-md-6">
+		<h5>Borrar condicion de pago</h5>
+		<p></p>
+		<div class="card card-body">
+
+
+			<p>¿Está seguro de borrar el condicion "{{condicion}}"?</p>
+
+			<form action="{% url 'proyectos:condicionPago-borrar' condicion.id  %}" method="POST">
+				
+				{% csrf_token %}
+				<input class="btn btn-danger" type="submit" name="Aceptar">
+				<a class="btn btn-warning" href="{% url 'proyectos:condicionPago-listar' %}">Cancelar</a>
+
+				
+			</form>
+		</div>
+	</div>
+</div>
+
+{% endblock %}

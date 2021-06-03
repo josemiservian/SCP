@@ -52,35 +52,34 @@ class GastoForm(forms.ModelForm):
 #Facturaciones
 class FormCrearFacturacion(forms.Form):
     
-    detalle = forms.CharField(min_length=3, max_length=30)
-    descripcion = forms.CharField(min_length=3, max_length=60)
+    nro_factura = forms.IntegerField()
+    nro_timbrado = forms.IntegerField()
+    vigencia_desde = forms.DateField()
+    vigencia_hasta = forms.DateField()
+    ruc = forms.CharField(min_length=6, max_length=15)
     forma_pago = forms.CharField(min_length=3, max_length=15)
     fecha_emision = forms.DateField(widget=forms.SelectDateWidget)
     fecha_vencimiento = forms.DateField(widget=forms.SelectDateWidget)
-    monto_total = forms.FloatField()
     monto_facturacion = forms.FloatField()
-    saldo_facturacion = forms.FloatField()
+    descripcion = forms.CharField(min_length=3, max_length=60)
     estado = forms.CharField(min_length=3, max_length=15)
 
     def save(self):
         """Crea y guarda una factura"""
         data = self.cleaned_data
-        factura = Facturacion(detalle=data['detalle'], descripcion=data['descripcion'],
-                              forma_pago=data['forma_pago'], fecha_emision=data['fecha_emision'],
-                              fecha_vencimiento=data['fecha_vencimiento'], 
-                              monto_total=data['monto_total'],
-                              monto_facturacion=data['monto_facturacion'], 
-                              saldo_facturacion=data['saldo_facturacion'],
-                              estado=data['estado'])
+        factura = Facturacion(
+            data['nro_factura'], data['nro_timbrado'], data['vigencia_desde'],
+            data['vigencia_hasta'], data['ruc'], data['forma_pago'],
+            data['fecha_emision'], data['fecha_vencimiento'], 
+            data['monto_facturacion'], data['descripcion'], data['estado']
+        )
         factura.save()
 
 
 class FacturaForm(forms.ModelForm):
     class Meta: 
         model = Facturacion
-        fields = ('detalle','descripcion','forma_pago','fecha_emision',
-                  'fecha_vencimiento','monto_total','monto_facturacion',
-                  'saldo_facturacion','estado')
+        fields = ('__all__')
 
 
 #Pagos
@@ -89,9 +88,9 @@ class FormCrearPago(forms.Form):
     detalle = forms.CharField(min_length=3, max_length=30)
     descripcion = forms.CharField(min_length=3, max_length=60)
     monto = forms.FloatField()
-    nro_cuota = forms.IntegerField()
+    #nro_cuota = forms.IntegerField()
     fecha = forms.DateField(widget=forms.SelectDateWidget)
-    saldo = forms.FloatField()
+    #saldo = forms.FloatField()
     estado = forms.ChoiceField(
         choices=(('P', 'Pagado'), ('NP', 'No pagado')))
 
@@ -99,13 +98,13 @@ class FormCrearPago(forms.Form):
         """Crea y guarda un pago"""
         data = self.cleaned_data
         pago = Pago(detalle=data['detalle'], descripcion=data['descripcion'],
-                    monto=data['monto'], nro_cuota=data['nro_cuota'],
-                    fecha=data['fecha'], saldo=data['saldo'], estado=data['estado'],)
+                    monto=data['monto'], 
+                    fecha=data['fecha'], estado=data['estado'],)
         pago.save()
 
 
 class PagoForm(forms.ModelForm):
     class Meta: 
         model = Pago
-        fields = ('detalle','descripcion','monto','nro_cuota',
-                  'fecha','saldo','estado')
+        fields = ('detalle','descripcion','monto',
+                  'fecha','estado')

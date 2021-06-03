@@ -1,0 +1,100 @@
+#ESTADO DE LAS AREAS
+ACTIVO = 'ACTIVO'
+INACTIVO = 'INACTIVO'
+
+ESTADO_CHOICES = [
+    
+    (ACTIVO, 'Activo'),
+    (INACTIVO, 'Inactivo'),
+]
+
+#CREAR CLIENTE - RUBRO
+COMERCIO = 'COMERCIO'
+TEXTIL = 'TEXTIL'
+CONSULTORA = 'CONSULTORA'
+AGROINDUSTRIA = 'AGROINDUSTRIA'
+IMPRENTA = 'IMPRENTA'
+METALURGICA = 'METALURGICA'
+FARMACEUTICO = 'FARMACEÚTICO'
+CONTABLE = 'CONTABLE'
+OTROS = 'OTROS'
+
+RUBROCLIENTE_CHOICES = [
+    
+    (COMERCIO, 'Comercio'),
+    (TEXTIL, 'Textil'),
+    (CONSULTORA, 'Consultora'),
+    (AGROINDUSTRIA, 'Agroindustria'),
+    (IMPRENTA, 'Imprenta'),
+    (METALURGICA, 'Metalúrgica'),
+    (FARMACEUTICO, 'Farmacéutico'),
+(CONTABLE, 'Contable'),
+(OTROS, 'Otros'),
+]
+
+#CREAR TIPO DE SERVICIO
+CAPACITACION = 'CAPACITACIÓN'
+PROCESOS= 'PROCESOS'
+REVISION_ESPECIAL = 'REVISIÓN_ESPECIAL'
+IMPLEMENTACION = 'IMPLEMENTACIÓN'
+NRM = 'NRM'
+PEI = 'PEI'
+AUDITORIA_CONTABLE = 'AUDITORIA_CONTABLE'
+AUDITORIA_FINANCIERA = 'AUDITORIA_FINANCIERA'
+OTROS = 'OTROS'
+
+SERVICIO_CHOICES = [
+    
+    (CAPACITACION, 'Capacitación'),
+    (PROCESOS, 'Procesos'),
+    (REVISION_ESPECIAL, 'Revisión Especial'),
+    (IMPLEMENTACION, 'Implementaciones'),
+    (NRM, 'Norma de Requisitos Mínimos 2015'),
+    (PEI, 'Planificación Estratégica Institucional'),
+    (AUDITORIA_CONTABLE, 'Auditoría de Cuentas Contables'),
+(AUDITORIA_FINANCIERA, 'Auditoría de Estados Financieros'),
+(OTROS, 'Otros'),
+]
+#CARGO DE EMPLEADOS
+ASISTENTE = 'ASISTENTE'
+SENIOR = 'SENIOR'
+GERENTE = 'GERENTE'
+DIRECTOR = 'DIRECTOR'
+SOCIO = 'SOCIO'
+SUPERVISOR = 'SUPERVISOR'
+
+CARGOS_CHOICES = [
+    
+    (ASISTENTE, 'Asistente'),
+    (SENIOR, 'Senior'),
+    (GERENTE, 'Gerente'),
+    (DIRECTOR, 'Director'),
+    (SOCIO, 'Socio'),
+    (SUPERVISOR, 'Supervisor'),
+]
+
+#FACTURAS
+FACTURADO = 'FACTURADO'
+PENDIENTE_FACTURACION = 'PENDIENTE FACTURACION'
+PAGADO = 'PAGADO'
+FACTURA_CHOICES = [
+    (FACTURADO, 'Facturado'),
+    (PENDIENTE_FACTURACION, 'Pendiente de facturación'),
+    (PAGADO, 'Pagado')
+]
+
+#Condiciones de pago
+CREDITO = 'CREDITO'
+CONTADO = 'CONTADO'
+PAGOS_CHOICES = [
+    (CREDITO, 'Crédito'),
+    (CONTADO, 'Contado')
+]
+
+#Estados de pago
+PENDIENTE_PAGO = 'PENDIENTE DE PAGO'
+PAGADO = 'PAGADO'
+ESTADOS_PAGO = [
+    (PENDIENTE_PAGO, 'Pendiente de pago'),
+    (PAGADO, 'Pagado')
+]
