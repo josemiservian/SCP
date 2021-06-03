@@ -45,6 +45,8 @@ INSTALLED_APPS = [
     'apps.gestion',
     'apps.proyectos',
     'apps.reportes',
+    'apps.consultas',
+
 ]
 
 MIDDLEWARE = [

@@ -2,7 +2,11 @@ from django.db import models
 
 # Create your models here.
 class Seguimiento(models.Model):
-    
+        
+    #empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
+    #contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    #fecha = models.DateField('proyectos.RegistroHora', on_delete=models.CASCADE)
+    #cant_horas_invertidas = models.IntegerField(null=False)
     detalle = models.CharField(max_length=30, null=False)
     descripcion = models.CharField(null=False, max_length=50)
     estado_inicial = models.CharField(null=False, max_length=15)
@@ -14,3 +18,6 @@ class Seguimiento(models.Model):
 
     def __str__(self):
         return self.detalle
+
+    
+    
