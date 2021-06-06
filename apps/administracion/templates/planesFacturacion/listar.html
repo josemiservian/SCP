@@ -1,0 +1,55 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+
+<div class="row">
+	<div class="col d-flex justify-content-between">
+		
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<h5>Planes de facturación</h5>
+			<table class="table table-sm">
+				<tr>
+					<th>Descripcion</th>
+					<th>Fecha de emisión</th>
+					<th>Fecha de vencimiento</th>
+					<th>Monto a Facturar</th>
+					<th>Estado</th>
+					<th>Accion</th>
+					<th></th>
+				
+				{% for plan in planes_facturacion %}
+				</tr>
+					<td>{{plan.descripcion}}</td>
+					<td>{{plan.fecha_emision}}</td>
+					<td>{{plan.fecha_vencimiento}}</td>
+					<td>{{plan.monto_facturar}}</td>
+					<td>{{plan.estado}}</td>
+					{% if plan.estado == 'PENDIENTE FACTURACION' %}
+						<td><a class="btn btn-primary" href="{% url 'administracion:facturaciones-emitir_factura' plan.id %}">Emitir factura</a></td>
+						<td></td>
+					{% else %}
+						{% if plan.estado == 'FACTURADO' %}
+							<td><a class="btn btn-primary" href="{% url 'administracion:facturaciones-registrar-pago' plan.facturacion_set.get.id %}">Registrar pago</a></td>
+						{% elif plan.estado == 'PAGADO' %}
+							<td><a class="btn btn-primary" href="{% url 'administracion:pagos-detalle' plan.facturacion_set.get.pago_set.get.id %}">Ver pago</a></td>
+						{% endif %}
+						<td><a class="btn btn-primary" href="{% url 'administracion:factura' plan.facturacion_set.get.id %}">Ver factura</a></td>
+					{% endif %}
+				<tr>
+				{% endfor %}
+			</table>
+		</div>
+	</div>
+</div>
+<br>
+<div class="col justify-content-between">
+	<a class="btn btn-secondary" href="{% url 'proyectos:condicionPagos-listar' contrato %}">Volver</a>
+</div>
+
+{% endblock %}
+

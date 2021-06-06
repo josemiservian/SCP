@@ -97,9 +97,9 @@ class EntregableForm(forms.ModelForm):
 
 
 class FormCondicionPago(forms.Form):
-    #contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    contrato = forms.ModelChoiceField(queryset=Contrato.objects.all(), disabled=True, required=False)
     forma_pago = forms.CharField(widget=forms.Select(choices=PAGOS_CHOICES))
-    monto_total = forms.FloatField()
+    monto_total = forms.FloatField(widget=forms.NumberInput(attrs={'readonly':'readonly'}))
     cantidad_pagos = forms.IntegerField(initial=1, min_value=1)
     dias_vencimiento = forms.IntegerField(initial=10)
 
@@ -113,7 +113,7 @@ class FormCondicionPago(forms.Form):
             dias_vencimiento=data['dias_vencimiento']
         )  
         condicion_pago.save()
-        return condicion_pago.cantidad_pagos
+        return condicion_pago
 
 CondicionPagoFormset = formset_factory(FormCondicionPago, extra=0)
 
@@ -129,13 +129,13 @@ class CondicionPagoForm(forms.ModelForm):
 #Formularios para Registro de horas
 class FormCrearRegistroHora(forms.Form):
     
-    contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    #contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
     entregable = forms.ModelChoiceField(queryset=Entregable.objects.all())
     nombre = forms.CharField(min_length=3, max_length=30)
     detalle = forms.CharField(min_length=3, max_length=50)
     fecha = forms.DateField(widget=forms.SelectDateWidget)
-    hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
-    hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
+    #hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
+    #hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
     horas_trabajadas = forms.CharField(min_length=5, max_length=5, help_text='Horas trabajadas (HH:MM)')
 
     def clean_horas_trabajadas(self):
@@ -158,9 +158,10 @@ class FormCrearRegistroHora(forms.Form):
         data = self.cleaned_data
         empleado = Empleado.objects.get(usuario__username=request.user)
         registro = RegistroHora(
-            empleado=empleado, contrato=data['contrato'], entregable=data['entregable'],
+            empleado=empleado, 
+            contrato=Contrato.objects.get(id=data['entregable'].contrato.id), 
+            entregable=data['entregable'],
             nombre=data['nombre'], detalle=data['detalle'], fecha=data['fecha'], 
-            hora_inicio=data['hora_inicio'], hora_fin=data['hora_fin'], 
             horas_trabajadas=data['horas_trabajadas'])
         registro.save()
         return registro.id
@@ -168,18 +169,19 @@ class FormCrearRegistroHora(forms.Form):
 
 class RegistroForm(forms.ModelForm):
     
-    contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
+    #contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
     entregable = forms.ModelChoiceField(queryset=Entregable.objects.all())
     nombre = forms.CharField(min_length=3, max_length=30)
     detalle = forms.CharField(min_length=3, max_length=50)
     fecha = forms.DateField(widget=forms.SelectDateWidget)
-    hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
-    hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
+    #hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
+    #hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
 
     
     class Meta: 
         model = RegistroHora
-        fields = ('contrato', 'entregable','nombre','detalle','fecha','hora_inicio','hora_fin')
+        fields = ('__all__')
+        exclude = ['contrato']
 
 
 #Formularios de Equipos de Proyecto
@@ -278,19 +280,19 @@ class PropuestaAsociarCliente(forms.ModelForm):
         model = Propuesta
         fields = ('cliente',)
 
-    def __init__(self, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['cliente'].widget = widgets.RelatedFieldWidgetWrapper(
-            self.fields['cliente'].widget,
-            self.instance._meta.get_field('cliente').remote_field,
-            admin_site
-        ) 
+    #def __init__(self, *args, **kwargs):
+    #    super().__init__(*args, **kwargs)
+    #    self.fields['cliente'].widget = widgets.RelatedFieldWidgetWrapper(
+    #        self.fields['cliente'].widget,
+    #        self.instance._meta.get_field('cliente').remote_field,
+    #        admin_site
+    #    ) 
 
-    #def save(self, pk):
-    #    data = self.cleaned_data()
-    #    propuesta = Propuesta.objects.get(id=pk)
-    #    propuesta.cliente = data['cliente']
-    #    propuesta.save()
+    def save(self, pk):
+        data = self.cleaned_data
+        propuesta = Propuesta.objects.get(id=pk)
+        propuesta.cliente = data['cliente']
+        propuesta.save()
 
 
 #formularios para Propuesta Detalle

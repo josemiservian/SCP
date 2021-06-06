@@ -11,10 +11,12 @@ from django.http import JsonResponse
 from scp.decorators import allowed_users
 
 #Modelos
+from apps.administracion.models import Gasto
 from apps.proyectos.models import Propuesta, PropuestaDetalle
 
 # Forms
 from apps.proyectos.forms import FormCrearPropuesta, PropuestaForm, PropuestaDetalleForm, PropuestaAsociarCliente
+from apps.administracion.forms import FormCrearGasto
 
 #Filtros
 from apps.proyectos.filtros import PropuestaFilter
@@ -47,7 +49,8 @@ def crear_propuesta(request):
         form = FormCrearPropuesta(request.POST)
         if form.is_valid():
             pk = form.save()
-            return redirect(str(pk) + '/detalle/crear')
+            return redirect('proyectos:propuestas-listar', 'P')
+            #return redirect(str(pk) + '/detalle/crear')
 
     context = {'form':form}
     return render(request, 'propuestas/crear.html', context)
@@ -186,9 +189,9 @@ def crear_propuestaDetalle(request, pk):
             formset.save()
             propuesta.calcular_totales()
             propuesta.save()
-            return redirect('proyectos:propuestas-listar', 'P')
+            return redirect('proyectos:propuestas-detalle', pk)
             
-    context = {'formset':formset}
+    context = {'formset':formset, 'propuesta':propuesta}
     return render(request, 'propuestas/crear_propuestaDetalle.html', context)
 
 @login_required(login_url='cuentas:login')
@@ -196,14 +199,17 @@ def crear_propuestaDetalle(request, pk):
 def listar_propuestasDetalle(request):
 
     propuestas_detalle = PropuestaDetalle.objects.all() #queryset
-    return render(request, 'propuestas/listar_propuestaDetalle.html', {'propuestas_detalle':propuestas_detalle})
+    propuesta = propuestas_detalle[0].id
+    context = {'propuestas_detalle':propuestas_detalle, 'propuesta':propuesta}
+    return render(request, 'propuestas/listar_propuestaDetalle.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_propuesta')
 def listar_detalle_propuesta(request, pk):
     '''Lista los detalles de propuestas dada una propuesta'''
     propuestas_detalle = PropuestaDetalle.objects.filter(propuesta__id=pk)
-    return render(request, 'propuestas/listar_propuestaDetalle.html', {'propuestas_detalle':propuestas_detalle})
+    context = {'propuestas_detalle':propuestas_detalle, 'propuesta':pk}
+    return render(request, 'propuestas/listar_propuestaDetalle.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_propuesta')
@@ -239,3 +245,41 @@ def borrar_propuestaDetalle(request, pk):
         
     context = {'propuesta_detalle':propuesta_detalle, 'propuesta':propuesta_detalle.propuesta.id}
     return render(request, 'propuestas/borrar_propuestaDetalle.html', context)
+
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='add_gasto')
+def crear_gastos(request, pk):
+    '''Gastos asociados a una propuesta.'''
+
+    GastoFormSet = inlineformset_factory(
+        Propuesta, 
+        Gasto,
+        fields=('motivo', 'detalle', 'gasto'),
+        can_delete=False,
+        extra=5
+    )
+    propuesta = Propuesta.objects.get(id=pk)
+    formset = GastoFormSet(
+        queryset=Gasto.objects.none(),
+        instance=propuesta
+    )
+    if request.method =='POST':
+        formset = GastoFormSet(request.POST, instance=propuesta)
+        if formset.is_valid():
+            formset.save()
+            propuesta.calcular_totales()
+            propuesta.save()
+            return redirect('proyectos:propuestas-detalle', pk)
+            
+    context = {'formset':formset, 'propuesta':propuesta}
+    return render(request, 'propuestas/agregar_gasto.html', context)
+
+
+@login_required(login_url='cuentas:login')
+@allowed_users(action='view_gasto')
+def listar_propuestas_gastos(request, pk):
+    '''Gastos relacionados a una propuesta'''
+    gastos = Gasto.objects.filter(propuesta__id=pk) #queryset
+    context = {'gastos':gastos, 'propuesta':pk}
+    return render(request, 'propuestas/listar_gastos.html', context)

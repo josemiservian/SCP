@@ -27,9 +27,7 @@
 					<th>Detalle</th>
 					<th>Descripcion</th>
 					<th>Monto</th>
-					<th>Numero de cuota</th>
 					<th>Fecha</th>
-					<th>Saldo</th>
 					<th>Estado</th>
 					<th>Accion</th>
 				</tr>
@@ -40,9 +38,7 @@
 					<td>{{pago.detalle}}</td>
 					<td>{{pago.descripcion}}</td>
 					<td>{{pago.monto}}</td>
-					<td>{{pago.nro_cuota}}</td>
 					<td>{{pago.fecha}}</td>
-					<td>{{pago.saldo}}</td>
 					<td>{{pago.estado}}</td>
 					<td><a class="btn btn-sm btn-info" href="{% url 'administracion:pagos-modificar'  pago.id%}">Actualizar</a></td>
 					<td><a class="btn btn-sm btn-info" href="{% url 'administracion:pagos-borrar'  pago.id%}">Borrar</a></td>

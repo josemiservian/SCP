@@ -52,18 +52,13 @@ def crear_registroHoras(request):
             #Aumenta la cantidad de horas cargadas a las HORAS EJECUTADAS,
             #las tarifas por hora de los empleado a GASTO y calcula la
             #RENTABILIDAD (en horas y presupuesto) del Contrato
-            contrato = Contrato.objects.filter(id=form['contrato'].value())[0]
-            horas = utils.calcular_horas(
-                
-                form['hora_inicio'].value(), 
-                form['hora_fin'].value(),
-                'INSERT'
-            )
+            registro_id = form.save(request)
+            registro = RegistroHora.objects.get(id=registro_id)
+            contrato = Contrato.objects.get(id=registro.entregable.contrato.id)
+            horas = utils.calcular_horas(registro.horas_trabajadas,'INSERT')
             gastos = utils.calcular_gasto_hora(request.user, contrato.id, horas)
             contrato.maestro_calculos(horas, gastos)
             contrato.save()
-            registro_id = form.save(request)
-            registro = RegistroHora.objects.get(id=registro_id)
             gasto_horas = Gasto.objects.create(
                 motivo='HONORARIOS', 
                 detalle=registro.detalle,
@@ -105,14 +100,12 @@ def actualizar_registroHora(request, pk):
 
     registro = RegistroHora.objects.get(id=pk)
     form = RegistroForm(instance=registro)
+    contrato = Contrato.objects.get(id=registro.entregable.contrato.id)
 
     if request.method == 'POST':
         #Se utilizara la accion DELETE para borrar la anterior hora cargada
-        contrato = Contrato.objects.filter(id=form['contrato'].value())[0]
         horas_anteriores = utils.calcular_horas(
-            
-            str(form['hora_inicio'].value()), 
-            str(form['hora_fin'].value()),
+            str(form['horas_trabajadas'].value()), 
             'DELETE'
         )
         gastos = utils.calcular_gasto_hora(request.user, contrato.id, horas_anteriores)
@@ -121,14 +114,12 @@ def actualizar_registroHora(request, pk):
         contrato.save()
 
         form = RegistroForm(request.POST, instance=registro)
+
         if form.is_valid():
             #Se utilizara la accion INSERT para cargar las horas actualizadas
-            contrato = Contrato.objects.filter(id=form['contrato'].value())[0]
-            gasto_horas = Gasto.objects.filter(registro__id=pk)[0]
+            gasto_horas = Gasto.objects.get(registro__id=pk)
             horas = utils.calcular_horas(
-                
-                form['hora_inicio'].value(), 
-                form['hora_fin'].value(),
+                form['horas_trabajadas'].value(), 
                 'INSERT'
             )
 
@@ -149,10 +140,9 @@ def borrar_registroHora(request, pk):
 
     registro = RegistroHora.objects.get(id=pk)
     if request.method == "POST":
-        contrato = Contrato.objects.filter(id=registro.contrato.id)[0]
+        contrato = Contrato.objects.get(id=registro.entregable.contrato.id)
         horas = utils.calcular_horas(
-                registro.hora_inicio.strftime('%H:%M:%S'),
-                registro.hora_fin.strftime('%H:%M:%S'),
+                registro.horas_trabajadas,
                 'DELETE'
             )
         gastos = utils.calcular_gasto_hora(request.user, contrato.id, horas)
