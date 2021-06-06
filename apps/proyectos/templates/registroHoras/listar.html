@@ -31,8 +31,6 @@
 					<th>Nombre</th>
 					<th>Detalle</th>
 					<th>Fecha</th>
-					<th>Hora Inicio</th>
-					<th>Hora Fin</th>
 					<th>Horas trabajadas</th>
 					<th>Accion</th>
 				</tr>
@@ -45,8 +43,6 @@
 					<td>{{registro.nombre}}</td>
 					<td>{{registro.detalle}}</td>
 					<td>{{registro.fecha}}</td>
-					<td>{{registro.hora_inicio}}</td>
-					<td>{{registro.hora_fin}}</td>
 					<td>{{registro.horas_trabajadas}}</td>
 					<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:registrohoras-modificar'  registro.id%}">Actualizar</a></td>
 					<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:registrohoras-borrar'  registro.id%}">Borrar</a></td>

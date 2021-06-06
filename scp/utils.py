@@ -7,24 +7,20 @@ from apps.administracion.models import PlanFacturacion
 from apps.cuentas.models import Empleado
 from apps.proyectos.models import Contrato, EquipoProyecto, MiembroEquipoProyecto
 
-def calcular_horas(hora_inicio, hora_fin, accion):#contrato, 
+def calcular_horas(horas, accion): 
     '''Calcula la diferencia entre dos horas.'''
     
     #contrato = Contrato.objects.filter(id=contrato)[0]
-    horas_cargadas = dt.strptime(hora_fin,'%H:%M:%S') - dt.strptime(hora_inicio,'%H:%M:%S')
+    horas_cargadas = dt.strptime(horas,'%H:%M')
+    horas_cargadas = horas_cargadas.hour + horas_cargadas.minute / 60
     if accion == 'INSERT':
-        
-        horas_cargadas = horas_cargadas.seconds / 3600
-        
+        pass
     elif accion == 'UPDATE':
         pass
     elif accion == 'DELETE':
 
-        horas_cargadas = (horas_cargadas.seconds / 3600) * -1
-    
+        horas_cargadas = horas_cargadas * -1
     return horas_cargadas
-    #contrato.sumar_horas(horas_cargadas)
-    #contrato.save()
 
 
 def calcular_gasto_hora(usuario, contrato, horas):
@@ -40,26 +36,27 @@ def calcular_gasto_hora(usuario, contrato, horas):
     return gasto
 
 
-def generar_planes(contrato, monto_total, cantidad_pagos):
+def generar_planes(condicion_pago):
         '''Genera los planes de facturacion basado en la cantidad de pagos.
         Se generará para un contrato tantos planes como cantidad de pagos se tenga'''
         hoy = datetime.date.today()
+        cantidad_pagos = condicion_pago.cantidad_pagos
+        monto_total = condicion_pago.monto_total
         numero_pago = 1
 
-        while numero_pago <= cantidad_pagos:
+        while numero_pago <= condicion_pago.cantidad_pagos:
             
-            contrato=contrato
-            descripcion=contrato.nombre + ' - ' + f'{numero_pago}/{cantidad_pagos}'
+            descripcion=condicion_pago.contrato.nombre + ' - ' + f'{numero_pago}/{cantidad_pagos}'
             fecha_emision=hoy+relativedelta.relativedelta(months=numero_pago)
             fecha_vencimiento=fecha_emision+relativedelta.relativedelta(days=10)
             monto_facturar=monto_total/cantidad_pagos
 
             plan = PlanFacturacion(
-                contrato=contrato,
                 descripcion=descripcion,
                 fecha_emision=fecha_emision,
                 fecha_vencimiento=fecha_vencimiento,
-                monto_facturar=monto_facturar
+                monto_facturar=monto_facturar,
+                condicion_pago = condicion_pago
             )
             plan.save()
 
