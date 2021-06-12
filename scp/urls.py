@@ -22,12 +22,12 @@ from django.urls import path, include
 
 #el namespace se utilziara para referenciar templates en otros 
 urlpatterns = [
-    path('admin/', admin.site.urls), 
-    path('', include(('apps.cuentas.urls','cuentas'), namespace='cuentas')),
-    path('administracion/', include(('apps.administracion.urls', 'administracion'), namespace='administracion')),
-    path('gestion/', include(('apps.gestion.urls', 'gestion'), namespace='gestion')),
-    path('proyectos/', include(('apps.proyectos.urls', 'proyectos'), namespace='proyectos')),
-    path('reportes/', include(('apps.reportes.urls', 'reportes'), namespace='reportes')),
+    #path('admin/', admin.site.urls), 
+    #path('', include(('apps.cuentas.urls','cuentas'), namespace='cuentas')),
+    #path('administracion/', include(('apps.administracion.urls', 'administracion'), namespace='administracion')),
+    #path('gestion/', include(('apps.gestion.urls', 'gestion'), namespace='gestion')),
+    #path('proyectos/', include(('apps.proyectos.urls', 'proyectos'), namespace='proyectos')),
+    #path('reportes/', include(('apps.reportes.urls', 'reportes'), namespace='reportes')),
     
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
