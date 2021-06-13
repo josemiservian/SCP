@@ -12,7 +12,7 @@ class Empleado(models.Model):
     apellido = models.CharField(max_length=20, null=False)
     direccion = models.CharField(max_length=80, null=False)
     fecha_nacimiento = models.DateField(null=False)
-    cargo = models.ForeignKey('gestion.Cargo', on_delete=models.CASCADE, null=True)
+    cargo = models.ForeignKey('gestion.Cargo', on_delete=models.CASCADE)
     tarifa = models.FloatField(null=False, default=0)
     estado = models.CharField(max_length=20, null=False, default='Activo')
     #area = models.ForeignKey('areas.Area', on_delete=models.CASCADE)

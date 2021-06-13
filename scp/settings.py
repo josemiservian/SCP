@@ -45,7 +45,7 @@ INSTALLED_APPS = [
     'apps.cuentas',
     'apps.gestion',
     'apps.proyectos',
-    'apps.reportes',
+    #'apps.reportes',
 ]
 
 MIDDLEWARE = [

@@ -28,8 +28,6 @@ class Servicio(models.Model):
     
     detalle =  models.CharField(max_length=30, null=False)
     descripcion = models.CharField(max_length=60, null=False)
-    estado_final = models.CharField(max_length=15, null=False)
-    costo = models.FloatField(null=False)
     area = models.ForeignKey('gestion.Area', on_delete=models.CASCADE)
 
     def __str__(self):

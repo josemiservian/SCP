@@ -15,7 +15,7 @@ from apps.proyectos.models import Propuesta, PropuestaDetalle
 
 # Forms
 from apps.proyectos.forms import FormCrearPropuesta, PropuestaForm, PropuestaDetalleForm, PropuestaAsociarCliente
-from apps.administracion.forms import FormCrearGasto
+#from apps.administracion.forms import FormCrearGasto
 
 # Create your views here.
 
