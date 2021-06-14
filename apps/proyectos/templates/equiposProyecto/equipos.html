@@ -1,17 +1,16 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-
-<br>
-
 <div class="row">
-	<div class="col-md-5">
+	<div class="col d-flex justify-content-between">
 		<h5>Equipos:</h5>
-		<hr>
-			
-			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
-			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'proyectos:squads-crear'%}">Crear equipo</a>
-			<p></p>
+		<a class="btn btn-primary" href="{% url 'proyectos:squads-crear'%}">Crear equipo</a>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
 			<table class="table table-sm">
 				<tr>
 					<th></th>
@@ -19,6 +18,9 @@
 					<th>Descripcion</th>
 					<th>Contrato</th>
 					<th>Lider Proyecto</th>
+					<th>Acción</th>
+					<th></th>
+					<th></th>
 				</tr>
 
 				{% for equipo in equipos %}
@@ -35,8 +37,11 @@
 				{% endfor %}
 
 			</table>
+		</div>
+
 	</div>
 </div>
+<br>
 
 {% endblock %}
 

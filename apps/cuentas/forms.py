@@ -3,8 +3,12 @@ from django import forms
 
 # Models
 from django.contrib.auth.models import User, Group, Permission
+from django.forms import widgets
 from apps.cuentas.models import Empleado
 from apps.gestion.models import Cargo
+
+#Python
+import datetime
 
 #Constantes
 GRUPOS = tuple([(grupo.id, grupo.name) for grupo in Group.objects.all()])
@@ -104,4 +108,7 @@ class EmpleadoForm(forms.ModelForm):
         
         model = Empleado
         fields = ('cedula','nombre', 'apellido', 'direccion', 'fecha_nacimiento')#, 'cargo', 'tarifa', 'estado'
-
+        widgets = {
+            'fecha_nacimiento': forms.SelectDateWidget(
+                years=range(1900, datetime.date.today().year-17))
+            }

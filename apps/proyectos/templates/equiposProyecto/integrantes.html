@@ -1,17 +1,16 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-
-<br>
-
 <div class="row">
-	<div class="col-md-5">
-		<h5>Integrantes del equipo:</h5>
-		<hr>
-			
-			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
-			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'proyectos:squads-add' pk%}">Agregar integrante</a>
-			<p></p>
+	<div class="col d-flex justify-content-between">
+		<h5>Integrantes:</h5>
+		<a class="btn btn-primary" href="{% url 'proyectos:squads-add' pk%}">Agregar integrante</a>
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
 			<table class="table table-sm">
 				<tr>
 					<th></th>
@@ -34,9 +33,11 @@
 				{% endfor %}
 				
 			</table>
-			<p></p>
-	</div>
+		</div>
+		<br>
+		<a class="btn btn-secondary" href="{% url "proyectos:squads-listar" %}" >Volver</a>
 
+	</div>
 </div>
 
 {% endblock %}

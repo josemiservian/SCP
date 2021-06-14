@@ -1,25 +1,22 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-
-
 <div class="row">
 	<div class="col-md-6">
-		<h5>Modificar cliente</h5>
 		<div class="card card-body">
-
+			<h5>Modificar cliente:</h5>
+			<hr>
 			<form action="" method="POST">
 				{% csrf_token %}
-				{{ form.management_form }}
-				{% for field in form %}
-					{{field}}
-					<hr>
-				{% endfor %}
+				{{form.as_p}}
 				
-                <button type="submit" class="btn btn-primary btn-block mt-5">Actualizar</button>
-				<a  href="{% url "proyectos:clientes-listar" %}" class="cancellink-box">Cancelar</a>
+				
 			</form>
-
+		</div>
+		<br>
+		<div class="col justify-content-between"></div>
+			<button type="submit" class="btn btn-primary">Actualizar</button>
+			<a class="btn btn-secondary" href="{% url "proyectos:clientes-listar" %}" class="cancellink-box">Cancelar</a>
 		</div>
 	</div>
 </div>

@@ -1,40 +1,42 @@
 {%  extends 'main.html' %}
 {% block content %}
-<br>
 
+<br>
 <div class="row">
-	<div class="col-md-5">
+	<div class="col d-flex justify-content-between">
 		<h5>Servicio:</h5>
-		<hr>
-			
-			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
-			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:servicios-crear'%}">Crear Servicio</a>
-			<p></p>
+		<a class="btn btn-primary" id="crear-registro" href="{% url 'gestion:servicios-crear'%}">Crear servicio</a>	
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col col-md-6">
+		<div class="card card-body">
 			<table class="table table-sm">
-                    <tr>
-                        <th></th>
-                        <th>Detalle</th>
-                        <th>Descripcion</th>
-                        <th>Estado final</th>
-                        <th>Costo</th>
-						<th>Area</th>
-                        <th>Accion</th>
-                    </tr>
+				<tr>
+					<th></th>
+					<th>Detalle</th>
+					<th>Descripcion</th>
+					<th>Area</th>
+					<th>Accion</th>
+					<th></th>
+				</tr>
 
 				{% for servicio in servicios %}
 					<tr>
 						<td>{{servicio.id}}</td>
 						<td>{{servicio.detalle}}</td>
-                        <td>{{servicio.descripcion}}</td>
-                        <td>{{servicio.area.nombre}}</td>
+						<td>{{servicio.descripcion}}</td>
+						<td>{{servicio.area.nombre}}</td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:servicios-modificar'  servicio.id%}">Actualizar</a></td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:servicios-borrar'  servicio.id%}">Borrar</a></td>
 					</tr>
 				{% endfor %}
 
 			</table>
+		</div>
+
 	</div>
 </div>
-
 {% endblock %}
 

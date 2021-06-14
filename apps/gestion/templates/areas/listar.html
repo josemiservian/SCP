@@ -2,40 +2,39 @@
 {% block content %}
 
 <br>
-
 <div class="row">
-	<div class="col-md-5">
+	<div class="col d-flex justify-content-between">
 		<h5>Areas:</h5>
-		<hr>
-
-			
-		<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
-		<a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:areas-crear'%}">Crear Area</a>
-		<p></p>
-
+		<a class="btn btn-primary" id="crear-registro" href="{% url 'gestion:areas-crear'%}">Crear Area</a>	
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col-md-4">
+		<div class="card card-body">
 			<table class="table table-sm">
-                    <tr>
-                        <th></th>
-                        <th>Nombre</th>
-                        <th>Estado</th>
-						<th>Accion</th>
-                    </tr>
+				<tr>
+					<th></th>
+					<th>Nombre</th>
+					<th>Estado</th>
+					<th>Accion</th>
+				</tr>
 
 				{% for area in areas %}
-					<tr>
-						<td>{{area.id}}</td>
-                        <td>{{area.nombre}}</td>
-                        <td>{{area.estado}}</td>
-						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:areas-modificar'  area.id%}">Actualizar</a></td>
-						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:areas-borrar'  area.id%}">Borrar</a></td>
-					</tr>
+				<tr>
+					<td>{{area.id}}</td>
+					<td>{{area.nombre}}</td>
+					<td>{{area.estado}}</td>
+					<td><a class="btn btn-sm btn-info" href="{% url 'gestion:areas-modificar'  area.id%}">Actualizar</a></td>
+					<td><a class="btn btn-sm btn-info" href="{% url 'gestion:areas-borrar'  area.id%}">Borrar</a></td>
+				</tr>
 				{% endfor %}
-
+	
 			</table>
 		</div>
+
 	</div>
-
 </div>
-
+<br>
 {% endblock %}
 

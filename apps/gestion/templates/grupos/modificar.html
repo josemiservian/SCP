@@ -1,42 +1,23 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-<head>
-	<title>Modificar Grupo</title>
-</head>
-<body>
-
-
-	<div id="container">
-		<h1>Modificar Grupo</h1>
-		<div class="col-md-6">
-			<div class="card card-body">
-
-				<form action="" method="POST">
-					{% csrf_token %}
-					{{ form.management_form }}
-					<div>
-						{% for field in form %}
-						{{field}}
-						<hr>
-						{% endfor %}
-
-					</div>
-					
-					
-					
-					<div>
-						<button type="submit" class="btn btn-primary btn-block mt-5">Actualizar</button>
-						<a  href="{% url "gestion:grupos-listar" %}" class="cancellink-box">Cancelar</a>
-					</div>
-
-				</form>
-
-			</div>
+<div class="row">
+	<div class="col-md-6">
+		<div class="card card-body">
+			<h5>Modificar grupo:</h5>
+			<hr>
+			<form action="" method="POST">
+				{% csrf_token %}
+				{{form.as_p}}
+				
+				
+			</form>
+		</div>
+		<br>
+		<div class="col justify-content-between"></div>
+			<button type="submit" class="btn btn-primary">Actualizar</button>
+			<a class="btn btn-secondary" href="{% url "gestion:grupos-listar" %}" class="cancellink-box">Cancelar</a>
 		</div>
 	</div>
-
-
+</div>
 	{% endblock %}
-</body>
-

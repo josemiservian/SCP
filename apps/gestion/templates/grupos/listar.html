@@ -1,20 +1,22 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-
 <div class="row">
-	<div class="col-md-5">
+	<div class="col d-flex justify-content-between">
 		<h5>Grupos:</h5>
-		<hr>
-			
-			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
-			<a class="btn btn-primary  btn-sm btn-block" href="{% url 'gestion:grupos-crear'%}">Crear Grupo</a>
-			<p></p>
+		<a class="btn btn-primary" id="crear-registro" href="{% url 'gestion:grupos-crear'%}">Crear grupo</a>	
+	</div>
+</div>
+<hr>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
 			<table class="table table-sm">
                     <tr>
                         <th></th>
                         <th>Grupo</th>
 						<th>Accion</th>
+						<th></th>
                     </tr>
 
 				{% for grupo in grupos %}
@@ -27,6 +29,7 @@
 				{% endfor %}
 
 			</table>
+		</div>
 	</div>
 </div>
 

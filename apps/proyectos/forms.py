@@ -8,11 +8,12 @@ from django.db.models import ManyToOneRel
 # Models
 from apps.proyectos.models import * #Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora, Propuesta, PropuestaDetalle
 from apps.cuentas.models import Empleado
-from apps.gestion.models import Area, Cargo, Rol, Servicio
+from apps.gestion.models import Area, Cargo, Servicio
 import datetime as dt
 
 #Python
 from datetime import datetime
+from scp import widgets
 
 #Constantes
 from scp.choices import PAGOS_CHOICES
@@ -86,6 +87,9 @@ class ContratoForm(forms.ModelForm):
         model = Contrato
         fields = ('cliente', 'propuesta','nombre', 'descripcion','monto','horas_presupuestadas',
                   'fecha_inicio','fecha_fin','tipo_servicio')
+        widgets = {
+            'fecha_inicio':forms.SelectDateWidget(years=range(1900, 2030)),
+            'fecha_fin':forms.SelectDateWidget(years=range(1900, 2030))}
 
 
 #Formularios para Entregable
@@ -94,6 +98,10 @@ class EntregableForm(forms.ModelForm):
         
         model = Entregable
         fields = ('__all__')
+        widgets = {
+            'fecha_inicio':forms.SelectDateWidget(years=range(1900, 2030)),
+            'fecha_fin':forms.SelectDateWidget(years=range(1900, 2030))
+        }
 
 
 class FormCondicionPago(forms.Form):

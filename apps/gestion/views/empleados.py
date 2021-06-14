@@ -48,8 +48,10 @@ def listar_empleados(request):
 def actualizar_empleado(request, pk):
 
 	empleado = Empleado.objects.get(id=pk)
-	form = EmpleadoForm(instance=empleado)
-
+	form = EmpleadoForm(
+		
+		instance=empleado)
+	print(form['fecha_nacimiento'].value())
 	if request.method == 'POST':
 		form = EmpleadoForm(request.POST, instance=empleado)
 		if form.is_valid():

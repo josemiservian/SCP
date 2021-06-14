@@ -1,7 +1,6 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-
 <div class="row">
 	<div class="col-md-6">
 		<h5>Modificar entregable</h5>
@@ -9,15 +8,14 @@
 
 			<form action="" method="POST">
 				{% csrf_token %}
-				{{ form.management_form }}
-				{% for field in form %}
-					{{field}}
-					<hr>
-				{% endfor %}
-                <button type="submit" class="btn btn-primary">Actualizar</button>
-				<a  href="{% url 'proyectos:entregables-detalle' entregable.id %}" class="cancellink-box">Cancelar</a>
+				{{form.as_p}}
 			</form>
-
+			
+		</div>
+		<br>
+		<div class="col justify-content-between"></div>
+			<button type="submit" class="btn btn-primary">Actualizar</button>
+			<a class="btn btn-secondary" href="{% url "proyectos:clientes-listar" %}" class="cancellink-box">Cancelar</a>
 		</div>
 	</div>
 </div>

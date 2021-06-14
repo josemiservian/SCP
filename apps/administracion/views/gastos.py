@@ -80,7 +80,7 @@ def actualizar_gasto(request, pk):
 @allowed_users(action='delete_gasto')
 def borrar_gasto(request, pk):
 	
-    Gasto = Gasto.objects.get(id=pk)
+    gasto = Gasto.objects.get(id=pk)
     if request.method == "POST":
         Gasto.delete()
         return redirect('administracion:gastos-listar')
