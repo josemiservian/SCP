@@ -72,7 +72,7 @@ def listar_propuestas(request, estado):
     propuestas = paginator.get_page(page)
 
 
-    #return render(request, 'propuestas/listar.html', {'propuestas':propuestas, 'filtros':filtros})
+    return render(request, 'propuestas/listar.html', {'propuestas':propuestas, 'filtros':filtros})
     
 
     #propuestas = Propuesta.objects.all()

@@ -1,18 +1,22 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-
-<div class="col">
-	<div class="card card-body">
-        <h5><strong>¿Desea emitir la factura {{plan.descripcion}}, con valor de {{plan.monto_facturar}}?</strong></h5>
-		<hr>
-        <form method="POST">	
-            {% csrf_token %}
-            <input class="btn btn-danger" type="submit" name="Aceptar">
-            <a class="btn btn-warning" href="{% url 'proyectos:condicionPagos-listar' plan.condicion_pago.contrato.id %}">Cancelar</a>
-        </form>
+<div class="row">
+	<div class="col-md-6">
+		<h5>Emitir Factura</h5>
+		<p></p>
+        <div class="col">
+	        <div class="card card-body">
+            <h5><strong>¿Desea emitir la factura {{plan.descripcion}}, con valor de {{plan.monto_facturar}}?</strong></h5>
+		    <hr>
+            <form method="POST">	
+                {% csrf_token %}
+                <input class="btn btn-danger" type="submit" name="Aceptar">
+                <a class="btn btn-warning" href="{% url 'proyectos:condicionPagos-listar' plan.condicion_pago.contrato.id %}">Cancelar</a>
+            </form>
             
-	</div>
+	    </div>
+    </div>   
 </div>
 <br>
 

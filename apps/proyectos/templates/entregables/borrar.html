@@ -16,7 +16,7 @@
 				
 				{% csrf_token %}
 				<input class="btn btn-danger" type="submit" name="Aceptar">
-				<a class="btn btn-warning" href="{% url 'proyectos:entregables-listar' %}">Cancelar</a>
+				<a class="btn btn-warning" href="{% url 'proyectos:entregables-listar' entregable.id  %}">Cancelar</a>
 
 				
 			</form>

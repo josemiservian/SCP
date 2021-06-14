@@ -40,13 +40,15 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'xhtml2pdf',
+   
     #Aplicaciones
     'apps.administracion',
     'apps.cuentas',
     'apps.gestion',
     'apps.proyectos',
     'apps.reportes',
-]
+    'apps.help',
+]   
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
