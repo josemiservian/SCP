@@ -155,16 +155,16 @@ class FormCrearServicio(forms.Form):
     
     detalle = forms.CharField(max_length=30)
     descripcion = forms.CharField(max_length=60)
-    estado_final = forms.CharField(max_length=15)
-    costo = forms.FloatField()
     area = forms.ModelChoiceField(Area.objects.all())
 
     def save(self):
         """Crea y guarda un cliente"""
         data = self.cleaned_data
-        servicio = Servicio(detalle=data['detalle'], descripcion=data['descripcion'],
-                            estado_final=data['estado_final'], costo=data['costo'],
-                            area=data['area'],)
+        servicio = Servicio(
+            detalle=data['detalle'], 
+            descripcion=data['descripcion'],
+            area=data['area']
+        )
         servicio.save()
 
 
@@ -172,4 +172,4 @@ class ServicioForm(forms.ModelForm):
 
     class Meta:
         model = Servicio
-        fields = ('detalle','descripcion','estado_final','costo','area')
+        fields = ('detalle','descripcion','area')

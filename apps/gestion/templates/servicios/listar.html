@@ -26,8 +26,6 @@
 						<td>{{servicio.id}}</td>
 						<td>{{servicio.detalle}}</td>
                         <td>{{servicio.descripcion}}</td>
-                        <td>{{servicio.estado_final}}</td>
-                        <td>{{servicio.costo}}</td>
                         <td>{{servicio.area.nombre}}</td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:servicios-modificar'  servicio.id%}">Actualizar</a></td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'gestion:servicios-borrar'  servicio.id%}">Borrar</a></td>

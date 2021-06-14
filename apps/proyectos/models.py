@@ -34,8 +34,8 @@ class Contrato(models.Model):
     propuesta = models.ForeignKey(
         'proyectos.Propuesta', 
         on_delete=models.CASCADE, 
-        limit_choices_to={'estado': 'A'},
-        null=True)
+        limit_choices_to={'estado': 'A'}
+    )
     nombre = models.CharField(max_length=30, null=False)
     descripcion = models.CharField(max_length=80, null=False)
     monto = models.FloatField(null=False)
@@ -172,8 +172,8 @@ class RegistroHora(models.Model):
     encuentran los empleados de la consultora.'''
 
     empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
-    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE, null=True)
-    entregable = models.ForeignKey('proyectos.Entregable', on_delete=models.CASCADE, null=True)
+    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    entregable = models.ForeignKey('proyectos.Entregable', on_delete=models.CASCADE)
     nombre = models.CharField(max_length=60, null=False)
     detalle = models.CharField(max_length=250, null=False)
     fecha = models.DateField(null=False)

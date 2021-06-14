@@ -16,7 +16,7 @@ class Facturacion(models.Model):
     nro_timbrado = models.IntegerField(null=False, default=123456789)
     vigencia_desde =  models.DateField(null=False, default=timezone.now)
     vigencia_hasta =  models.DateField(null=False, default=timezone.now)
-    nombre_cliente = models.CharField(null=True, max_length=100)
+    nombre_cliente = models.CharField(null=False, max_length=100)
     ruc = models.CharField(max_length=15, null=False, default='111111-1')
     forma_pago = models.CharField(max_length=15, null=False, choices=PAGOS_CHOICES)
     fecha_emision = models.DateField(null=False, default=timezone.now)
@@ -24,7 +24,7 @@ class Facturacion(models.Model):
     monto_facturacion = models.FloatField(null=False, default=11111)
     descripcion = models.CharField(max_length=60, blank=True, null=False, default='')
     estado = models.CharField(max_length=20, choices=PAGOS_CHOICES, default='PENDIENTE DE PAGO')
-    plan_facturacion = models.ForeignKey('administracion.PlanFacturacion', null=True ,on_delete=CASCADE)
+    plan_facturacion = models.ForeignKey('administracion.PlanFacturacion', on_delete=CASCADE)
 
     def __str__(self):
         return f'{self.nro_factura}'
@@ -41,10 +41,10 @@ class PlanFacturacion(models.Model):
     fecha_vencimiento = models.DateField(null=False)
     monto_facturar = models.FloatField(null=False)
     estado = models.CharField(max_length=25, choices=FACTURA_CHOICES, default='PENDIENTE FACTURACION')
-    condicion_pago = models.ForeignKey('proyectos.CondicionPago', on_delete=models.CASCADE, null=True)
+    condicion_pago = models.ForeignKey('proyectos.CondicionPago', on_delete=models.CASCADE)
 
     class Meta:
-        verbose_name = 'Plan de Facturacione'
+        verbose_name = 'Plan de Facturaciones'
 
     def __str__(self):
         return self.descripcion
@@ -106,8 +106,8 @@ class Gasto(models.Model):
 class Pago(models.Model):
     '''Modelo para generacion de Pagos a la consultora.'''
     
-    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE, null=True)
-    factura = models.ForeignKey('administracion.Facturacion', on_delete=models.CASCADE, null=True)
+    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    factura = models.ForeignKey('administracion.Facturacion', on_delete=models.CASCADE)
     detalle = models.CharField(max_length=50, blank=True, null=False)
     descripcion = models.CharField(max_length=60, blank=True, null=False, default='') 
     monto = models.FloatField(null=False)
