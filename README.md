@@ -310,3 +310,113 @@ En la sección de detalle de la vista Equipos, visualizará el botón *Ver integ
 ![Detalle de Horas](\static\images\horas\detalle_horas.PNG "Detalle de Horas")
 
 *Observación: En la parte superior de la pantalla, podrá realizar filtros de búsqueda por contrato, entregable, nombre del entregable, detalle o fechas.*
+
+
+## Plan de Facturación
+
+
+<a name="item1"></a>
+##Crear Propuesta
+---
+####Aquí podrás visualizar el detalle de facturas con sus respectivos estados y en base al método de pago seleccionado.
+---
+
+![Plan Facturación](\static\images\facturacion\plan_facturacion.PNG "Plan Facturación")
+
+<a name="top"></a>
+
+* ####[Emitir Factura](#item1)
+* ####[Registrar Pago](#item2)
+
+
+<a name=”item1″></a>
+##Emitir Factura
+---
+####Las facturas se encontrarán inicialmente en un estado Pendiente Facturación. Si es necesario realizar la emisión de la factura, sólo deberá hacer click sobre el botón *Emitir factura*
+---
+
+![Confirmar emisión factura](\static\images\facturacion\confirmar_emitir_factura.PNG "Confirmar emisión factura")
+
+*El mensaje que visualizarás es para validar la confirmación de la emisión de la factura, podrás aceptar o cancelar el proceso si lo deseas*
+
+---
+####Una vez emitida la factura, ésta pasa a un estado Facturado, en donde podrás luego visualizar la factura emitida en formato PDF mediante el botón *Ver factura* o registrar el pago de dicha factura con el botón *Registrar pago*
+---
+
+![Detalle Plan Facturación](\static\images\facturacion\detalle_plan_facturacion.PNG "Detalle Plan Facturación")
+
+![Factura creada](\static\images\facturacion\imagen_factura.PNG "Factura creada")
+
+####[Subir](#top)
+
+<a name="item2"></a>
+##Registrar Pago
+
+
+![Confirmar registro de pago](\static\images\facturacion\confirmar_registrar_pago.PNG "Confirmar registro de pago")
+
+*El mensaje que visualizarás es para validar la confirmación del pago de la factura, podrás aceptar o cancelar el proceso si lo deseas*
+
+---
+####Una vez realizado dicho proceso, la factura cambia a un estado Pagado, en donde además podrás ver el detalle del pago registrado mediante el botón *Ver Pago*
+---
+
+![Detalle de pago](\static\images\facturacion\detalle_factura_pagada.PNG "Detalle de factura pagada")
+
+####[Subir](#top)
+
+
+
+##Facturas
+
+####En esta sección podrás visualizar todas aquellas facturas que fueron emitidas con los detalles correspondientes.
+
+####*Algunas definiciones importantes con relación a la factura:*###
+
+- **Nro.:** Se trata del número asociado a la factura emitida, sta numeración es cronológica en función de la facturación del emisor.
+
+- **Timbrado:** Es la representación numérica de la autorización concedida por la Administración Tributaria a través de su sistema informático
+
+-**Vigencia desde/hasta:** Se otorga de acuerdo al comportamiento tributario.
+
+-**RUC:** Es el número de identificación - personal e intransferible. Registro Único del Contribuyente 
+
+![Facturas](\static\images\facturacion\detalle_facturacion.PNG "Detalle Facturas")
+
+
+##Pagos
+
+---
+####En esta sección podrás visualizar todos los pagos realizados a facturas que fueron emitidas con los detalles correspondientes.
+---
+
+- **Monto:** Monto abonado en el pago.
+- **Fecha:** Fecha en donde se ha realizado el pago.
+- **Estado:** P (Pagado).
+
+*Observaciones: en cada detalle de pago podrá visualizar los botones Actualizar y Borrar, si desea modificar el pago o eliminarlo.*
+
+![Pagos](\static\images\facturacion\pagos_realizados.PNG "Pagos")
+
+##Gastos
+
+---
+####En esta sección podrás añadir y visualizar los gastos relacionados a los contratos.
+
+####Para registrar un gasto deberás hacer click en el botón *Añadir gasto*:
+---
+
+![Crear gasto](\static\images\facturacion\crear_gasto.PNG "Crear gasto")
+
+- **Motivo:** Por medio de la lista desplegable, deberás seleccionar el concepto del gasto a registrar. En caso de que la misma no se encuentre disponible dentro del listado, podrás seleccionar *Otros*
+
+- **Detalle:** Resumen del detalle del gasto registrado en el contrato.
+
+- **Gasto:** Completar con el monto correspondiente al gasto.
+
+---
+####Una vez registrado el gasto, en la pantalla visualizarás todos los gastos cargados con sus respectivos detalles, en donde podrá además actualizar o modificar los datos cargados, asi como eliminarlo del sistema:
+---
+
+![Detalles gastos](\static\images\facturacion\detalle_gastos.PNG "Detalles gastos")
+

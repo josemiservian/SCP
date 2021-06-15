@@ -11,5 +11,5 @@ class ServicioFilter(django_filters.FilterSet):
 
     class Meta:
         model = Servicio
-        fields =  ['estado_final', 'area']
-        
+        fields =  ['area']
+    

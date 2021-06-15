@@ -14,7 +14,8 @@
 
 				<form action="" method="POST">
 					{% csrf_token %}
-					{{ form.management_form }}
+					{{form.as_p}}
+					<!-- {{ form.management_form }}
 					<div>
 						{% for field in form %}
 						{{field}}
@@ -22,7 +23,7 @@
 						{% endfor %}
 
 					</div>
-					
+					 -->
 					
 					
 					<div>

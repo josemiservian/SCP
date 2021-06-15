@@ -9,11 +9,12 @@
 
 			<form action="" method="POST">
 				{% csrf_token %}
-				{{ form.management_form }}
+				{{form.as_p}}
+				<!-- {{ form.management_form }}
 				{% for field in form %}
 					{{field}}
 					<hr>
-				{% endfor %}
+				{% endfor %} -->
                 <button type="submit" class="btn btn-primary">Actualizar</button>
 				<a  href="{% url 'proyectos:entregables-detalle' entregable.id %}" class="cancellink-box">Cancelar</a>
 			</form>

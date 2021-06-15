@@ -87,7 +87,7 @@ WSGI_APPLICATION = 'scp.wsgi.application'
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'scp',
+        'NAME': 'SCP_2',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',
