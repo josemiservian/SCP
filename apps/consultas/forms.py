@@ -6,3 +6,9 @@ class ConsulContForm(Form):
         'class': 'form-control',
         'autocomplete': 'off'
     }))
+
+class GraficoForm(Form):
+    date_range = CharField(widget=TextInput(attrs={
+        'class': 'form-control',
+        'autocomplete': 'off'
+    }))

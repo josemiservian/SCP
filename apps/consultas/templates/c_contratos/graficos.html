@@ -1,0 +1,213 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head %}
+<script src="{% static '/highcharts-8.1.2/highcharts.js' %}"></script>
+<script src="{% static '/highcharts-8.1.2/modules/exporting.js' %}"></script>
+<script src="{% static '/highcharts-8.1.2/modules/export-data.js' %}"></script>
+<script src="{% static '/highcharts-8.1.2/modules/accessibility.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="container"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="container2"></div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div id="container-pie"></div>
+        </div>
+    </div>
+    <br>
+</div>
+<script type="application/javascript">
+    var graphcolumn = Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+           // text: 'Reporte de ventas del año 2020'
+            text: 'Gastos por Contratos'
+        },
+       
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+               
+                crosshair: true
+            },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} Gs</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+    });
+</script>
+
+<script type="application/javascript">
+var graphcolumn2 = Highcharts.chart('container2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Comparativo de Desviaciones entre proyectos por mes'
+    },
+    subtitle: {
+        text: ''
+    },
+   
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} Hs.</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+            dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+        }
+    },
+  });
+
+</script>
+<script type="application/javascript" >
+    var graphpie = Highcharts.chart('container-pie', {
+        chart: {
+            plotBackgroundColor: null,
+            plotBorderWidth: null,
+            plotShadow: false,
+            type: 'pie'
+        },
+        title: {
+            //text: 'Porcentaje de venta de productos por el mes de Junio del año 2020'
+            text: 'Porcentaje de horas ejecutadas de contratos por mes del año 2021'
+        },
+        tooltip: {
+            pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+        },
+        accessibility: {
+            point: {
+                //valueSuffix: '%'
+                valueSuffix: 'Hs.'
+            }
+        },
+        plotOptions: {
+            pie: {
+                allowPointSelect: true,
+                cursor: 'pointer',
+                dataLabels: {
+                    enabled: true,
+                    format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                }
+            }
+        },
+    });
+
+    function get_graph_hours_year_month() {
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+            data: {
+               
+                'action': 'get_graph_hours_year_month'
+            },
+            dataType: 'json',
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                graphcolumn.addSeries(data);
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    }
+
+    function get_graph_hours_proyect_year_month() {
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+            data: {
+                'action': 'get_graph_hours_proyect_year_month'
+            },
+            dataType: 'json',
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                graphpie.addSeries(data);
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    }
+
+    function get_graph_hours_contrato_year_month() {
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+            data: {
+                'action': 'get_graph_hours_contrato_year_month'
+            },
+            dataType: 'json',
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                graphcolumn2.addSeries(data);
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    }
+
+
+    $(function () {
+
+       get_graph_hours_year_month();
+
+        get_graph_hours_proyect_year_month();
+
+        get_graph_hours_contrato_year_month();
+
+    });
+</script>
+
+
+
+{% endblock %}

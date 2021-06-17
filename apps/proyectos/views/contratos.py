@@ -39,6 +39,7 @@ class CrearContrato(FormView):
 #FUNCIONES
 
 #Contratos
+'''
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_contrato')
 def crear_contrato2(request):
@@ -53,6 +54,7 @@ def crear_contrato2(request):
 
     context = {'form':form}
     return render(request, 'contratos/crear.html', context)
+'''
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_contrato')

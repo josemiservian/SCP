@@ -1,0 +1,274 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head %}
+<script src="{% static '/highcharts-8.1.2/highcharts.js' %}"></script>
+<script src="{% static '/highcharts-8.1.2/modules/exporting.js' %}"></script>
+<script src="{% static '/highcharts-8.1.2/modules/export-data.js' %}"></script>
+<script src="{% static '/highcharts-8.1.2/modules/accessibility.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="container"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="container2"></div>
+                <div id="container3"></div>
+            </div>
+        </div>
+        <br>
+        <div class="row">
+            <div class="col-lg-12">
+                <div id="container-pie"></div>
+            </div>
+        </div>
+        <br>
+    </div>
+    <script type="application/javascript" >
+    _valores : {{graph_hours_proyect_year_month|safe}};
+    Highcharts.chart('container', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'HORAS EJECUTADAS POR PROYECTO/MES'
+    },
+    subtitle: {
+        text: 'Total de horas ejecutadas por contrato'
+    },
+    xAxis: {
+        categories: [
+            'Contrato 1',
+            'Contrato 2',
+            'Contrato 3',
+            'Contrato 4',
+            'Contrato 5',
+          
+        ],
+        crosshair: true
+    },
+    yAxis: {
+        min: 0,
+        title: {
+            text: 'Horas Ejecutadas'
+        }
+    },
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} Hs.</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        //name: 'Tokyo',
+        name: 'Proyecto',
+       //data: { graph_hours_proyect_year_month, safe }
+       data: _valores
+       //data: [49.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4]
+
+    }]
+});
+    </script>
+    <script type="application/javascript" >
+      Highcharts.chart('container2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'ESTE YA ES SU OTRO GRAFICO'
+    },
+    xAxis: {
+        categories: [
+            'Seattle HQ',
+            'San Francisco',
+            'Tokyo'
+        ]
+    },
+    yAxis: [{
+        min: 0,
+        title: {
+            text: 'Employees'
+        }
+    }, {
+        title: {
+            text: 'Profit (millions)'
+        },
+        opposite: true
+    }],
+    legend: {
+        shadow: false
+    },
+    tooltip: {
+        shared: true
+    },
+    plotOptions: {
+        column: {
+            grouping: false,
+            shadow: false,
+            borderWidth: 0
+        }
+    },
+    series: [{
+        name: 'Employees',
+        color: 'rgba(165,170,217,1)',
+        data: [150, 73, 20],
+        pointPadding: 0.3,
+        pointPlacement: -0.2
+    }, {
+        name: 'Employees Optimized',
+        color: 'rgba(126,86,134,.9)',
+        data: [140, 90, 40],
+        pointPadding: 0.4,
+        pointPlacement: -0.2
+    }, {
+        name: 'Profit',
+        color: 'rgba(248,161,63,1)',
+        data: [183.6, 178.8, 198.5],
+        tooltip: {
+            valuePrefix: '$',
+            valueSuffix: ' M'
+        },
+        pointPadding: 0.3,
+        pointPlacement: 0.2,
+        yAxis: 1
+    }, {
+        name: 'Profit Optimized',
+        color: 'rgba(186,60,61,.9)',
+        data: [203.6, 198.8, 208.5],
+        tooltip: {
+            valuePrefix: '$',
+            valueSuffix: ' M'
+        },
+        pointPadding: 0.4,
+        pointPlacement: 0.2,
+        yAxis: 1
+    }]
+}); </script>
+<script type="application/javascript" >
+Highcharts.chart('container3', {
+    chart: {
+        type: 'cylinder',
+        options3d: {
+            enabled: true,
+            alpha: 15,
+            beta: 15,
+            depth: 50,
+            viewDistance: 25
+        }
+    },
+    title: {
+        text: 'este es en 3d siq ya'
+    },
+    plotOptions: {
+        series: {
+            depth: 25,
+            colorByPoint: true
+        }
+    },
+    series: [{
+        data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 95.6, 54.4],
+        name: 'Cylinders',
+        showInLegend: false
+    }]
+}); </script>
+<script type="application/javascript">
+var graphpie = Highcharts.chart('container-pie', {
+            chart: {
+                plotBackgroundColor: null,
+                plotBorderWidth: null,
+                plotShadow: false,
+                type: 'pie'
+            },
+            title: {
+                //text: 'Porcentaje de venta de productos por el mes de Junio del año 2020'
+                text: 'Horas Ejecutadas de contratos por mes del año 2021'
+            },
+            tooltip: {
+                pointFormat: '{series.name}: <b>{point.percentage:.1f}%</b>'
+            },
+            accessibility: {
+                point: {
+                    valueSuffix: '%'
+                }
+            },
+            plotOptions: {
+                pie: {
+                    allowPointSelect: true,
+                    cursor: 'pointer',
+                    dataLabels: {
+                        enabled: true,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f} %'
+                    }
+                }
+            },
+        });
+
+        //function get_graph_hours_year_month() {
+          //  $.ajax({
+            //    url: window.location.pathname, //window.location.pathname
+              //  type: 'POST',
+                //data: {
+                  //  'action': 'get_graph_hours_year_month'
+                //},
+                //dataType: 'json',
+            //}).done(function (data) {
+              //  if (!data.hasOwnProperty('error')) {
+                //    graphcolumn.addSeries(data);
+                  //  return false;
+                //}
+                //message_error(data.error);
+            //}).fail(function (jqXHR, textStatus, errorThrown) {
+              //  alert(textStatus + ': ' + errorThrown);
+            //}).always(function (data) {
+
+            //});
+        //}
+
+        function get_graph_hours_proyect_year_month() {
+            $.ajax({
+                url: window.location.pathname, //window.location.pathname
+                type: 'POST',
+                data: {
+                    'action': 'get_graph_hours_proyect_year_month'
+                },
+                dataType: 'json',
+            }).done(function (data) {
+                if (!data.hasOwnProperty('error')) {
+                    graphpie.addSeries(data);
+                    return false;
+                }
+                message_error(data.error);
+            }).fail(function (jqXHR, textStatus, errorThrown) {
+                alert(textStatus + ': ' + errorThrown);
+            }).always(function (data) {
+
+            });
+        }
+
+        $(function () {
+
+            //get_graph_hours_year_month();
+
+            get_graph_hours_proyect_year_month();
+
+        });
+</script>
+
+{% endblock %}

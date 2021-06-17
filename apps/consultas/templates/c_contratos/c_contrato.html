@@ -23,13 +23,16 @@
             <table class="table table-bordered" id="data">
                 <thead>
                 <tr>
-                    <th scope="col">Contrato</th>
-                    <th scope="col">Descripcion</th>
-                    <th scope="col">Monto</th>
-                    <th scope="col">Horas Presupuestadas</th>
-                    <th scope="col">Horas Ejecutadas</th>
-                    <th scope="col">Fecha de Inicio</th>
-                    <th scope="col">Fecha de Fin</th>
+                    <th scope="col">Contrato </th>
+                    <th scope="col">Descripcion </th>
+                    <th scope="col">Monto de Contrato </th>
+                    <th scope="col">Monto Ejecutado </th>
+                    <th scope="col">Horas Presupuestadas </th>
+                    <th scope="col">Horas Ejecutadas </th>
+                    <th scope="col">Fecha de Inicio </th>
+                    <th scope="col">Fecha de Fin </th>
+                    <th scope="col">Rentabilidad de las horas </th>
+                    <th scope="col">Rentabilidad del Presupuesto </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,7 +42,10 @@
 
         <div class="card-footer">
             <a href="{{ list_url }}" class="btn btn-success btn-flat">
-                <i class="fas fa-sync"></i> Actualizar
+                <i class="fas fa-sync"></i> Actualizar 
+            </a>
+            <a href="{{ create_url }}" class="btn btn-primary btn-flat btnTest">
+                <i class="fas fa-images"></i> Ver Gráfico
             </a>
         </div>
     </div>
