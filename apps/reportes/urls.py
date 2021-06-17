@@ -1,8 +1,15 @@
 from django.urls import path
 from apps.reportes.views import seguimientos
+from apps.reportes.views import reporte
 
 urlpatterns = [
 	
+    path(
+        route='seguimientos/report',
+        view= reporte.ReportHorasView.as_view(),
+        #ReportHorasView.as_view(),
+        name='Report-Horas'
+    ),
     path(
         route='seguimientos/crear',
         view=seguimientos.crear_seguimiento,#CrearSeguimiento.as_view(),

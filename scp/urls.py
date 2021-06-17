@@ -29,6 +29,8 @@ urlpatterns = [
     path('proyectos/', include(('apps.proyectos.urls', 'proyectos'), namespace='proyectos')),
     path('reportes/', include(('apps.reportes.urls', 'reportes'), namespace='reportes')),
     path('help/', include(('apps.help.urls', 'help'), namespace='help')),
+    path('consultas/', include(('apps.consultas.urls', 'consultas'), namespace='consultas')),
     
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

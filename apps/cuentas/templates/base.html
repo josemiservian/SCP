@@ -24,10 +24,12 @@
   </head>
   <body>
     <div class="d-flex toggled" id="wrapper">{% block container %}{% endblock%}</div>
+    
     <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
+      src="https://code.jquery.com/jquery-3.2.1.js"
+      integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+      crossorigin="anonymous">
+  </script>
     ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -39,6 +41,20 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-    {% block scripts_content %}{% endblock %}
+    <!-- para rango de fechas-->
+    <link rel="stylesheet" href="{% static '/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet"
+          href="{% static '/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static '/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static '/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static '/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static '/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static '/moment-2.29.1/moment.js' %}"></script>
+    <script src="{% static '/daterangepicker-3.1/spanish.js' %}"></script>
+    <script src="{% static '/daterangepicker-3.1/daterangepicker.js' %}"></script>
+    <link rel="stylesheet" href="{% static '/daterangepicker-3.1/daterangepicker.css' %}"/>
+    <script src="{% static 'js/report.js' %}"></script>
+    
+    {% block scripts_content %} {% endblock %}
   </body>
 </html>

@@ -47,8 +47,10 @@ INSTALLED_APPS = [
     'apps.gestion',
     'apps.proyectos',
     'apps.reportes',
-    'apps.help',
-]   
+    'apps.help', 
+    'apps.consultas',
+
+]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
