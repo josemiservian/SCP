@@ -82,8 +82,8 @@ def borrar_gasto(request, pk):
 	
     gasto = Gasto.objects.get(id=pk)
     if request.method == "POST":
-        Gasto.delete()
+        gasto.delete()
         return redirect('administracion:gastos-listar')
         
-    context = {'Gasto':Gasto}
+    context = {'gasto':gasto}
     return render(request, 'gastos/borrar.html', context)
