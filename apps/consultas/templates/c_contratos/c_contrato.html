@@ -3,6 +3,25 @@
 
 
 {% block content %}
+
+<style>
+    .floating-btnz{
+        width: 30px;
+        height: 30px;
+        background: #007bff;
+        display: flex;
+        border-radius: 50%;
+        color: #ffffff;
+        font-size: 20px;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        box-shadow: 4px 4px 4px rgba(0,0,0, 0.25);
+        outline: blue;
+        border: none;
+        cursor: pointer;
+    }
+</style>
     <div class="card card-primary">
         <div class="card-header">
             <h3 class="card-title">
@@ -23,13 +42,16 @@
             <table class="table table-bordered" id="data">
                 <thead>
                 <tr>
-                    <th scope="col">Contrato</th>
-                    <th scope="col">Descripcion</th>
-                    <th scope="col">Monto</th>
-                    <th scope="col">Horas Presupuestadas</th>
-                    <th scope="col">Horas Ejecutadas</th>
-                    <th scope="col">Fecha de Inicio</th>
-                    <th scope="col">Fecha de Fin</th>
+                    <th scope="col">Contrato </th>
+                    <th scope="col">Descripcion </th>
+                    <th scope="col">Monto de Contrato </th>
+                    <th scope="col">Monto Ejecutado </th>
+                    <th scope="col">Horas Presupuestadas </th>
+                    <th scope="col">Horas Ejecutadas </th>
+                    <th scope="col">Fecha de Inicio </th>
+                    <th scope="col">Fecha de Fin </th>
+                    <th scope="col">Rentabilidad de las horas </th>
+                    <th scope="col">Rentabilidad del Presupuesto </th>
                 </tr>
                 </thead>
                 <tbody>
@@ -39,10 +61,17 @@
 
         <div class="card-footer">
             <a href="{{ list_url }}" class="btn btn-success btn-flat">
-                <i class="fas fa-sync"></i> Actualizar
+                <i class="fas fa-sync"></i> Actualizar 
+            </a>
+            <a href="{{ create_url }}" class="btn btn-primary btn-flat btnTest">
+                <i class="fas fa-images"></i> Ver Gráfico
             </a>
         </div>
     </div>
+    <br>
+    <br>
+
+    <button  class="material-icons floating-btnz" onclick="location.href='{% url 'help:help_detail' 14 %}'">?</button>
 
 {% endblock %}
 

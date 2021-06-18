@@ -35,10 +35,13 @@ class ConsultaView(TemplateView):
                         s.nombre,
                         s.descripcion,
                         s.monto,
+                        s.gastos,
                         s.horas_presupuestadas,
                         s.horas_ejecutadas,
                         s.fecha_inicio,
                         s.fecha_fin,
+                        s.rentabilidad_horas,
+                        s.rentabilidad_presupuesto,
                     ])
             else:
                 data['error'] = 'Ha ocurrido un error'
@@ -51,4 +54,7 @@ class ConsultaView(TemplateView):
         context['title'] = 'Reporte de los Contratos'
         context['list_url'] = reverse_lazy('consultas:c_contrato')
         context['form'] = ConsulContForm()
+        context['create_url'] = reverse_lazy('consultas:graficos')
         return context
+
+

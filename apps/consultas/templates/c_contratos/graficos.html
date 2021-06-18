@@ -1,0 +1,332 @@
+{% extends 'main.html' %}
+{% load static %}
+
+
+{% block head %}
+<script src="{% static '/highcharts-8.1.2/highcharts.js' %}"></script>
+<script src="{% static '/highcharts-8.1.2/modules/exporting.js' %}"></script>
+<script src="{% static '/highcharts-8.1.2/modules/export-data.js' %}"></script>
+<script src="{% static '/highcharts-8.1.2/modules/accessibility.js' %}"></script>
+{% endblock %}
+
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-lg-6">
+                <div id="container"></div>
+            </div>
+            <div class="col-lg-6">
+                <div id="container2"></div>
+            </div>
+        </div>
+    </div>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="col-lg-6">
+            <div id="container3"></div>
+        </div>
+        <div class="col-lg-6">
+            <div id="container4"></div>
+        </div>
+    </div>
+
+    <br>
+</div>
+<script type="application/javascript">
+    var graphcolumn = Highcharts.chart('container', {
+        chart: {
+            type: 'column'
+        },
+        title: {
+           // text: 'Reporte de ventas del año 2020'
+            text: 'Gastos por Contratos'
+        },
+       
+        subtitle: {
+            text: ''
+        },
+        xAxis: {
+               
+                crosshair: true
+            },
+        tooltip: {
+            headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+            pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+                '<td style="padding:0"><b>{point.y:.1f} Gs</b></td></tr>',
+            footerFormat: '</table>',
+            shared: true,
+            useHTML: true
+        },
+        plotOptions: {
+            column: {
+                pointPadding: 0.2,
+                borderWidth: 0
+            }
+        },
+    });
+</script>
+
+<script type="application/javascript">
+var graphcolumn2 = Highcharts.chart('container2', {
+    chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Desvío de Horas por Contrato'
+    },
+    subtitle: {
+        text: ''
+    },
+   
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} Hs.</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+            dataLabels: {
+                        enabled: false,
+                        format: '<b>{point.name}</b>: {point.percentage:.1f}'
+                    }
+        }
+    },
+  });
+
+</script>
+<script type="application/javascript" >
+    var graphcolumn3 = Highcharts.chart('container3', {
+        chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Horas Ejecutadas vs. Horas Presupuestadas'
+    },
+    subtitle: {
+        text: ''
+    },
+   
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} Hs.</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+            dataLabels: {
+                        enabled: false,
+                        format: '<b>{point.name}</b> {point.percentage:.1f}'
+                    },
+            colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
+        '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
+        },
+        series: [{
+        // specific options for this series instance
+        colors: ['#c42525', '#77a1e5']
+    }]
+    },
+    
+    
+  });
+
+  var graphcolumn4 = Highcharts.chart('container4', {
+        chart: {
+        type: 'column'
+    },
+    title: {
+        text: 'Monto del Contrato vs. Gastos del Contrato'
+    },
+    subtitle: {
+        text: ''
+    },
+   
+    tooltip: {
+        headerFormat: '<span style="font-size:10px">{point.key}</span><table>',
+        pointFormat: '<tr><td style="color:{series.color};padding:0">{series.name}: </td>' +
+            '<td style="padding:0"><b>{point.y:.1f} Gs.</b></td></tr>',
+        footerFormat: '</table>',
+        shared: true,
+        useHTML: true
+    },
+    plotOptions: {
+        column: {
+            pointPadding: 0.2,
+            borderWidth: 0,
+            dataLabels: {
+                        enabled: false,
+                        format: '<b>{point.name}</b> {point.percentage:.1f}'
+                    },
+            colors: ['#2f7ed8', '#0d233a', '#8bbc21', '#910000', '#1aadce',
+        '#492970', '#f28f43', '#77a1e5', '#c42525', '#a6c96a']
+        },
+        series: [{
+        // specific options for this series instance
+        colors: ['#c42525', '#77a1e5']
+    }]
+    },
+    
+    
+  });
+
+  function get_graph_gastos_porproyecto() {
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+            data: {
+               
+                'action': 'get_graph_gastos_porproyecto'
+            },
+            dataType: 'json',
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                graphcolumn4.addSeries(data);
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    }
+
+    function get_graph_hours_porproyecto() {
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+            data: {
+               
+                'action': 'get_graph_hours_porproyecto'
+            },
+            dataType: 'json',
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                graphcolumn4.addSeries(data);
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    }
+
+    function get_graph_hours_year_month() {
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+            data: {
+               
+                'action': 'get_graph_hours_year_month'
+            },
+            dataType: 'json',
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                graphcolumn.addSeries(data);
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    }
+
+    function get_graph_hours_vero_year_month() {
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+                 data: {
+                    'action': 'get_graph_hours_vero_year_month'
+                 },
+         
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                graphcolumn3.addSeries(data);
+               
+                
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    }
+
+    function get_graph_hours_vero2_year_month() {
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+                 data: {
+                    'action': 'get_graph_hours_vero2_year_month'
+                 },
+                 dataType: 'json',
+                 
+                      
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                graphcolumn3.addSeries(data);
+                
+                
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    }
+
+    function get_graph_hours_contrato_year_month() {
+        $.ajax({
+            url: window.location.pathname, //window.location.pathname
+            type: 'POST',
+            data: {
+                'action': 'get_graph_hours_contrato_year_month'
+            },
+            dataType: 'json',
+        }).done(function (data) {
+            if (!data.hasOwnProperty('error')) {
+                graphcolumn2.addSeries(data);
+                return false;
+            }
+            message_error(data.error);
+        }).fail(function (jqXHR, textStatus, errorThrown) {
+            alert(textStatus + ': ' + errorThrown);
+        }).always(function (data) {
+
+        });
+    }
+
+
+    $(function () {
+
+       get_graph_hours_year_month();
+       get_graph_hours_contrato_year_month();
+       get_graph_hours_vero_year_month();
+       get_graph_hours_vero2_year_month();
+       get_graph_hours_porproyecto();
+       get_graph_gastos_porproyecto();
+
+   });
+</script>
+
+
+
+{% endblock %}

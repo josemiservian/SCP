@@ -1,4 +1,3 @@
-<a name="top"></a>
 # Sistema de Gestión de Proyectos - SCP
 
 ## Indice de Contenidos
@@ -419,4 +418,57 @@ En la sección de detalle de la vista Equipos, visualizará el botón *Ver integ
 ---
 
 ![Detalles gastos](\static\images\facturacion\detalle_gastos.PNG "Detalles gastos")
+
+##Reportes
+
+---
+####En esta sección podrás obtener una vista con el resumen de los contratos existentes en el sistema, con los datos resaltantes relacionados a cada contrato.
+---
+
+![Pantalla Principal Reportes](\static\images\reporte\detalel_pantalla_reporte.PNG "Pantalla Principal Reportes")
+
+---
+###*Para obtener esta vista, sólo es necesario seleccionar el rango de fechas que deseamos sean mostrados con relación a los contratos:*
+
+![Rango de fechas](\static\images\reporte\rango_fechas.PNG "Rango de fechas")
+
+---
+*Además, podrás exportar el detalle a un archivo Excel o PDF*
+
+---
+
+###Uso de Botones:
+
+- **Descargar Excel:** Exporta los datos a un archivo en formato Excel.
+- **Descargar Pdf:** Exporta los datos a un archivo en formato PDF.
+- **Actualizar:** Refresca la pantalla con los datos recientes.
+- **Ver Gráfico:** Mostrará una ventana con 4 gráficos en donde podrás visualizar algunos resumenes.
+
+---
+####Al seleccionar el botón *Ver Gráfico*, desplegará una pantalla en donde podrás visualizar 4 tipos de gráficos:
+
+- **Gastos por Contrato:** Son los gastos adicionales efectuados dentro del contrato, en concepto de Viáticos por viajes, Repososición de combustible, Materiales para logística, Honorarios profesionales, Alquileres, Aranceles por plataformas y Otros, registrados en la sección del sistema *Gastos*.
+
+![Desvío de horas](\static\images\reporte\desvio_horas.PNG "Desvío de horas")
+
+- **Desvío de Horas por Contrato:** Muestra la desviación con relación a las horas presupuestadas del contrato y las horas ejecutadas. Si la barra va en dirección inversa (para abajo), tenemos un contrato con horas negativas (se han ejecutado más horas de lo presupuestado).
+
+- **Horas ejecutadas vs. Horas presupuestadas:** Muestra dos barras relacionando las horas presupuestadas y ejecutadas del contrato.
+
+- **Monto del contrato vs. Gastos del Contrato:** Muestra dos barras relacionando el monto del contrato establecido al momento de la propuesta y los gastos que se han ejecutado a dicho contrato.
+
+![Barras comparativas](\static\images\reporte\barras_comparativas.PNG "Barras comparativas")
+
+*####Algunos detalles que te servirán en la sección de gráficos:*
+
+* ####Al posicionar el mouse por encima del gráfico, podrás ver el detalle de lo que representa.
+
+![Detalle barras](\static\images\reporte\detalle_barras.PNG "Detalle barras")
+
+* ####Podrás descargar el gráfico que deseas, seleccionando las tres líneas que se encuentran al costado superior derecho de cada gráfico.
+
+![Descargar gráfico](\static\images\reporte\opcion_descargar_grafico.PNG "Descargar gráfico")
+
+
+
 
