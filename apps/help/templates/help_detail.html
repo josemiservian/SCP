@@ -1,0 +1,11 @@
+{% load markdown_extras %}
+
+<div>
+  <h2>{{ help.title }}</h2>
+  <p>{{ help.body | markdown | safe }}</p>
+</div>
+<hr>
+
+<br/><br/>
+
+<a href="javascript:history.back()"><img src="/static/images/regresar.png" height="48" width="150" alt="Botón"</a>

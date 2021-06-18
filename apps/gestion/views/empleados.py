@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.contrib import messages
 from django.db.models import Sum, Count, TimeField
 from django.db.models.functions import Cast
+from django.core.paginator import Paginator
 #Decoradores
 from scp.decorators import allowed_users
 
@@ -15,6 +16,9 @@ from scp.decorators import allowed_users
 from django.contrib.auth.models import User
 from apps.cuentas.models import Empleado
 from apps.proyectos.models import Contrato, RegistroHora
+
+#Filters
+from apps.gestion.filtros import EmpleadoFilter
 
 # Forms
 from apps.cuentas.forms import FormularioRegistro, EmpleadoForm
@@ -41,7 +45,16 @@ def crear_empleado(request):
 def listar_empleados(request):
 
     empleados = Empleado.objects.all().order_by('id')
-    return render(request, 'empleados/listar.html', {'empleados':empleados})
+    filtros = EmpleadoFilter(request.GET, queryset=empleados)
+
+    empleados = filtros.qs
+
+    paginator = Paginator(empleados, 10)
+
+    page = request.GET.get('page')
+
+    empleados = paginator.get_page(page)
+    return render(request, 'empleados/listar.html', {'empleados':empleados, 'filtros':filtros})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_empleado')

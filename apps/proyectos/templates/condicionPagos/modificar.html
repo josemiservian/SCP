@@ -15,14 +15,15 @@
 		<h5>Modificar propuesta</h5>
 		<div class="card card-body">
 
-			<form action="" method="POST">
+			<form method="POST" action="{% url "proyectos:condicionPagos-modificar" %}">
 				{% csrf_token %}
-				{{ form.management_form }}
+				{{form.as_p}}
+				<!-- {{ form.management_form }}
 				{% for field in form %}
 					{{field}}
 					<hr>
 				{% endfor %}
-				
+				 -->
                 <button type="submit" class="btn btn-primary">Actualizar</button>
 				<a  href="{% url 'proyectos:propuestas-listar' estado %}" class="cancellink-box">Cancelar</a>
 			</form>
@@ -30,6 +31,7 @@
 		</div>
 	</div>
 </div>
+
 
 
 {% endblock %}

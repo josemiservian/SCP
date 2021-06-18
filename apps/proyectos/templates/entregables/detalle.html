@@ -8,7 +8,6 @@
 		<hr>
         <p><strong>Contrato</strong>: {% if entregable.contrato is None %} - {% else %} {{entregable.contrato}} {% endif %}</p>
         <p><strong>Actividades</strong>: {% if entregable.actividades is None %} - {% else %} {{entregable.actividades}} {% endif %}</p>
-        <p><strong>Responsable</strong>: {% if entregable.responsable is None %} - {% else %} {{entregable.responsable}} {% endif %}</p>
         <p><strong>Horas asignadas</strong>: {% if entregable.horas_asignadas is None %} - {% else %} {{entregable.horas_asignadas}} {% endif %}</p>
         <p><strong>Fecha inicio</strong>: {% if entregable.fecha_inicio is None %} - {% else %} {{entregable.fecha_inicio}} {% endif %}</p>
         <p><strong>Fecha fin</strong>: {% if entregable.fecha_fin is None %} - {% else %} {{entregable.fecha_fin}} {% endif %}</p>            

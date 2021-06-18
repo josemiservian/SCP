@@ -1,7 +1,26 @@
 {%  extends 'main.html' %}
 {% block content %}
 
-<br>
+
+<style>
+    .floating-btnz{
+        width: 30px;
+        height: 30px;
+        background: #007bff;
+        display: flex;
+        border-radius: 50%;
+        color: #ffffff;
+        font-size: 20px;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        box-shadow: 4px 4px 4px rgba(0,0,0, 0.25);
+        outline: blue;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+
 <div class="row">
 	<div class="col d-flex justify-content-between">
 		<h5>Servicio:</h5>
@@ -38,5 +57,55 @@
 
 	</div>
 </div>
+
+
+<hr>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<h5>Filtros:</h5>
+			<form method="GET">
+				{{filtros.form}}
+
+		    <button class="btn btn-primary" type="submit">Buscar</button>
+			
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<br>
+
+<div class="pagination">
+    {% if servicios.has_previous %}
+        <a class="pagination-action" href="?page=1">
+            <i class="fa fa-angle-double-left" aria-hidden="true"></i></a>
+        <a class="pagination-action" href="?page={{ servicios.previous_page_number }}">
+            <i class="fa fa-angle-left" aria-hidden="true"></i>
+        </a>
+    {% endif %}
+    {% for num in servicios.paginator.page_range %}
+        {% if servicios.number == num %}
+            <span class="pagination-number pagination-current">{{ num }}</span>
+        {% elif num > servicios.number|add:'-3' and num < servicios.number|add:'3' %}
+            <a class="pagination-number" href="?page={{ num }}">{{ num }}</a>
+        {% endif %}
+    {% endfor %}
+    {% if servicios.has_next %}
+        <a class="pagination-action" href="?page={{ servicios.next_page_number }}">
+            <i class="fa fa-angle-right" aria-hidden="true"></i>
+        </a>
+        <a class="pagination-action" href="?page={{ servicios.paginator.num_pages }}">
+            <i class="fa fa-angle-double-right" aria-hidden="true"></i>
+        </a>
+    {% endif %}
+</div>
+
+<br>
+<br>
+
+<button  class="material-icons floating-btnz" onclick="location.href='{% url 'help:help_detail' 5 %}'">?</button>
+
 {% endblock %}
 

@@ -40,12 +40,16 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_filters',
     'xhtml2pdf',
+   
     #Aplicaciones
     'apps.administracion',
     'apps.cuentas',
     'apps.gestion',
     'apps.proyectos',
-    #'apps.reportes',
+    'apps.reportes',
+    'apps.help', 
+    'apps.consultas',
+
 ]
 
 MIDDLEWARE = [
@@ -85,9 +89,9 @@ WSGI_APPLICATION = 'scp.wsgi.application'
 DATABASES = {
    'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'SCP',
+        'NAME': 'SCP_3',
         'USER': 'postgres',
-        'PASSWORD': '12345',
+        'PASSWORD': 'postgres',
         'HOST': 'localhost',
         'PORT': '5432',
     }

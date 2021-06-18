@@ -1,6 +1,24 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
+<style>
+    .floating-btnz{
+        width: 30px;
+        height: 30px;
+        background: #007bff;
+        display: flex;
+        border-radius: 50%;
+        color: #ffffff;
+        font-size: 20px;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        box-shadow: 4px 4px 4px rgba(0,0,0, 0.25);
+        outline: blue;
+        border: none;
+        cursor: pointer;
+    }
+</style>
 
 <div class="row">
 	<div class="col d-flex justify-content-between">
@@ -14,12 +32,12 @@
 			<h5>Planes de facturación</h5>
 			<table class="table table-sm">
 				<tr>
-					<th>Descripcion</th>
+					<th>Descripción</th>
 					<th>Fecha de emisión</th>
 					<th>Fecha de vencimiento</th>
 					<th>Monto a Facturar</th>
 					<th>Estado</th>
-					<th>Accion</th>
+					<th>Acción</th>
 					<th></th>
 				
 				{% for plan in planes_facturacion %}
@@ -50,6 +68,11 @@
 <div class="col justify-content-between">
 	<a class="btn btn-secondary" href="{% url 'proyectos:condicionPagos-listar' contrato %}">Volver</a>
 </div>
+
+<br>
+<br>
+
+<button  class="material-icons floating-btnz" onclick="location.href='{% url 'help:help_detail' 10 %}'">?</button>
 
 {% endblock %}
 

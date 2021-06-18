@@ -21,8 +21,10 @@ from apps.proyectos.models import Contrato, RegistroHora
 #Filtros
 from apps.proyectos.filtros import RegistroHoraFilter
 
+
 #Formularios
 from apps.proyectos.forms import FormCrearRegistroHora, RegistroForm
+
 
 # Create your views here.
 

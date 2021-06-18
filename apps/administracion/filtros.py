@@ -12,7 +12,7 @@ class FacturacionFilter(django_filters.FilterSet):
 class GastoFilter(django_filters.FilterSet):
 
     #motivo = CharFilter(field_name='motivo', label='Motivo', lookup_expr='icontains')
-    detalle = CharFilter(field_name='detalle', label='Detalle', lookup_expr='icontains')
+    #detalle = CharFilter(field_name='detalle', label='Detalle', lookup_expr='icontains')
     fecha_inicio = DateFilter(field_name='fecha', label='Fecha (Mayor/igual a)',lookup_expr='gte')
     fecha_fin = DateFilter(field_name='fecha', label='Fecha (Menor/igual a)',lookup_expr='lte')
     

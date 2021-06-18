@@ -5,6 +5,7 @@ from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.forms import inlineformset_factory
+from django.core.paginator import Paginator
 
 #Decoradores
 from scp.decorators import allowed_users
@@ -14,6 +15,9 @@ from apps.proyectos.models import EquipoProyecto, MiembroEquipoProyecto
 
 # Forms
 from apps.proyectos.forms import FormCrearEquipo, FormAddMiembro, EquipoForm, MiembroForm
+
+#Filtros
+from apps.proyectos.filtros import EquipoProyectoFilter
 
 # Create your views here.
 
@@ -106,7 +110,18 @@ def crear_equipo(request):
 def listar_equipos(request):
 
     equipos = EquipoProyecto.objects.all()
-    return render(request, 'equiposProyecto/equipos.html', {'equipos':equipos})
+
+    filtros = EquipoProyectoFilter(request.GET, queryset=equipos)
+
+    equipos = filtros.qs
+
+    paginator = Paginator(equipos, 10)
+
+    page = request.GET.get('page')
+
+    equipos = paginator.get_page(page)
+
+    return render(request, 'equiposProyecto/equipos.html', {'equipos':equipos, 'filtros':filtros})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_equipoproyecto')

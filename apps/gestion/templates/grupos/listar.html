@@ -1,6 +1,26 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
+
+<style>
+    .floating-btnz{
+        width: 30px;
+        height: 30px;
+        background: #007bff;
+        display: flex;
+        border-radius: 50%;
+        color: #ffffff;
+        font-size: 20px;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        box-shadow: 4px 4px 4px rgba(0,0,0, 0.25);
+        outline: blue;
+        border: none;
+        cursor: pointer;
+    }
+</style>
+
 <div class="row">
 	<div class="col d-flex justify-content-between">
 		<h5>Grupos:</h5>
@@ -29,9 +49,11 @@
 				{% endfor %}
 
 			</table>
-		</div>
+            
 	</div>
 </div>
+
+<button  class="material-icons floating-btnz" onclick="location.href='{% url 'help:help_detail' 3 %}'">?</button>
 
 {% endblock %}
 

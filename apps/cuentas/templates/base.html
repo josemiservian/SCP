@@ -8,13 +8,13 @@
 
     {% load static %} {% block head_content %}{% endblock %}
 
-    <!-- Bootstrap CSS -->
-    <link
-      rel="stylesheet"
-      href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-      integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
-      crossorigin="anonymous"
-    />
+   <!-- Bootstrap CSS -->
+   <link
+    rel="stylesheet"
+    href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
+    integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T"
+    crossorigin="anonymous"
+  />
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.4.1/font/bootstrap-icons.css">
     <!-- CSS de la Aplicación -->
     <!-- <link href="css/app.css" rel="stylesheet" /> -->
@@ -23,11 +23,13 @@
     <script defer src="https://use.fontawesome.com/releases/v5.0.6/js/all.js"></script>
   </head>
   <body>
-    <div class="d-flex toggled" id="wrapper">{% block container %}{% endblock%}</div>
+    
+    
     <script
-      src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-      integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo"
-      crossorigin="anonymous"
+      src="https://code.jquery.com/jquery-3.2.1.js"
+      integrity="sha256-DZAnKJ/6XZ9si04Hgrsxu/8s717jcIzLy3oi35EouyE="
+      crossorigin="anonymous" 
+  </script>
     ></script>
     <script
       src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
@@ -39,6 +41,40 @@
       integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM"
       crossorigin="anonymous"
     ></script>
-    {% block scripts_content %}{% endblock %}
+    <!-- para rango de fechas-->
+    <link rel="stylesheet" href="{% static '/datatables-1.10.20/css/dataTables.bootstrap4.min.css' %}"/>
+    <link rel="stylesheet"
+          href="{% static '/datatables-1.10.20/plugins/responsive-2.2.3/css/responsive.bootstrap4.min.css' %}"/>
+    <script src="{% static '/datatables-1.10.20/js/jquery.dataTables.js' %}"></script>
+    <script src="{% static '/datatables-1.10.20/js/dataTables.bootstrap4.min.js' %}"></script>
+    <script src="{% static '/datatables-1.10.20/plugins/responsive-2.2.3/js/dataTables.responsive.min.js' %}"></script>
+    <script src="{% static '/datatables-1.10.20/plugins/responsive-2.2.3/js/responsive.bootstrap4.min.js' %}"></script>
+    <script src="{% static '/moment-2.29.1/moment.js' %}"></script>
+    <script src="{% static '/daterangepicker-3.1/spanish.js' %}"></script>
+    <script src="{% static '/daterangepicker-3.1/daterangepicker.js' %}"></script>
+    <link rel="stylesheet" href="{% static '/daterangepicker-3.1/daterangepicker.css' %}"/>
+
+    
+    <link rel="stylesheet" href="{% static '/datatables-1.10.20/plugins/buttons-1.6.1/css/buttons.bootstrap.min.css' %}"/>
+    <script src="{% static '/datatables-1.10.20/plugins/buttons-1.6.1/js/dataTables.buttons.min.js' %}" type="text/javascript"></script>
+    <script src="{% static '/datatables-1.10.20/plugins/jszip-2.5.0/jszip.min.js' %}" type="text/javascript"></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/pdfmake.min.js"type="text/javascript"></script>
+    <script src=" https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.53/vfs_fonts.js " type="text/javascript"></script>
+    <script src="{% static '/datatables-1.10.20/plugins/pdfmake-0.1.36/vfs_fonts.js' %}" type="text/javascript"></script>
+    <script src="{% static '/datatables-1.10.20/plugins/buttons-1.6.1/js/buttons.html5.min.js' %}" type="text/javascript"></script>
+    
+     
+
+    <script src="{% static '/highcharts-8.1.2/highcharts.js' %}"></script>
+    <script src="{% static '/highcharts-8.1.2/highcharts-3d.js' %}"></script>
+    <script src="{% static '/highcharts-8.1.2/modules/exporting.js' %}"></script>
+    <script src="{% static '/highcharts-8.1.2/modules/export-data.js' %}"></script>
+    <script src="{% static '/highcharts-8.1.2/modules/accessibility.js' %}"></script>
+    <script src="{% static '/highcharts-8.1.2/modules/cylinder.js' %}"></script>
+    <script src="{% static 'js/report.js' %}"></script>
+
+    <div class="d-flex toggled" id="wrapper">{% block container %}{% endblock%}</div>
+
+    {% block scripts_content %} {% endblock %}
   </body>
 </html>

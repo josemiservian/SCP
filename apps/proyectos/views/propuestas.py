@@ -4,6 +4,7 @@ from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
 from django.shortcuts import render, redirect
 from django.forms.models import inlineformset_factory
+from django.core.paginator import Paginator
 from django.http import JsonResponse
 
 #Decoradores
@@ -16,6 +17,9 @@ from apps.proyectos.models import Propuesta, PropuestaDetalle
 # Forms
 from apps.proyectos.forms import FormCrearPropuesta, PropuestaForm, PropuestaDetalleForm, PropuestaAsociarCliente
 #from apps.administracion.forms import FormCrearGasto
+
+#Filtros
+from apps.proyectos.filtros import PropuestaFilter
 
 # Create your views here.
 
@@ -55,8 +59,23 @@ def crear_propuesta(request):
 @allowed_users(action='view_propuesta')
 def listar_propuestas(request, estado):
 
+    propuestas = Propuesta.objects.all() #queryset
 
-    propuestas = Propuesta.objects.all()
+    filtros = PropuestaFilter(request.GET, queryset=propuestas)
+
+    propuestas = filtros.qs
+
+    paginator = Paginator(propuestas, 10)
+
+    page = request.GET.get('page')
+
+    propuestas = paginator.get_page(page)
+
+
+    return render(request, 'propuestas/listar.html', {'propuestas':propuestas, 'filtros':filtros})
+    
+
+    #propuestas = Propuesta.objects.all()
     
     if estado == 'P':
         propuestas = propuestas.filter(estado='P')
@@ -65,7 +84,7 @@ def listar_propuestas(request, estado):
     else:
         propuestas = propuestas.filter(estado='R')
     
-    return render(request, 'propuestas/listar.html', {'propuestas':propuestas, 'estado':estado})
+    return render(request, 'propuestas/listar.html', {'propuestas':propuestas, 'estado':estado, 'filtros':filtros})
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_propuesta')

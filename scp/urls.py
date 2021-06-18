@@ -27,7 +27,10 @@ urlpatterns = [
     path('administracion/', include(('apps.administracion.urls', 'administracion'), namespace='administracion')),
     path('gestion/', include(('apps.gestion.urls', 'gestion'), namespace='gestion')),
     path('proyectos/', include(('apps.proyectos.urls', 'proyectos'), namespace='proyectos')),
-    #path('reportes/', include(('apps.reportes.urls', 'reportes'), namespace='reportes')),
+    path('reportes/', include(('apps.reportes.urls', 'reportes'), namespace='reportes')),
+    path('help/', include(('apps.help.urls', 'help'), namespace='help')),
+    path('consultas/', include(('apps.consultas.urls', 'consultas'), namespace='consultas')),
     
+
 
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
