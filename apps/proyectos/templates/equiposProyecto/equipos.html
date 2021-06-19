@@ -19,10 +19,6 @@
         cursor: pointer;
     }
 </style>
-
-
-<br>
-
 <div class="row">
 	<div class="col d-flex justify-content-between">
 		<h5>Equipos:</h5>
@@ -30,6 +26,22 @@
 	</div>
 </div>
 <hr>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<h5>Filtros:</h5>
+			<form method="GET">
+				{{filtros.form}}
+
+		    <button class="btn btn-primary" type="submit">Buscar</button>
+			
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<br>
 <div class="row">
 	<div class="col">
 		<div class="card card-body">
@@ -65,24 +77,6 @@
 </div>
 <br>
 
-<hr>
-<div class="row">
-	<div class="col">
-		<div class="card card-body">
-			<h5>Filtros:</h5>
-			<form method="GET">
-				{{filtros.form}}
-
-		    <button class="btn btn-primary" type="submit">Buscar</button>
-			
-		  </form>
-
-		</div>
-	</div>
-	
-</div>
-<br>
-
 <div class="pagination">
     {% if equipos.has_previous %}
         <a class="pagination-action" href="?page=1">
@@ -107,10 +101,7 @@
         </a>
     {% endif %}
 </div>
-
 <br>
-<br>
-
 <button  class="material-icons floating-btnz" onclick="location.href='{% url 'help:help_detail' 8 %}'">?</button>
 
 {% endblock %}

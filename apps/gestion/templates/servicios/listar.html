@@ -1,7 +1,6 @@
 {%  extends 'main.html' %}
 {% block content %}
-
-
+<br>
 <style>
     .floating-btnz{
         width: 30px;
@@ -29,7 +28,23 @@
 </div>
 <hr>
 <div class="row">
-	<div class="col col-md-6">
+	<div class="col">
+		<div class="card card-body">
+			<h5>Filtros:</h5>
+			<form method="GET">
+				{{filtros.form}}
+
+		    <button class="btn btn-primary" type="submit">Buscar</button>
+			
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<br>
+<div class="row">
+	<div class="col">
 		<div class="card card-body">
 			<table class="table table-sm">
 				<tr>
@@ -56,24 +71,6 @@
 		</div>
 
 	</div>
-</div>
-
-
-<hr>
-<div class="row">
-	<div class="col">
-		<div class="card card-body">
-			<h5>Filtros:</h5>
-			<form method="GET">
-				{{filtros.form}}
-
-		    <button class="btn btn-primary" type="submit">Buscar</button>
-			
-		  </form>
-
-		</div>
-	</div>
-	
 </div>
 <br>
 

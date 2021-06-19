@@ -27,52 +27,47 @@
 	<div class="col-md">
 		<h5>Facturas:</h5>
 		<div class="card card-body">
-			
-			<a><input type="submit" value="Buscar"><input type="text" size="40" name="q" value="" id="searchbar" autofocus=""></a>
-			<a class="btn btn-primary " href="{% url 'administracion:facturaciones-crear'%}">Crear Factura</a>
-		</div>
 			<table class="table table-sm">
-                    <tr>
-                        <th></th>
-                        <th>Nro.</th>
-						<th>Timbrado</th>
-						<th>Vigencia Desde</th>
-						<th>Vigencia Hasta</th>
-						<th>RUC</th>
-						<th>Forma Pago</th>
-						<th>Emisión</th>
-						<th>Vencimiento</th>
-						<th>Monto</th>
-						<th>Descripción</th>
-						<th>Estado</th>
-						<th>Acción</th>
-                    </tr>
-
+				<tr>
+					<th></th>
+					<th>Nro.</th>
+					<th>Timbrado</th>
+					<th>Vigencia Desde</th>
+					<th>Vigencia Hasta</th>
+					<th>RUC</th>
+					<th>Forma Pago</th>
+					<th>Emisión</th>
+					<th>Vencimiento</th>
+					<th>Monto</th>
+					<th>Descripción</th>
+					<th>Estado</th>
+					<th>Acción</th>
+				</tr>
+				
 				{% for factura in facturas %}
-					<tr>
-						<td>{{factura.id}}</td>
-						<td>{{factura.nro_factura}}</td>
-                        <td>{{factura.nro_timbrado}}</td>
-                        <td>{{factura.vigencia_desde}}</td>
-                        <td>{{factura.vigencia_hasta}}</td>
-                        <td>{{factura.ruc}}</td>
-                        <td>{{factura.forma_pago}}</td>
-                        <td>{{factura.fecha_emision}}</td>
-                        <td>{{factura.fecha_vencimiento}}</td>
-						<td>{{factura.monto_facturacion}}</td>
-						<td>{{factura.descripcion}}</td>
-						<td>{{factura.estado}}</td>
-						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:facturaciones-modificar'  factura.id%}">Actualizar</a></td>
-						<td><a class="btn btn-sm btn-info" href="{% url 'administracion:facturaciones-borrar'  factura.id%}">Borrar</a></td>
-					</tr>
+				<tr>
+					<td>{{factura.id}}</td>
+					<td>{{factura.nro_factura}}</td>
+					<td>{{factura.nro_timbrado}}</td>
+					<td>{{factura.vigencia_desde}}</td>
+					<td>{{factura.vigencia_hasta}}</td>
+					<td>{{factura.ruc}}</td>
+					<td>{{factura.forma_pago}}</td>
+					<td>{{factura.fecha_emision}}</td>
+					<td>{{factura.fecha_vencimiento}}</td>
+					<td>{{factura.monto_facturacion}}</td>
+					<td>{{factura.descripcion}}</td>
+					<td>{{factura.estado}}</td>
+					<td><a class="btn btn-sm btn-info" href="{% url 'administracion:facturaciones-modificar'  factura.id%}">Actualizar</a></td>
+					<td><a class="btn btn-sm btn-info" href="{% url 'administracion:facturaciones-borrar'  factura.id%}">Borrar</a></td>
+				</tr>
 				{% endfor %}
-
+				
 			</table>
+		</div>
 	</div>
-
 </div>
-
-
+<br>
 <button  class="material-icons floating-btnz" onclick="location.href='{% url 'help:help_detail' 11 %}'">?</button>
 
 {% endblock %}

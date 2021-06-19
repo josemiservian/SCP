@@ -1,9 +1,6 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-
-<br>
-
 <style>
     .floating-btnz{
         width: 30px;
@@ -30,7 +27,22 @@
 	</div>
 </div>
 <hr>
+<div class="row">
+	<div class="col">
+		<div class="card card-body">
+			<h5>Filtros:</h5>
+			<form method="GET">
+				{{filtros.form}}
 
+		    <button class="btn btn-primary" type="submit">Buscar</button>
+			
+		  </form>
+
+		</div>
+	</div>
+	
+</div>
+<br>
 <div class="row">
 	<div class="col">
 		<div class="card card-body">
@@ -66,26 +78,7 @@
 
 </div>
 
-<button  class="material-icons floating-btnz" onclick="location.href='{% url 'help:help_detail' 4 %}'">?</button>
-
-<hr>
-<div class="row">
-	<div class="col">
-		<div class="card card-body">
-			<h5>Filtros:</h5>
-			<form method="GET">
-				{{filtros.form}}
-
-		    <button class="btn btn-primary" type="submit">Buscar</button>
-			
-		  </form>
-
-		</div>
-	</div>
-	
-</div>
 <br>
-
 <div class="pagination">
     {% if empleados.has_previous %}
         <a class="pagination-action" href="?page=1">
@@ -110,5 +103,6 @@
         </a>
     {% endif %}
 </div>
+<br>
+<button  class="material-icons floating-btnz" onclick="location.href='{% url 'help:help_detail' 4 %}'">?</button>
 {% endblock %}
-
