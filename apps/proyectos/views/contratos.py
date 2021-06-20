@@ -1,5 +1,5 @@
 # Django
-from scp import utils
+from scp import utils, widgets
 from apps.administracion.models import PlanFacturacion
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
@@ -8,6 +8,7 @@ from django.shortcuts import render, redirect
 from django.forms.models import inlineformset_factory
 from django.core.paginator import Paginator
 from django.http import JsonResponse
+from django import forms
 
 #Decoradores
 from scp.decorators import allowed_users
@@ -41,21 +42,6 @@ class CrearContrato(FormView):
 #Contratos
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_contrato')
-def crear_contrato2(request):
-
-    form = FormCrearContrato
-
-    if request.method == 'POST':
-        form = FormCrearContrato(request.POST)
-        if form.is_valid():
-            context = {'form':contrato_creado}
-            return render(request, 'contratos/crear.html', context)
-
-    context = {'form':form}
-    return render(request, 'contratos/crear.html', context)
-
-@login_required(login_url='cuentas:login')
-@allowed_users(action='add_contrato')
 def crear_contrato(request):
 
     form = FormCrearContrato
@@ -64,7 +50,7 @@ def crear_contrato(request):
         form = FormCrearContrato(request.POST)
         if form.is_valid():
             pk = form.save()
-            return redirect(f'{pk}/entregables/crear')
+            return redirect('proyectos:contratos-detalle', pk)
 
     context = {'form':form}
     return render(request, 'contratos/crear.html', context)
@@ -107,7 +93,7 @@ def actualizar_contrato(request, pk):
             form.save()
             return redirect('proyectos:contratos-listar')
 
-    context = {'form':form}
+    context = {'form':form, 'contrato':contrato}
     return render(request, 'contratos/modificar.html', context)
 
 @login_required(login_url='cuentas:login')
@@ -151,7 +137,11 @@ def crear_entregable(request, pk):
             'fecha_fin'
         ),
         can_delete=False,
-        extra=5
+        extra=5,
+        widgets={
+            'fecha_inicio':forms.DateInput(attrs={'type':'date'}),
+            'fecha_fin':forms.DateInput(attrs={'type':'date'}),
+        }
     )
     contrato = Contrato.objects.get(id=pk)
     formset = EntregableFormSet(
@@ -162,7 +152,7 @@ def crear_entregable(request, pk):
         formset = EntregableFormSet(request.POST, instance=contrato)
         if formset.is_valid():
             formset.save()
-            return redirect('proyectos:condicionPagos-crear', contrato.id)
+            return redirect('proyectos:contratos-detalle', contrato.id)
             
     context = {'formset':formset, 'contrato':contrato.id}
     return render(request, 'entregables/crear.html', context)
@@ -239,7 +229,7 @@ def crear_condicionPago(request, pk):
             utils.generar_planes(condicion_pago)
             return redirect('proyectos:contratos-detalle', pk)
 
-    context = {'form':form}
+    context = {'form':form, 'contrato':contrato}
     
     return render(request, 'condicionPagos/crear2.html', context)
 

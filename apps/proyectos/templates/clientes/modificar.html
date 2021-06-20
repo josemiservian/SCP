@@ -10,14 +10,14 @@
 				{% csrf_token %}
 				{{form.as_p}}
 				
+				<div class="col justify-content-between"></div>
+					<button type="submit" class="btn btn-primary">Actualizar</button>
+					<a class="btn btn-secondary" href="{% url "proyectos:clientes-listar" %}" class="cancellink-box">Cancelar</a>
+				</div>
 				
 			</form>
 		</div>
 		<br>
-		<div class="col justify-content-between"></div>
-			<button type="submit" class="btn btn-primary">Actualizar</button>
-			<a class="btn btn-secondary" href="{% url "proyectos:clientes-listar" %}" class="cancellink-box">Cancelar</a>
-		</div>
 	</div>
 </div>
 

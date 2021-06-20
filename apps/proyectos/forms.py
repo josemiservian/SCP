@@ -62,10 +62,18 @@ class FormCrearContrato(forms.Form):
     descripcion = forms.CharField(max_length=80)
     monto = forms.FloatField(localize=True)
     horas_presupuestadas = forms.IntegerField(min_value=0)
-    fecha_inicio = forms.DateField(widget=forms.SelectDateWidget)
-    fecha_fin = forms.DateField(widget=forms.SelectDateWidget)
+    fecha_inicio = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
+    fecha_fin = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
     tipo_servicio = forms.ModelChoiceField(queryset=Servicio.objects.all())
 
+    def clean_propuesta(self):
+        '''Valida que ya no se tenga la propuesta seleccionada a otro contrato'''
+
+        propuesta = self.cleaned_data.get('propuesta')
+        
+        if Contrato.objects.filter(propuesta=propuesta).exists():
+            raise forms.ValidationError(f'La propuesta {propuesta} ya se encuentra asociada a otro contrato.') 
+        return propuesta
 
     def save(self):
         """Crea y guarda el contrato"""
@@ -141,7 +149,7 @@ class FormCrearRegistroHora(forms.Form):
     entregable = forms.ModelChoiceField(queryset=Entregable.objects.all())
     nombre = forms.CharField(min_length=3, max_length=30)
     detalle = forms.CharField(min_length=3, max_length=50)
-    fecha = forms.DateField(widget=forms.SelectDateWidget)
+    fecha = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
     #hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
     #hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
     horas_trabajadas = forms.CharField(min_length=5, max_length=5, help_text='Horas trabajadas (HH:MM)')
@@ -181,7 +189,7 @@ class RegistroForm(forms.ModelForm):
     entregable = forms.ModelChoiceField(queryset=Entregable.objects.all())
     nombre = forms.CharField(min_length=3, max_length=30)
     detalle = forms.CharField(min_length=3, max_length=50)
-    fecha = forms.DateField(widget=forms.SelectDateWidget)
+    fecha = forms.DateField(widget=forms.SelectDateWidget(years=range(2000, 2050)))
     #hora_inicio = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))#widget=forms.SelectDateWidget
     #hora_fin = forms.TimeField(widget=forms.Select(choices=HOUR_CHOICES))
 
@@ -200,12 +208,24 @@ class FormCrearEquipo(forms.Form):
     contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
     lider = forms.ModelChoiceField(queryset=Empleado.objects.all())
     
+    def clean_contrato(self):
+        '''Valida que ya no se tenga un equipo asociado a un contrato'''
+
+        contrato = self.cleaned_data.get('contrato')
+        
+        if EquipoProyecto.objects.filter(contrato=contrato).exists():
+            raise forms.ValidationError(f'El contrato "{contrato}" ya se encuentra asociado a un equipo.') 
+        return contrato
 
     def save(self):
         """Crea y guarda un cliente"""
         data = self.cleaned_data
-        equipo = EquipoProyecto(nombre=data['nombre'], descripcion=data['descripcion'],
-                                contrato=data['contrato'], lider_proyecto=data['lider'])
+        equipo = EquipoProyecto(
+            nombre=data['nombre'], 
+            descripcion=data['descripcion'],
+            contrato=data['contrato'], 
+            lider_proyecto=data['lider']
+        )
         equipo.save()
 
 
@@ -215,7 +235,7 @@ class FormAddMiembro(forms.Form):
     empleado = forms.ModelChoiceField(queryset=Empleado.objects.all())
     rol = forms.ChoiceField(choices=(
         ('CON','Consultor'),
-        ('LPR','Lider del Proyecto'),
+        #('LPR','Lider del Proyecto'),
         ('AUD','Auditor'))
     )
     #tarifa_asignada = forms.FloatField()
@@ -239,7 +259,7 @@ class EquipoForm(forms.ModelForm):
     class Meta:
         
         model = EquipoProyecto
-        fields = ('nombre','descripcion','contrato','lider_proyecto')
+        fields = ('__all__')#'nombre','descripcion','contrato','lider_proyecto'
     
 
 class MiembroForm(forms.ModelForm):

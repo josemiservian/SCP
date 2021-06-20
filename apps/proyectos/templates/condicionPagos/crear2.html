@@ -2,6 +2,7 @@
 {% load static %}
 {% block content %}
 <br>
+<div class="row">
     <div class="col col-md-10">
         <div class="card card-body">
 
@@ -11,12 +12,13 @@
                 {% csrf_token %}
     
                 {{form.as_p}}
-                <hr>
+                <div class="col justify-content-between"></div>
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <a  href="{% url 'proyectos:contratos-detalle' contrato.id %}" class="btn btn-secondary">Cancelar</a>
+                </div>
+            </form>
         </div>
-        <p></p>
-        <input type="submit" value="Aceptar">
-        <a  href="{% url 'proyectos:contratos-listar' %}" class="cancellink-box">Cancelar</a>
-        </form>
     </div>
+</div>
     <script src="{% static '/js/selectorMonto.js'%}"></script>
 {% endblock %}

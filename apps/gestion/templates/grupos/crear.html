@@ -1,19 +1,25 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
+<div class="row">
     <div class="col col-md-5">
         <h5>Crear grupo:</h5>
         <p></p>
+        <div class="card card-body">
+
+            <form method="POST" action="{% url "gestion:grupos-crear" %}">
+                {% csrf_token %}
     
-        <form method="POST" action="{% url "gestion:grupos-crear" %}">
-            {% csrf_token %}
-
-            {{form.as_p}}
-            <div>
-                <input type="submit" value="Crear">
-                <a  href="{% url "gestion:grupos-listar" %}" class="cancellink-box">Cancelar</a>
-            </div>
-        </form>
+                {{form.as_p}}
+                
+            </form>
+        </div>
+        <br>
+        <div>
+            <input class="btn btn-primary" type="submit" value="Crear">
+            <a class="btn btn-secondary" href="{% url "gestion:grupos-listar" %}" class="cancellink-box">Cancelar</a>
+        </div>
     </div>
-
+    
+</div>
 {% endblock %}

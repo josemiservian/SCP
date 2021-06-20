@@ -39,6 +39,9 @@
 </div>
 <br>
 <div class="col justify-content-between">
+	{% if not condiciones %}
+		<a href="{% url 'proyectos:condicionPagos-crear' contrato.id %}" class="btn btn-primary">Crear</a>
+	{% endif %}
 	<a class="btn btn-secondary" href="{% url 'proyectos:contratos-detalle' contrato.id %}">Volver</a>
 </div>
 

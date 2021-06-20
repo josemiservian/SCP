@@ -14,10 +14,10 @@
 					{{form}}
 					<hr>
 				{% endfor %}
-				
-				<input type="submit" name="Añadir al equipo">
-				<a  href="{% url "proyectos:squads-listar" %}" class="cancellink-box">Cancelar</a>
-				
+				<div class="col justify-content-between"></div>
+					<button type="submit" class="btn btn-primary">Añadir al equipo</button>
+					<a  href="{% url "proyectos:squads-listar" %}" class="btn btn-secondary">Cancelar</a>
+				</div>	
 			</form>
 
 		</div>

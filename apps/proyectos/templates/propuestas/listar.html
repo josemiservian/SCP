@@ -70,7 +70,7 @@
 						<th>Estado</th>
 						<th>Fecha de aceptacion</th>
 						<th>Accion</th>
-						<th></th>
+
                     </tr>
 
 				{% for propuesta in propuestas %}
@@ -85,7 +85,6 @@
 						<td>{{propuesta.estado}}</td>
 						<td>{{propuesta.fecha_aceptacion}}</td>
 						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-detalle' propuesta.id%}">Detalle</a></td>
-						<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:propuestas-borrar'  propuesta.id%}">Borrar</a></td>
 					</tr>
 				{% endfor %}
 

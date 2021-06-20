@@ -1,4 +1,5 @@
 # Django
+from django.http import request
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
@@ -12,6 +13,7 @@ from scp import utils
 
 #Decoradores
 from scp.decorators import allowed_users
+from scp.decorators import validar_empleado_proyecto
 
 #Models
 from apps.administracion.models import Gasto
@@ -44,6 +46,7 @@ class CrearRegistroHora(FormView):
 #FUNCIONES
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_registrohora')
+@validar_empleado_proyecto()
 def crear_registroHoras(request):
 
     form = FormCrearRegistroHora()
@@ -79,6 +82,7 @@ def crear_registroHoras(request):
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_registrohora')
+@validar_empleado_proyecto()
 def listar_registroHoras(request):
     '''Lista las horas cargadas por el usuario '''
     registros = RegistroHora.objects.filter(empleado__usuario__username=request.user)
@@ -98,6 +102,7 @@ def listar_registroHoras(request):
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='change_registrohora')
+@validar_empleado_proyecto()
 def actualizar_registroHora(request, pk):
 
     registro = RegistroHora.objects.get(id=pk)
@@ -138,6 +143,7 @@ def actualizar_registroHora(request, pk):
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='delete_registrohora')
+@validar_empleado_proyecto()
 def borrar_registroHora(request, pk):
 
     registro = RegistroHora.objects.get(id=pk)
@@ -160,6 +166,7 @@ def borrar_registroHora(request, pk):
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_registrohora')
+@validar_empleado_proyecto()
 def resumen_horas_empleado(request):
     '''Resumen de horas trabajadas totales del empleado.'''
     pass

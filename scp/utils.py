@@ -26,13 +26,21 @@ def calcular_horas(horas, accion):
 def calcular_gasto_hora(usuario, contrato, horas):
     '''Calcular el monto gasto por las horas trabajadas por el empleado.'''
 
-    empleado = Empleado.objects.filter(usuario__username=usuario)[0]
+    gasto = 0
+    empleado = Empleado.objects.get(usuario__username=usuario)
     #Se busca al empleado en el proyecto indicado para obtener la tarifa
     #por hora asignada para el proyecto
-    equipo = EquipoProyecto.objects.filter(contrato__id=contrato)[0]
-    miembro = MiembroEquipoProyecto.objects.filter(empleado__id=empleado.id,
-                                                   equipo_proyecto__id=equipo.id)[0]
-    gasto = miembro.tarifa_asignada * horas
+    equipo = EquipoProyecto.objects.get(contrato__id=contrato)
+    #si el empleado es lider de proyecto 
+    if EquipoProyecto.objects.filter(contrato__id=contrato).filter(lider_proyecto=empleado):
+        gasto = empleado.tarifa * horas
+    #Si no es lider del proyecto (pertenece a un squad).
+    else:
+        miembro = MiembroEquipoProyecto.objects.get(
+            empleado__id=empleado.id,
+            equipo_proyecto__id=equipo.id
+        )
+        gasto = miembro.tarifa_asignada * horas
     return gasto
 
 

@@ -1,5 +1,6 @@
 # Django
 from django import forms
+from django.forms import widgets
 
 # Models
 from apps.administracion.models import Facturacion, Gasto, Pago
@@ -48,6 +49,7 @@ class GastoForm(forms.ModelForm):
     class Meta: 
         model = Gasto
         fields = ('motivo', 'detalle', 'fecha', 'gasto', 'empleado', 'contrato')
+        widgets = {'fecha': forms.SelectDateWidget(years=range(1900, 2030))}
 
 #Facturaciones
 class FormCrearFacturacion(forms.Form):
@@ -80,7 +82,12 @@ class FacturaForm(forms.ModelForm):
     class Meta: 
         model = Facturacion
         fields = ('__all__')
-
+        widgets = {
+            'vigencia_desde': forms.SelectDateWidget(years=range(1900, 2030)),
+            'vigencia_hasta': forms.SelectDateWidget(years=range(1900, 2030)),
+            'fecha_emision': forms.SelectDateWidget(years=range(1900, 2030)),
+            'fecha_vencimiento': forms.SelectDateWidget(years=range(1900, 2030))
+        }
 
 #Pagos
 class FormCrearPago(forms.Form):

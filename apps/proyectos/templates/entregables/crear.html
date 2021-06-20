@@ -2,6 +2,8 @@
 {% load static %}
 {% block content %}
 <br>
+<div class="row">
+
     <div class="col col-md-10">
         <div class="card card-body">
 
@@ -15,10 +17,15 @@
                     {{form}}
                 <hr>
                 {% endfor %}
+                <br>
+                <div class="col justify-content-between">
+
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <a class="btn btn-secondary" href="{% url 'proyectos:contratos-detalle' contrato %}" class="cancellink-box">Cancelar</a>
+                </div>
+            </form>
         </div>
-        <p></p>
-        <input type="submit" value="Seleccionar condiciones de pago">
-        <a  href="{% url 'proyectos:contratos-borrar' contrato %}" class="cancellink-box">Cancelar</a>
-        </form>
     </div>
+</div>
+<script></script>
 {% endblock %}

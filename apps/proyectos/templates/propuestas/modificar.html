@@ -1,15 +1,6 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
-
-<div class="row">
-	<div class="col d-flex justify-content-between">
-		<h5>Propuestas:</h5>
-		<a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-crear' propuesta%}">Agregar detalles</a>
-		<a class="btn btn-primary" href="{% url 'proyectos:propuestasDetalle-detallePorPropuesta' propuesta%}">Ver detalles</a>
-	</div>
-</div>
-
 <div class="row">
 	<div class="col-md-6">
 		<h5>Modificar propuesta</h5>
@@ -18,17 +9,13 @@
 			<form action="" method="POST">
 				{% csrf_token %}
 				{{form.as_p}}
-				<!-- {{ form.management_form }}
-				{% for field in form %}
-					{{field}}
-					<hr>
-				{% endfor %} -->
-				
-                <button type="submit" class="btn btn-primary">Actualizar</button>
-				<a  href="{% url 'proyectos:propuestas-detalle' propuesta %}" class="cancellink-box">Cancelar</a>
+				<div class="col justify-content-between"></div>
+					<button type="submit" class="btn btn-primary">Actualizar</button>
+					<a class="btn btn-secondary"  href="{% url 'proyectos:propuestas-detalle' propuesta %}" class="cancellink-box">Cancelar</a>
+				</div>
 			</form>
-
 		</div>
+		<br>
 	</div>
 </div>
 

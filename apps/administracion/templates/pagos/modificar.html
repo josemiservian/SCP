@@ -6,22 +6,18 @@
 <div class="row">
 	<div class="col-md-6">
 		<div class="card card-body">
-
+			<h5>Modificar pagos:</h5>
+			<hr>
 			<form action="" method="POST">
 				{% csrf_token %}
 				{{form.as_p}}
-				<!-- {{ form.management_form }}
-				{% for field in form %}
-					{{field}}
-					<hr>
-				{% endfor %} -->
-				
-                <button type="submit" class="btn btn-primary btn-block mt-5">Actualizar</button>
-				<a class="btn btn-warning" href="{% url 'administracion:pagos-listar' %}">Cancelar</a>
-
+				<div class="col justify-content-between"></div>
+					<button type="submit" class="btn btn-primary">Actualizar</button>
+					<a class="btn btn-secondary" href="{% url 'administracion:pagos-listar' %}">Cancelar</a>
+				</div>
 			</form>
-
 		</div>
+		<br>
 	</div>
 </div>
 

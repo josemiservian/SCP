@@ -53,7 +53,7 @@ class EquipoProyectoFilter(django_filters.FilterSet):
 
     class Meta:
         model = EquipoProyecto
-        fields =  ['contrato', 'lider_proyecto']#('__all__')
+        fields =  ['contrato']#('__all__'), 'lider_proyecto'
         #exclude = ['nombre', 'created', 'modified', 'rentabilidad_presupuesto', 'descripcion', 'monto']
 
 

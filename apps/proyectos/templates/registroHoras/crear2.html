@@ -2,17 +2,24 @@
 {% load static %}
 {% block content %}
 <br>
-<div class="col">
-    <div class="card card-body">
+<div class="row">
+    <div class="col">
         <h5>Registrar horas</h5>
         <hr>
-        <form method="POST" action="{% url "proyectos:registrohoras-crear" %}">
-            {% csrf_token %}
+        <div class="card card-body">
 
-            {{form.as_p}}
-            <input type="submit" value="Crear">
-            <a class="btn btn-warning" href="{% url 'proyectos:registrohoras-listar'%}">Cancelar</a>
-        </form>
+            <form method="POST" action="{% url "proyectos:registrohoras-crear" %}">
+                {% csrf_token %}
+    
+                {{form.as_p}}
+                <div class="col justify-content-between"></div>
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <a class="btn btn-secondary" href="{% url 'proyectos:registrohoras-listar'%}">Cancelar</a>
+                </div>
+            </form>
+        </div>
+        <br>
+        
     </div>
 </div>
 <script src="{% static '/js/validateTime.js'%}"></script>

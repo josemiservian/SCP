@@ -12,15 +12,10 @@
 			<form action="" method="POST">
 				{% csrf_token %}
 				{{form.as_p}}
-				<!-- {{ form.management_form }}
-				{% for field in form %}
-					{{field}}
-					<hr>
-				{% endfor %} -->
-				
-                <button type="submit" class="btn btn-primary btn-block mt-5">Actualizar</button>
-				<a class="btn btn-warning" href="{% url 'proyectos:registrohoras-listar'%}">Cancelar</a>
-
+				<div class="col justify-content-between"></div>
+					<button type="submit" class="btn btn-primary">Actualizar</button>
+					<a class="btn btn-secondary"  href="{% url 'proyectos:registrohoras-listar' %}">Cancelar</a>
+				</div>
 			</form>
 
 		</div>

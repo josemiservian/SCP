@@ -50,7 +50,6 @@
 					<th>Fecha Inicio</th>
 					<th>Fecha Fin</th>
 					<th>Accion</th>
-					<th></th>
 
 				</tr>
 			{% for contrato in contratos %}
@@ -63,7 +62,6 @@
 					<td>{{contrato.fecha_inicio}}</td>
 					<td>{{contrato.fecha_fin}}</td>
 					<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:contratos-detalle'  contrato.id%}">Detalle</a></td>
-					<td><a class="btn btn-sm btn-info" href="{% url 'proyectos:contratos-borrar'  contrato.id%}">Borrar</a></td>
 				</tr>
 			{% endfor %}
 

@@ -1,18 +1,26 @@
 {%  extends 'main.html' %}
 {% block content %}
 <br>
+<div class="row">
+
     <div class="col col-md-5">
         <h5>Crear equipo</h5>
         <p></p>
-        <form method="POST" action="{% url "proyectos:squads-crear" %}">
-            {% csrf_token %}
+        <div class="card card-body">
 
-            {{form.as_p}}
-            <input type="submit" value="Crear">
-            <a  href="{% url "proyectos:squads-listar" %}" class="cancellink-box">Cancelar</a>
-        </form>
+            <form method="POST" action="{% url "proyectos:squads-crear" %}">
+                {% csrf_token %}
+    
+                {{form.as_p}}
+                <div class="col justify-content-between"></div>
+                    <button type="submit" class="btn btn-primary">Crear</button>
+                    <a class="btn btn-secondary" href="{% url 'proyectos:squads-listar' %}" class="cancellink-box">Cancelar</a>
+		        </div>
+
+            </form>
+        </div>
     </div>
-
+</div>
         
 
 {% endblock %}

@@ -225,9 +225,9 @@ def actualizar_propuestaDetalle(request, pk):
             form.save()
             propuesta.calcular_totales()
             propuesta.save()
-            return redirect('proyectos:propuestas-listar', 'P')
+            return redirect('proyectos:propuestas-listar', propuesta.estado)
 
-    context = {'form':form}
+    context = {'form':form, 'propuesta':propuestas_detalle.propuesta.id}
     return render(request, 'propuestas/modificar_propuestaDetalle.html', context)
 
 

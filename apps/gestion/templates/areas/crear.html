@@ -1,20 +1,22 @@
 {%  extends 'main.html' %}
 {% block content %}
-
 <br>
+<div class="row">
+    <div class="col col-md-5">
+        <h5>Crear area:</h5>
+        <p></p>
+        <div class="card card-body">
 
-<div class="col col-md-5"> 
-    <h5>Crear Area</h5>
-    <form method="POST" action="{% url "gestion:areas-crear" %}">
-        {% csrf_token %}
-
-        {{form.as_p}}
-        <div>
-            <input type="submit" value="Crear">
-            <a  href="{% url "gestion:areas-listar" %}" class="cancellink-box">Cancelar</a>
+            <form method="POST" action="{% url "gestion:areas-crear" %}">
+                {% csrf_token %}
+                {{form.as_p}}
+                <div class="col justify-content-between"></div>
+                    <input  type="submit" value="Crear" class="btn btn-primary">
+                    <a class="btn btn-secondary" href="{% url 'gestion:areas-listar' %}" class="cancellink-box">Cancelar</a>
+                </div>
+            </form>
         </div>
-    </form>
-</div>
-    
 
+    </div>
+</div>
 {% endblock %}

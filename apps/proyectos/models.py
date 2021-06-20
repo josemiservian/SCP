@@ -31,7 +31,7 @@ class Contrato(models.Model):
         -Excelente >1'''
 
     cliente = models.ForeignKey('proyectos.Cliente', on_delete=models.CASCADE)
-    propuesta = models.ForeignKey(
+    propuesta = models.OneToOneField(
         'proyectos.Propuesta', 
         on_delete=models.CASCADE, 
         limit_choices_to={'estado': 'A'}
@@ -133,7 +133,7 @@ class EquipoProyecto(models.Model):
 
     nombre = models.CharField(max_length=40, blank=True, null=True)
     descripcion = models.CharField(max_length=80, blank=True, null=True)
-    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    contrato = models.OneToOneField('proyectos.Contrato', on_delete=models.CASCADE)
     lider_proyecto = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     #rol = models.ForeignKey('roles.Rol', on_delete=models.CASCADE)
     #tarifa_asignada = models.FloatField(null=False)
@@ -148,12 +148,12 @@ class MiembroEquipoProyecto(models.Model):
     equipo_proyecto = models.ForeignKey('proyectos.EquipoProyecto', on_delete=models.CASCADE)
     empleado = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     #rol = models.ForeignKey('gestion.Rol', on_delete=models.CASCADE)
-    LIDER_PROYECTO = 'LPR'
+    #LIDER_PROYECTO = 'LPR'
     CONSULTOR = 'CON'
     AUDITOR = 'AUD'
 
     ROLES_CHOICES = [
-        (LIDER_PROYECTO, 'Lider del Proyecto'),
+        #(LIDER_PROYECTO, 'Lider del Proyecto'),
         (CONSULTOR, 'Consultor'),
         (AUDITOR, 'Auditor'),
     ]

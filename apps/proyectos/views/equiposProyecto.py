@@ -64,7 +64,6 @@ def add_integrante(request, pk):
         formset = MiembroFormSet(request.POST, instance=equipo)
         if formset.is_valid():
             formset.save()
-            #return listar_integrantes(request, pk)
             return redirect('proyectos:squads-listar')
     context = {'formset':formset}
     return render(request, 'equiposProyecto/add2.html', context)
@@ -135,7 +134,7 @@ def actualizar_equipo(request, pk):
 		form = EquipoForm(request.POST, instance=equipo)
 		if form.is_valid():
 			form.save()
-			return redirect('proyectos:squads-equipos')
+			return redirect('proyectos:squads-listar')
 
 	context = {'form':form}
 	return render(request, 'equiposProyecto/modificar.html', context)
