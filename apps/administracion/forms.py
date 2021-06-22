@@ -30,7 +30,7 @@ class FormCrearGasto(forms.Form):
     ]
     motivo = forms.ChoiceField(choices=MOTIVOS_CHOICES)
     detalle = forms.CharField()
-    fecha = forms.DateField(widget=forms.SelectDateWidget)
+    fecha = forms.DateField(widget=forms.DateInput(attrs={'type':'date'}))
     gasto = forms.FloatField()
     empleado = forms.ModelChoiceField(queryset=Empleado.objects.all())
     contrato = forms.ModelChoiceField(queryset=Contrato.objects.all())
@@ -43,6 +43,7 @@ class FormCrearGasto(forms.Form):
                         fecha=data['fecha'], gasto=data['gasto'], 
                         empleado=data['empleado'], contrato=data['contrato'])
         gasto.save()
+        return gasto
 
 
 class GastoForm(forms.ModelForm):

@@ -20,7 +20,7 @@ from apps.proyectos.models import Contrato, Entregable, CondicionPago
 from apps.proyectos.filtros import ContratoFilter
 
 # Forms
-from apps.proyectos.forms import FormCrearContrato, ContratoForm, EntregableForm, CondicionPagoForm, CondicionPagoFormset, FormCondicionPago
+from apps.proyectos.forms import FormCrearContrato, ContratoForm, EntregableForm, CondicionPagoForm, CondicionPagoFormset, FormCondicionPago, EntregablesFormSet
 
 # Create your views here.
 
@@ -117,7 +117,8 @@ def contrato_json(request, pk):
     contrato = list(Contrato.objects.filter(id=pk).values(
         'id', 
         'cliente', 
-        'monto', 
+        'monto',
+        'horas_presupuestadas'
     ))
     return JsonResponse(contrato, safe=False)
 
@@ -130,6 +131,7 @@ def crear_entregable(request, pk):
     EntregableFormSet = inlineformset_factory(
         Contrato, 
         Entregable,
+        formset=EntregablesFormSet,
         fields=(
             'actividades', 
             'horas_asignadas',
@@ -154,7 +156,7 @@ def crear_entregable(request, pk):
             formset.save()
             return redirect('proyectos:contratos-detalle', contrato.id)
             
-    context = {'formset':formset, 'contrato':contrato.id}
+    context = {'formset':formset, 'contrato':contrato}
     return render(request, 'entregables/crear.html', context)
 
 @login_required(login_url='cuentas:login')
@@ -206,9 +208,10 @@ def actualizar_entregable(request, pk):
 def borrar_entregable(request, pk):
     
     entregable = Entregable.objects.get(id=pk)
+    contrato = Contrato.objects.get(id=entregable.contrato.id)
     if request.method == "POST":
         entregable.delete()
-        return redirect('proyectos:entregables-listar')
+        return redirect('proyectos:entregables-listar', contrato.id)
         
     context = {'entregable':entregable}
     return render(request, 'entregables/borrar.html', context)

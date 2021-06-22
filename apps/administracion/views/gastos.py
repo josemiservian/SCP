@@ -1,4 +1,5 @@
 # Django
+from apps.proyectos.models import Contrato
 from django.urls import reverse, reverse_lazy
 from django.views.generic import FormView
 from django.contrib.auth.decorators import login_required
@@ -9,6 +10,7 @@ from scp.decorators import allowed_users
 
 #Models
 from apps.administracion.models import Gasto
+from apps.proyectos.models import Contrato
 
 #Formularios
 from apps.administracion.forms import GastoForm, FormCrearGasto
@@ -36,16 +38,18 @@ class CrearGasto(FormView):
 @allowed_users(action='add_gasto')
 def crear_gasto(request):
 
-	form = FormCrearGasto
+    form = FormCrearGasto
 
-	if request.method == 'POST':
-		form = FormCrearGasto(request.POST)
-		if form.is_valid():
-			form.save()
-			return redirect('administracion:gastos-listar')
+    if request.method == 'POST':
+        form = FormCrearGasto(request.POST)
+        if form.is_valid():
+            gasto = form.save()
+            gasto.contrato.maestro_calculos(0, gasto.gasto)
+            gasto.contrato.save()
+            return redirect('administracion:gastos-listar')
 
-	context = {'form':form}
-	return render(request, 'gastos/crear.html', context)
+    context = {'form':form}
+    return render(request, 'gastos/crear.html', context)
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='view_gasto')
@@ -63,25 +67,32 @@ def listar_gastos(request):
 @allowed_users(action='change_gasto')
 def actualizar_gasto(request, pk):
 
-	gasto = Gasto.objects.get(id=pk)
-	form = GastoForm(instance=gasto)
+    gasto = Gasto.objects.get(id=pk)
+    form = GastoForm(instance=gasto)
+    gasto.contrato.maestro_calculos(0, -gasto.gasto)
+    gasto.contrato.save()
+    
+    if request.method == 'POST':
+        form = GastoForm(request.POST, instance=gasto)
+        if form.is_valid():
+            monto = form['gasto'].value()
+            gasto.contrato.maestro_calculos(0, monto)
+            gasto.contrato.save()
+            form.save()
+            return redirect('administracion:gastos-listar')
 
-	if request.method == 'POST':
-		form = GastoForm(request.POST, instance=gasto)
-		if form.is_valid():
-			form.save()
-			return redirect('administracion:gastos-listar')
-
-	context = {'form':form}
-	return render(request, 'gastos/modificar.html', context)
+    context = {'form':form}
+    return render(request, 'gastos/modificar.html', context)
 
 
 @login_required(login_url='cuentas:login')
 @allowed_users(action='delete_gasto')
 def borrar_gasto(request, pk):
-	
+    
     gasto = Gasto.objects.get(id=pk)
     if request.method == "POST":
+        gasto.contrato.maestro_calculos(0, -gasto.gasto)
+        gasto.contrato.save()
         gasto.delete()
         return redirect('administracion:gastos-listar')
         

@@ -4,6 +4,7 @@ from django.utils import timezone
 import datetime as dt
 from django.db.models import Sum
 from django.db.models.functions import Coalesce
+from django.forms import ValidationError
 
 #Utils
 from scp.choices import PAGOS_CHOICES
@@ -92,6 +93,10 @@ class Contrato(models.Model):
         self.calcular_rentabilidad_horas()
         self.calcular_rentabilidad_presupuesto()
 
+    @property
+    def horas_entregables(self):
+        return self.entregable.aggregate(horas_asignadas=Coalesce(Sum('horas_asignadas'), 0))['horas_asignadas']
+
     def __str__(self):
         """Retorna nombre de Proyecto."""
         return self.cliente.nombre + ' - ' + self.nombre
@@ -99,7 +104,7 @@ class Contrato(models.Model):
 
 class Entregable(models.Model):
     '''Entregables que tendrá un proyecto'''
-    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE)
+    contrato = models.ForeignKey('proyectos.Contrato', on_delete=models.CASCADE, related_name='entregable')
     actividades = models.CharField(max_length=200, blank=False, null=False)
     #responsable = models.ForeignKey('cuentas.Empleado', on_delete=models.CASCADE)
     horas_asignadas = models.IntegerField()
@@ -163,9 +168,19 @@ class MiembroEquipoProyecto(models.Model):
         default=CONSULTOR)
     tarifa_asignada = models.FloatField(null=False)
 
+    def validar_empleado_equipo(self):
+
+        if MiembroEquipoProyecto.objects.filter(empleado=self.empleado).filter(equipo_proyecto=self.equipo_proyecto):
+            raise ValidationError('Los empleados solamente pueden estar registrados una vez por equipo.')
+
     def __str__(self):
         return self.empleado.nombre + ' ' + self.empleado.apellido + ' - ' + self.rol
 
+    def save(self, *args, **kwargs):
+
+        self.validar_empleado_equipo()
+
+        super(MiembroEquipoProyecto, self).save(*args, **kwargs)
 
 class RegistroHora(models.Model):
     '''Registro de horas de las tareas de los proyectos en los cuales se 

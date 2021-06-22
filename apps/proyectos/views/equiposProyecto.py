@@ -14,7 +14,7 @@ from scp.decorators import allowed_users
 from apps.proyectos.models import EquipoProyecto, MiembroEquipoProyecto
 
 # Forms
-from apps.proyectos.forms import FormCrearEquipo, FormAddMiembro, EquipoForm, MiembroForm
+from apps.proyectos.forms import FormCrearEquipo, FormAddMiembro, EquipoForm, MiembroForm, IntegranteFormSet
 
 #Filtros
 from apps.proyectos.filtros import EquipoProyectoFilter
@@ -51,10 +51,11 @@ class AddMiembro(FormView):
 @login_required(login_url='cuentas:login')
 @allowed_users(action='add_miembroequipoproyecto')
 def add_integrante(request, pk):
-	
+    
     MiembroFormSet = inlineformset_factory(
-        EquipoProyecto, 
-        MiembroEquipoProyecto,
+        parent_model=EquipoProyecto, 
+        model=MiembroEquipoProyecto,
+        formset=IntegranteFormSet,
         fields=('empleado','rol','tarifa_asignada'),
         can_delete=False,
         extra=5)
@@ -65,6 +66,7 @@ def add_integrante(request, pk):
         if formset.is_valid():
             formset.save()
             return redirect('proyectos:squads-listar')
+
     context = {'formset':formset}
     return render(request, 'equiposProyecto/add2.html', context)
 

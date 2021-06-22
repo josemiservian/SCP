@@ -1,9 +1,7 @@
 # Django
 from django import forms
-from django.db.models.fields.related import RECURSIVE_RELATIONSHIP_CONSTANT
-from django.forms import formset_factory
-from django.contrib.admin import site as admin_site, widgets
-from django.db.models import ManyToOneRel
+from django.db.models import fields
+from django.forms import formset_factory, BaseInlineFormSet
 
 # Models
 from apps.proyectos.models import * #Cliente, Contrato, EquipoProyecto, MiembroEquipoProyecto, RegistroHora, Propuesta, PropuestaDetalle
@@ -105,11 +103,15 @@ class EntregableForm(forms.ModelForm):
     class Meta:
         
         model = Entregable
-        fields = ('__all__')
+        fields = ['actividades', 'horas_asignadas', 'fecha_inicio', 'fecha_fin']
         widgets = {
             'fecha_inicio':forms.SelectDateWidget(years=range(1900, 2030)),
             'fecha_fin':forms.SelectDateWidget(years=range(1900, 2030))
         }
+    
+    def clean(self):
+        cleaned_data = super(EntregableForm, self).clean()
+        print(cleaned_data['horas_asignadas'])
 
 
 class FormCondicionPago(forms.Form):
@@ -229,22 +231,30 @@ class FormCrearEquipo(forms.Form):
         equipo.save()
 
 
-class FormAddMiembro(forms.Form):
+class FormAddMiembro(BaseInlineFormSet):
     
     #equipo = forms.ModelChoiceField(queryset=EquipoProyecto.objects.all())
-    empleado = forms.ModelChoiceField(queryset=Empleado.objects.all())
-    rol = forms.ChoiceField(choices=(
-        ('CON','Consultor'),
-        #('LPR','Lider del Proyecto'),
-        ('AUD','Auditor'))
-    )
+    #empleado = forms.ModelChoiceField(queryset=Empleado.objects.all())
+    #rol = forms.ChoiceField(choices=(
+    #    ('CON','Consultor'),
+    #    #('LPR','Lider del Proyecto'),
+    #    ('AUD','Auditor'))
+    #)
     #tarifa_asignada = forms.FloatField()
     
+    def clean_empleado(self):
+        for form in self.forms:
+            form.empleado = self.cleaned_data.get('empleado')
+            form.equipo = self.cleaned_data.get('equipo')
 
-    def save(self, equipo_id, usuario):
+            if MiembroEquipoProyecto.objects.filter(empleado=empleado).filter(equipo_proyecto=equipo).exists():
+                raise forms.ValidationError(f'El empleado "{empleado}" ya se encuentra asociado al equipo {equipo}.')
+            return empleado
+            
+    '''def save(self, equipo_id, usuario):
         """Añade a un empleado a un equipo de Proyecto"""
         data = self.cleaned_data
-        empleado = Empleado.objects.filter(usuario__username=usuario)[0]
+        empleado = Empleado.objects.get(usuario__username=usuario)
         #cargo = Cargo.objects.filter(empleado__usuario__username=usuario)[0]
         miembro_equipo = MiembroEquipoProyecto(
             equipo_proyecto_id=equipo_id,  
@@ -252,7 +262,7 @@ class FormAddMiembro(forms.Form):
             rol=data['rol'],
             tarifa_asignada=empleado.tarifa#cargo.tarifa
         )
-        miembro_equipo.save()
+        miembro_equipo.save()'''
 
 
 class EquipoForm(forms.ModelForm):
@@ -266,7 +276,7 @@ class MiembroForm(forms.ModelForm):
     class Meta:
         
         model = MiembroEquipoProyecto
-        fields = ('empleado','rol')#'equipo_proyecto',,'tarifa_asignada'
+        fields = ('empleado','rol','tarifa_asignada')#'equipo_proyecto',
 
 
 #Formularios para Propuestas
@@ -366,3 +376,26 @@ class PropuestaDetalleForm(forms.ModelForm):
         
         model = PropuestaDetalle
         fields = ('__all__')
+
+class EntregablesFormSet(BaseInlineFormSet):
+    def clean(self):
+        super().clean()
+        contrato = self.forms[0].cleaned_data['contrato']
+        #traer aqui la suma de los entregables YA CREADOS relacionados al proyecto
+        total_horas = sum(f.cleaned_data.get('horas_asignadas') for f in self.forms if f.cleaned_data.get('horas_asignadas') is not None)
+        if total_horas + contrato.horas_entregables > contrato.horas_presupuestadas:
+            raise forms.ValidationError("Las horas asignadas en entregables no debe ser mayor a las horas presupuestadas del contrato")
+        else:
+            return
+
+class IntegranteFormSet(BaseInlineFormSet):
+    def clean(self):
+        super().clean()
+        integrantes = []
+        equipo = self.forms[0].cleaned_data.get('equipo_proyecto')
+        for form in self.forms:
+            if form.cleaned_data.get('empleado') is not None:
+                integrantes.append(form.cleaned_data.get('empleado'))
+        validacion = [integrante for integrante in integrantes if equipo.lider_proyecto == integrante or integrante.miembroequipoproyecto_set.get(equipo_proyecto=equipo)]
+        if len(set(integrantes)) != len(integrantes) or validacion:
+            raise forms.ValidationError('Los empleados solamente pueden estar registrados una vez por equipo.')
