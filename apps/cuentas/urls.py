@@ -29,4 +29,9 @@ urlpatterns = [
         view=empleados.actualizar_perfil,
         name='configuracion'
     ),
+    path(
+        route='perfil/<str:username>',
+        view=empleados.ver_perfil,
+        name='perfil'
+    )
 ]

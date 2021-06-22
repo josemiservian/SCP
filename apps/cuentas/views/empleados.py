@@ -110,36 +110,12 @@ def admin(request):
 	context = {}
 	return render(request, 'inicio.html',context) 
 
+login_required(login_url='login')
+def ver_perfil(request, username):
 
-'''@login_required(login_url='cuentas:login')
-def resumen(request):
+	empleado = Empleado.objects.get(usuario__username=username)
+	return render(request, 'cuentas/perfil.html', {'perfil':empleado})
 
-	registro_horas = RegistroHora.objects.filter(
-		empleado__usuario__username=request.user).values(
-		'contrato__nombre',
-		'nombre',
-		'detalle',
-		'fecha',
-		horas=Cast('horas_trabajadas', TimeField()))
-	
-	#Proyectos asignadas en el mes (activos)
-	proyectos_asignados = registro_horas.values('contrato__nombre').distinct().count()
-
-	#Total de horas mensuales
-	total_horas_mensuales = registro_horas.aggregate(Sum('horas'))
-	total_horas_mensuales = total_horas_mensuales['horas__sum']
-	total_horas_mensuales = int(total_horas_mensuales.days *24 + total_horas_mensuales.seconds/3600)
-
-	#Total de tareas realizadas en el mes
-	total_tareas_mensuales = registro_horas.values('nombre').distinct().count()
-
-	context = {
-		'total_horas_mensuales':total_horas_mensuales,
-		'proyectos_asignados':proyectos_asignados,
-		'total_tareas_mensuales':total_tareas_mensuales
-	}
-
-	return render(request, 'cuentas/resumen.html',context)'''
 
 @login_required(login_url='login')
 def actualizar_perfil(request, username):

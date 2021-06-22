@@ -1,0 +1,22 @@
+{%  extends 'main.html' %}
+{% block content %}
+<br>
+<div class="col">
+	<div class="card card-body">
+        
+        <p><strong>Nombre</strong>: {{perfil.nombre}}</p>
+        <p><strong>Apellido</strong>: {{perfil.apellido}}</p>
+        <p><strong>Cedula</strong>: {{perfil.cedula}}</p>
+        <p><strong>Direccion</strong>: {{perfil.direccion}}</p>
+        <p><strong>Fecha nacimiento</strong>: {{perfil.fecha_nacimiento}}</p>
+ 
+	</div>
+</div>
+<br>
+<div class="col d-flex justify-content-between">
+    <div class="col justify-content-between">
+        <a class="btn btn-primary" href="{% url 'cuentas:configuracion' perfil.id %}">Modificar</a>
+        <a class="btn btn-secondary" href="{% url 'cuentas:inicio' %}">Volver</a>
+    </div>
+</div>
+{% endblock %}
